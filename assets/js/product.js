@@ -1,6 +1,4 @@
-
-
-// main product
+const dataUrl = 'https://cdn.crfnetwork.com/database/shopee.json'
 
 function responsive() {
     var listItem = document.querySelectorAll('.home-product-item');
@@ -47,47 +45,43 @@ function checkPageArrow(){
     }
 }
 
+let slider = document.querySelector('.slider .list');
+let items = document.querySelectorAll('.slider .list .item');
+let next = document.getElementById('next');
+let prev = document.getElementById('prev');
+let dots = document.querySelectorAll('.slider .dots li');
 
-// catagory
+let lengthItems = items.length - 1;
+let active = 0;
+next.onclick = function(){
+    active = active + 1 <= lengthItems ? active + 1 : 0;
+    reloadSlider();
+}
+prev.onclick = function(){
+    active = active - 1 >= 0 ? active - 1 : lengthItems;
+    reloadSlider();
+}
+let refreshInterval = setInterval(()=> {next.click()}, 3000);
+function reloadSlider(){
+    slider.style.left = -items[active].offsetLeft + 'px';
+    // 
+    let last_active_dot = document.querySelector('.slider .dots li.active');
+    last_active_dot.classList.remove('active');
+    dots[active].classList.add('active');
 
-var headerCatagoryItem = document.querySelectorAll('.header__sort-item');
+    clearInterval(refreshInterval);
+    refreshInterval = setInterval(()=> {next.click()}, 3000);
 
-for(var i = 0; i < 4; i++){
-    headerCatagoryItem[i].onclick = function(){
-        var headerCatagoryActive = document.querySelector('.header__sort-item--active');
-        headerCatagoryActive.classList.remove('header__sort-item--active');
-        this.classList.add('header__sort-item--active');
-        shuffer();
-    }
-
+    
 }
 
-var homeFilterPage = document.querySelectorAll('.home-filter-page-btn');
-
-homeFilterPage[0].onclick = function(){
-    var currentPage = document.querySelector('.home-filter-page-now');
-    if(currentPage.textContent != 1){
-        currentPage.textContent = Number(currentPage.textContent) - 1;
-        shuffer();
-    }
-    if(currentPage.textContent != 14){
-        homeFilterPage[1].classList.remove('home-filter-page-btn--disable');
-    }
-    if(currentPage.textContent == 1){
-        homeFilterPage[0].classList.add('home-filter-page-btn--disable');
-    }
-}
-homeFilterPage[1].onclick = function(){
-    var currentPage = document.querySelector('.home-filter-page-now');
-    if(currentPage.textContent != 14){
-        currentPage.textContent = Number(currentPage.textContent) + 1;
-        shuffer();
-    }
-    if(currentPage.textContent != 1){
-        homeFilterPage[0].classList.remove('home-filter-page-btn--disable');
-    }
-    if(currentPage.textContent == 14){
-        homeFilterPage[1].classList.add('home-filter-page-btn--disable');
-    }
-}
+dots.forEach((li, key) => {
+    li.addEventListener('click', ()=>{
+         active = key;
+         reloadSlider();
+    })
+})
+window.onresize = function(event) {
+    reloadSlider();
+};
 

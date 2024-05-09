@@ -13,7 +13,14 @@
     <link rel="stylesheet" href="./assets/css/style.css" />
     <link rel="stylesheet" href="./assets/css/grid.css" />
     <link rel="stylesheet" href="./assets/css/responsive.css" />
-    
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
   </head>
   <body>
     <!-- main -->
@@ -202,11 +209,11 @@
                   src="./assets/img/sp/no-cart.png"
                   class="header__no-cart-img"
                 />
-                <p class="header__no-cart-text">There is no product yet</p>
+                <p class="header__no-cart-text">Chưa có sản phẩm</p>
               </div>
 
               <div class="header__cart-list has-cart">
-                <h4 class="header__cart-heading">Chosen Product</h4>
+                <h4 class="header__cart-heading">Sản phẩm đã chọn</h4>
                 <ul class="header__cart-list-item">
                   <li class="header__cart-item">
                     <img
@@ -231,7 +238,28 @@
                   </li>
                   <li class="header__cart-item">
                     <img
-                      src="./assets/img/buy/7.PNG"
+                      src="./assets/img/buy/2.PNG"
+                      class="header__cart-item-img"
+                    />
+                    <div class="header__cart-item-info">
+                      <div class="header__cart-item-heading">
+                        <h3 class="header__cart-item-name">
+                          Hồng Ánh 1998 1m62 48kg 89-64-91
+                        </h3>
+                        <p class="header__cart-item-price">2.500.000đ</p>
+                      </div>
+                      <div class="header__cart-item-body">
+                        <p class="header__cart-item-number">x 1</p>
+                        <div class="header__cart-item-close">
+                          Xoá
+                          <i class="fas fa-times"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="header__cart-item">
+                    <img
+                      src="./assets/img/buy/3.PNG"
                       class="header__cart-item-img"
                     />
                     <div class="header__cart-item-info">
@@ -252,7 +280,7 @@
                   </li>
                   <li class="header__cart-item">
                     <img
-                      src="./assets/img/buy/8.PNG"
+                      src="./assets/img/buy/4.PNG"
                       class="header__cart-item-img"
                     />
                     <div class="header__cart-item-info">
@@ -271,24 +299,75 @@
                       </div>
                     </div>
                   </li>
+                  <li class="header__cart-item">
+                    <img
+                      src="./assets/img/buy/5.PNG"
+                      class="header__cart-item-img"
+                    />
+                    <div class="header__cart-item-info">
+                      <div class="header__cart-item-heading">
+                        <h3 class="header__cart-item-name">
+                          Thanh Thanh 2000 1m57 46kg 88-62-89
+                        </h3>
+                        <p class="header__cart-item-price">2.000.000đ</p>
+                      </div>
+                      <div class="header__cart-item-body">
+                        <p class="header__cart-item-number">x 2</p>
+                        <div class="header__cart-item-close">
+                          Xoá
+                          <i class="fas fa-times"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
                 </ul>
                 <div class="header__cart-footer">
                   <a href="#" class="btn btn--primary header__cart-see-cart"
-                    >View Cart</a
+                    >Xem giỏ hàng</a
                   >
                 </div>
               </div>
             </div>
           </div>
-        </div>       
-      </header>     
-      
+        </div>
+      </header>
+
+      <div class="slider">
+        <div class="list">
+          <div class="item">
+            <img src="assets/img/product/Italian-luxury-furniture-Minotti.webp" alt="" />
+          </div>
+          <div class="item">
+            <img src="assets/img/product/255263.jpg" alt="" />
+          </div>
+          <div class="item">
+            <img src="assets/img/product/design-furniture-interior-living-room-living-room-hd-wallpaper-preview.jpg" alt="" />
+          </div>
+          <div class="item">
+            <img src="assets/img/product/warm-and-modern-living-room-living-room-set-wallpaper-preview.jpg" alt="" />
+          </div>
+          <div class="item">
+            <img src="assets/img/product/190239.jpg" alt="" />
+          </div>
+          
+        </div>
+        <div class="buttons">
+          <button id="prev"><i class="ri-arrow-left-line"></i></button>
+          <button id="next"><i class="ri-arrow-right-line"></i></button>
+        </div>
+        <ul class="dots">
+          <li class="active"></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+      </div>
+
       <!-- container -->
       <div class="container">
         <div class="grid wide">
           <div class="row sm-gutter">
-            
-            <!-- Slider -->
             <div class="col l-2 m-0 c-0">
               <!-- category -->
               <nav class="category">
@@ -1143,6 +1222,5 @@
 
     <!-- script js -->
     <script src="./assets/js/product.js"></script>
-    <script></script>
   </body>
 </html>
