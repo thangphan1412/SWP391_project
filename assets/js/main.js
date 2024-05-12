@@ -1,4 +1,3 @@
-const dataUrl = 'https://cdn.crfnetwork.com/database/shopee.json'
 
 function responsive() {
     var listItem = document.querySelectorAll('.home-product-item');
