@@ -29,6 +29,8 @@
     <div class="offcanvas-header justify-content-center">
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
+
+    <!-- Start of cart detail -->
     <div class="offcanvas-body">
       <div class="order-md-last">
         <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -68,6 +70,9 @@
     </div>
   </div>
 
+  <!-- End of cart detail -->
+
+  <!-- Start of search bar-->
   <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasSearch"
     aria-labelledby="Search">
     <div class="offcanvas-header justify-content-center">
@@ -88,6 +93,8 @@
       </div>
     </div>
   </div>
+
+  <!-- End of search bar -->
 
   <header>
     <div class="container py-2">
@@ -142,16 +149,18 @@
           <ul class="d-flex justify-content-end list-unstyled m-0">
             
             <li>
-              <a href="wishlist.html" class="mx-3">
+              <a href="#" class="mx-3">
                 <iconify-icon icon="mdi:heart" class="fs-4"></iconify-icon>
               </a>
             </li>
+
+            <!-- Interact with cart-->
 
             <li>
               <a href="#" class="mx-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
                 aria-controls="offcanvasCart">
                 <iconify-icon icon="mdi:cart" class="fs-4 position-relative"></iconify-icon>
-                <span class="position-absolute translate-middle badge rounded-circle bg-primary pt-2">
+                <span class="position-absolute translate-middle badge rounded-circle bg-primary">
                   03
                 </span>
               </a>
@@ -166,6 +175,8 @@
             </li>
           </ul>
 
+          <!-- End of interact with cart-->
+
         </div>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
@@ -179,6 +190,8 @@
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
           </div>
 
+          <!-- Open category List -->
+
           <div class="offcanvas-body justify-content-between">
             <select class="filter-categories border-0 mb-0 me-5">
               <option>Shop by Category</option>
@@ -188,34 +201,54 @@
               <option>Toy</option>
             </select>
 
+            <!-- End of category list-->
+
+            <!-- Start of navigation -->
             <ul class="navbar-nav menu-list list-unstyled d-flex gap-md-3 mb-0">
+              
+              <!-- Home -->
               <li class="nav-item">
                 <a style="color: var(--accent-color);" href="index.html" class="nav-link active">Home</a>
               </li>
               
+              <!-- Product -->
+
               <li class="nav-item">
                 <a href="product.html" class="nav-link">Product</a>
               </li>
+
+              <!-- Blog -->
               <li class="nav-item">
                 <a href="blog.html" class="nav-link">Blog</a>
               </li>
+
+              <!-- Contact -->
               <li class="nav-item">
                 <a href="contact.html" class="nav-link">Contact</a>
               </li>
+
+              <!-- Others -->
               <li class="nav-item">
                 <a href="#" class="nav-link">Others</a>
               </li>
+
+              <!-- Open list related to user-->
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" role="button" id="pages" data-bs-toggle="dropdown"
                   aria-expanded="false">Users</a>
                 <ul class="dropdown-menu" aria-labelledby="pages">
                   <li><a href="login.html" class="dropdown-item">Login</a></li>
                   <li><a href="register.html" class="dropdown-item">Register</a></li>
-                  <li><a href="single-product.html" class="dropdown-item">Order History</a></li>
+                  <li><a href="#" class="dropdown-item">Order History</a></li>
+                  <li><a href="dashboard.html" class="dropdown-item">Dashboard</a></li>
                   <li><a href="cart.html" class="dropdown-item">My Profile</a></li>
                 </ul>
               </li>
             </ul>
+
+            <!-- End list related to user -->
+
+            <!-- Start of Cart -->
 
             <div class="d-none d-lg-flex align-items-end">
               <ul class="d-flex justify-content-end list-unstyled m-0">
@@ -230,7 +263,7 @@
                   <a href="#" class="mx-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
                     aria-controls="offcanvasCart">
                     <iconify-icon icon="mdi:cart" class="fs-4 position-relative"></iconify-icon>
-                    <span class="position-absolute translate-middle badge rounded-circle bg-primary pt-2">
+                    <span class="position-absolute translate-middle badge rounded-circle bg-primary">
                       03
                     </span>
                   </a>
@@ -238,6 +271,8 @@
               </ul>
 
             </div>
+
+            <!-- End of Cart -->
 
           </div>
 
@@ -250,6 +285,8 @@
     </div>
   </header>
 
+
+  <!-- Start of Banner -->
   <section id="banner" style="background: #F9F3EC;">
     <div class="container">
       <div class="swiper main-swiper">
@@ -317,6 +354,9 @@
     </div>
   </section>
 
+  <!-- End of banner -->
+
+  <!-- Start of Main category -->
   <section id="categories">
     <div class="container my-3 py-5">
       <div class="row my-5">
@@ -354,6 +394,11 @@
     </div>
   </section>
 
+  <!-- End of Main Category -->
+
+  <!-- Start of View demo Category -->
+
+  <!-- For clothing -->
   <section id="clothing" class="my-5 overflow-hidden">
     <div class="container pb-5">
 
@@ -482,9 +527,6 @@
             </div>
           </div>
           <div class="swiper-slide">
-            <!-- <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-              New
-            </div> -->
             <div class="card position-relative">
               <a href="single-product.html"><img src="assets/img/seller/banner.jpg" class="img-fluid rounded-4" alt="image"></a>
               <div class="card-body p-0">
@@ -519,9 +561,6 @@
             </div>
           </div>
           <div class="swiper-slide">
-            <!-- <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-              New
-            </div> -->
             <div class="card position-relative">
               <a href="single-product.html"><img src="assets/img/seller/card3.jpg" class="img-fluid rounded-4" alt="image"></a>
               <div class="card-body p-0">
@@ -556,9 +595,6 @@
             </div>
           </div>
           <div class="swiper-slide">
-            <!-- <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-              New
-            </div> -->
             <div class="card position-relative">
               <a href="single-product.html"><img src="images/item8.jpg" class="img-fluid rounded-4" alt="image"></a>
               <div class="card-body p-0">
@@ -601,6 +637,10 @@
     </div>
   </section>
 
+  <!-- End of clothing -->
+
+
+  <!-- Start of Accessories -->
   <section id="foodies" class="my-5">
     <div class="container my-5 py-5">
 
@@ -626,9 +666,6 @@
       <div class="isotope-container row">
 
         <div class="item cat col-md-4 col-lg-3 my-4">
-          <!-- <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-            New
-          </div> -->
           <div class="card position-relative">
             <a href="single-product.html"><img src="assets/img/seller/banner.jpg" class="img-fluid rounded-4" alt="image"></a>
             <div class="card-body p-0">
@@ -702,9 +739,6 @@
         </div>
 
         <div class="item dog col-md-4 col-lg-3 my-4">
-          <!-- <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-            New
-          </div> -->
           <div class="card position-relative">
             <a href="single-product.html"><img src="assets/img/seller/banner.jpg" class="img-fluid rounded-4" alt="image"></a>
             <div class="card-body p-0">
@@ -778,9 +812,6 @@
         </div>
 
         <div class="item bird col-md-4 col-lg-3 my-4">
-          <!-- <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-            New
-          </div> -->
           <div class="card position-relative">
             <a href="single-product.html"><img src="assets/img/seller/banner.jpg" class="img-fluid rounded-4" alt="image"></a>
             <div class="card-body p-0">
@@ -816,9 +847,6 @@
         </div>
 
         <div class="item bird col-md-4 col-lg-3 my-4">
-          <!-- <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-            New
-          </div> -->
           <div class="card position-relative">
             <a href="single-product.html"><img src="assets/img/seller/banner.jpg" class="img-fluid rounded-4" alt="image"></a>
             <div class="card-body p-0">
@@ -892,9 +920,6 @@
         </div>
 
         <div class="item cat col-md-4 col-lg-3 my-4">
-          <!-- <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-            New
-          </div> -->
           <div class="card position-relative">
             <a href="single-product.html"><img src="assets/img/seller/banner.jpg" class="img-fluid rounded-4" alt="image"></a>
             <div class="card-body p-0">
@@ -936,27 +961,9 @@
     </div>
   </section>
 
-  <section id="banner-2" class="my-3" style="background: #F9F3EC;">
-    <div class="container">
-      <div class="row flex-row-reverse banner-content align-items-center">
-        <div class="img-wrapper col-12 col-md-6">
-          <img src="assets/img/seller/lebronsunshinecover.jpg" class="img-fluid">
-        </div>
-        <div class="content-wrapper col-12 offset-md-1 col-md-5 p-5">
-          <div class="secondary-font text-primary text-uppercase mb-3 fs-4">Upto 40% off</div>
-          <h2 class="banner-title display-1 fw-normal">Clearance sale !!!
-          </h2>
-          <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
-            shop now
-            <svg width="24" height="24" viewBox="0 0 24 24" class="mb-1">
-              <use xlink:href="#arrow-right"></use>
-            </svg></a>
-        </div>
+  <!-- End of Accessories category-->
 
-      </div>
-    </div>
-  </section>
-
+  <!-- Start of Best Selling product-->
   <section id="bestselling" class="my-5 overflow-hidden">
     <div class="container py-5 mb-5">
 
@@ -975,9 +982,6 @@
         <div class="swiper-wrapper">
 
           <div class="swiper-slide">
-            <!-- <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-              New
-            </div> -->
             <div class="card position-relative">
               <a href="single-product.html"><img src="assets/img/seller/card2.jpg" class="img-fluid rounded-4" alt="image"></a>
               <div class="card-body p-0">
@@ -1012,9 +1016,6 @@
             </div>
           </div>
           <div class="swiper-slide">
-            <!-- <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-              New
-            </div> -->
             <div class="card position-relative">
               <a href="single-product.html"><img src="assets/img/seller/card3.jpg" class="img-fluid rounded-4" alt="image"></a>
               <div class="card-body p-0">
@@ -1047,6 +1048,7 @@
               </div>
             </div>
           </div>
+
           <div class="swiper-slide">
             <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
               Sale
@@ -1084,10 +1086,8 @@
               </div>
             </div>
           </div>
+
           <div class="swiper-slide">
-            <!-- <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-              New
-            </div> -->
             <div class="card position-relative">
               <a href="single-product.html"><img src="assets/img/seller/card2.jpg" class="img-fluid rounded-4" alt="image"></a>
               <div class="card-body p-0">
@@ -1159,9 +1159,6 @@
             </div>
           </div>
           <div class="swiper-slide">
-            <!-- <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-              New
-            </div> -->
             <div class="card position-relative">
               <a href="single-product.html"><img src="assets/img/seller/card2.jpg" class="img-fluid rounded-4" alt="image"></a>
               <div class="card-body p-0">
@@ -1205,34 +1202,7 @@
     </div>
   </section>
 
-  <section id="register" style="background: url('images/background-img.png') no-repeat;">
-    <div class="container ">
-      <div class="row my-5 py-5">
-        <div class="offset-md-3 col-md-6 my-5 ">
-          <h2 class="display-3 fw-normal text-center">Get 20% Off on <span class="text-primary">first Purchase</span>
-          </h2>
-          <form>
-            <div class="mb-3">
-              <input type="email" class="form-control form-control-lg" name="email" id="email"
-                placeholder="Enter Your Email Address">
-            </div>
-            <div class="mb-3">
-              <input type="password" class="form-control form-control-lg" name="email" id="password1"
-                placeholder="Create Password">
-            </div>
-            <div class="mb-3">
-              <input type="password" class="form-control form-control-lg" name="email" id="password2"
-                placeholder="Repeat Password">
-            </div>
-
-            <div class="d-grid gap-2">
-              <button type="submit" class="btn btn-dark btn-lg rounded-1">Register it now</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- End of Best selling product -->
 
   <section id="service">
     <div class="container py-5 my-5">
@@ -1244,7 +1214,7 @@
             </div>
             <h3 class="card-title py-2 m-0">Free Delivery</h3>
             <div class="card-text">
-              <p class="blog-paragraph fs-6">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+              <p class="blog-paragraph fs-6"></p>
             </div>
           </div>
         </div>
@@ -1255,7 +1225,7 @@
             </div>
             <h3 class="card-title py-2 m-0">100% secure payment</h3>
             <div class="card-text">
-              <p class="blog-paragraph fs-6">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+              <p class="blog-paragraph fs-6"></p>
             </div>
           </div>
         </div>
@@ -1266,7 +1236,7 @@
             </div>
             <h3 class="card-title py-2 m-0">Daily Offer</h3>
             <div class="card-text">
-              <p class="blog-paragraph fs-6">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+              <p class="blog-paragraph fs-6"></p>
             </div>
           </div>
         </div>
@@ -1277,7 +1247,7 @@
             </div>
             <h3 class="card-title py-2 m-0">Quality guarantee</h3>
             <div class="card-text">
-              <p class="blog-paragraph fs-6">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+              <p class="blog-paragraph fs-6"></p>
             </div>
           </div>
         </div>
