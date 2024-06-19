@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kết quả tìm kiếm sản phẩm</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<h1>Kết quả tìm kiếm sản phẩm</h1>
+
+
+
+
+<form action="/search" method="GET">
+    <label for="productName">Tên sản phẩm:</label>
+    <input type="text" id="productName" name="productName">
+    <button type="submit">Tìm kiếm</button>
+</form>
+
+
+
+
+<br>
+<table>
+    <thead>
+    <tr>
+        <th>Product ID</th>
+        <th>Product Image</th>
+        <th>Product Description</th>
+        <th>Product Name</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Dữ liệu sản phẩm sẽ được thêm vào đây từ controller -->
+    <tr th:each="product : ${products}">
+        <td th:text="${product.productId}"></td>
+        <td><img th:src="${product.primaryImage}" alt="Product Image" /></td>
+        <td th:text="${product.description}"></td>
+        <td th:text="${product.productName}"></td>
+    </tr>
+
+    </tbody>
+</table>
+
+
+</body>
+</html>

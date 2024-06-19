@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html  lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link th:href="@{/images/favicon.png}" rel="shortcut icon">
+    <title>Ludus - Electronics, Apparel, Computers, Books, DVDs & more</title>
+
+    <!--====== Google Font ======-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
+
+    <!--====== Vendor Css ======-->
+    <link rel="stylesheet"   th:href="@{/css/vendor.css}" />>
+    <link rel="stylesheet" th:href="@{/css/utility.css}" />
+    <link rel="stylesheet" th:href="@{/css/app.css}" />
+</head>
+<body class="config">
+<div id="app">
+
+    <!--====== Main Header ======-->
+    <div th:insert="~{partials/navbar :: navbar}"></div>
+    <!--====== End - Main Header ======-->
+
+
+    <!--====== App Content ======-->
+    <div class="app-content">
+
+        <!--====== Section 1 ======-->
+        <div class="u-s-p-y-60">
+
+            <!--====== Section Content ======-->
+            <div class="section__content">
+                <div class="container">
+                    <div class="breadcrumb">
+                        <div class="breadcrumb__wrap">
+                            <ul class="breadcrumb__list">
+                                <li class="has-separator">
+
+                                    <a th:href="@{/}">Home</a></li>
+                                <li class="has-separator">
+
+                                    <a th:href="@{/adminDashBoard}">Admin Dashboard</a></li>
+                                <li class="is-marked">
+
+                                    <a th:href="@{/createVoucher}">Manage Voucher</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--====== End - Section 1 ======-->
+
+
+        <!--====== Section 2 ======-->
+        <div class="u-s-p-b-60">
+
+            <!--====== Section Content ======-->
+            <div class="section__content">
+                <div class="dash">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-12">
+
+                                <!--====== Dashboard Features ======-->
+
+
+                                <!--====== End - Dashboard Features ======-->
+                            </div>
+
+                                    <h1 class="dash__h1 u-s-m-b-30">Manage Voucher</h1>
+
+
+                            <div th:if="${addMessage}" class="alert alert-success" role="alert">
+                                <p style="color: green" th:text="${addMessage}"></p>
+                            </div>
+
+                            <form class="l-f-o__form" th:action="@{/addVoucher}" method="post">
+                                <div class="u-s-m-b-30">
+                                    <label class="gl-label">Voucher Code</label>
+                                    <input class="input-text input-text--primary-style" type="text" placeholder="Enter the code or generate random code" name="code" id="codeInput">
+                                    <button type="button" id="generateCodeButton">Generate Code Random</button>
+                                </div>
+
+                                <div class="u-s-m-b-30">
+                                    <label class="gl-label">Discount Percentage</label>
+                                    <input class="input-text input-text--primary-style" type="number" placeholder="Enter the percentage" name="percentage" required step="any" pattern="[0-9]+(\.[0-9]+)?" title="Enter a valid decimal number" min="0" max="100">
+                                </div>
+
+                                <div class="u-s-m-b-30">
+                                    <label class="gl-label">Quantity</label>
+                                    <input class="input-text input-text--primary-style" type="number" placeholder="Enter the quantity" name="quantity" required min="1" max="100" step="1" pattern="[0-9]+" title="Enter a valid integer number">
+                                </div>
+
+                                <div class="u-s-m-b-30">
+                                    <label class="gl-label">End Date</label>
+                                    <input class="input-text input-text--primary-style" type="date" placeholder="Enter the date" name="endDate" id="endDateInput" required>
+                                </div>
+
+                                <div style="font-weight: 600;" class="u-s-m-b-15 col-lg-12">
+                                    <input class="btn btn--e-transparent-brand-b-2" type="submit" value="Submit">
+                                </div>
+                            </form>
+
+                            <div th:if="${changeMessage}" class="alert alert-success" role="alert">
+                                <p style="color: green" th:text="${changeMessage}"></p>
+                            </div>
+
+
+
+                                    <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
+                                        <div class="dash__table-wrap gl-scroll">
+                                            <table class="dash__table">
+                                                <thead>
+                                                <tr>
+                                                    <th>Id</th>
+                                                    <th>Code</th>
+                                                    <th>Quantity</th>
+                                                    <th>Create Date</th>
+                                                    <th>End Date</th>
+                                                    <th>Status</th>
+
+
+                                                </tr>
+                                                </thead>
+                                                <tbody th:each="voucher : ${Vouchers}">
+                                                <tr>
+                                                    <td th:text="${voucher.voucherId}"></td>
+                                                    <td>
+                                                        <span th:text="${voucher.voucherCode}"></span>
+                                                    </td>
+
+                                                    <td>
+                                                        <span th:text="${voucher.quantity}"></span>
+                                                    </td>
+
+                                                    <td>
+                                                        <span th:text="${voucher.createDate}"></span>
+                                                    </td>
+
+                                                    <td>
+                                                        <span th:text="${voucher.endDate}"></span>
+                                                    </td>
+
+                                                    <td>
+                                                        <span th:text="${voucher.status}"></span>
+
+                                                        <form th:action="@{/changeVoucherStatus}" method="post">
+                                                            <input type="text" th:value="${voucher.voucherId}" hidden="" name="voucherId">
+                                                            <button type="submit">Change</button>
+                                                        </form>
+
+
+                                                    </td>
+
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+
+
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====== End - Section Content ======-->
+        </div>
+        <!--====== End - Section 2 ======-->
+    </div>
+    <!--====== End - App Content ======-->
+
+
+    <!--====== Main Footer ======-->
+    <footer>
+        <div class="outer-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="outer-footer__content u-s-m-b-40">
+
+                            <span class="outer-footer__content-title">Contact Us</span>
+                            <div class="outer-footer__text-wrap"><i class="fas fa-home"></i>
+
+                                <span>4247 Ashford Drive Virginia VA-20006 USA</span></div>
+                            <div class="outer-footer__text-wrap"><i class="fas fa-phone-volume"></i>
+
+                                <span>(+0) 900 901 904</span></div>
+                            <div class="outer-footer__text-wrap"><i class="far fa-envelope"></i>
+
+                                <span>contact@domain.com</span></div>
+                            <div class="outer-footer__social">
+                                <ul>
+                                    <li>
+
+                                        <a class="s-fb--color-hover" href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li>
+
+                                        <a class="s-tw--color-hover" href="#"><i class="fab fa-twitter"></i></a></li>
+                                    <li>
+
+                                        <a class="s-youtube--color-hover" href="#"><i class="fab fa-youtube"></i></a></li>
+                                    <li>
+
+                                        <a class="s-insta--color-hover" href="#"><i class="fab fa-instagram"></i></a></li>
+                                    <li>
+
+                                        <a class="s-gplus--color-hover" href="#"><i class="fab fa-google-plus-g"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="outer-footer__content u-s-m-b-40">
+
+                                    <span class="outer-footer__content-title">Information</span>
+                                    <div class="outer-footer__list-wrap">
+                                        <ul>
+                                            <li>
+
+                                                <a href="cart.html">Cart</a></li>
+                                            <li>
+
+                                                <a href="dashboard.html">Account</a></li>
+                                            <li>
+
+                                                <a href="shop-side-version-2.html">Manufacturer</a></li>
+                                            <li>
+
+                                                <a href="dash-payment-option.html">Finance</a></li>
+                                            <li>
+
+                                                <a href="shop-side-version-2.html">Shop</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="outer-footer__content u-s-m-b-40">
+                                    <div class="outer-footer__list-wrap">
+
+                                        <span class="outer-footer__content-title">Our Company</span>
+                                        <ul>
+                                            <li>
+
+                                                <a href="about.html">About us</a></li>
+                                            <li>
+
+                                                <a href="contact.html">Contact Us</a></li>
+                                            <li>
+
+                                                <a href="index.html">Sitemap</a></li>
+                                            <li>
+
+                                                <a href="dash-my-order.html">Delivery</a></li>
+                                            <li>
+
+                                                <a href="shop-side-version-2.html">Store</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="lower-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="lower-footer__content">
+                            <div class="lower-footer__copyright">
+
+                                <span>Copyright © 2018</span>
+
+                                <a href="index.html">Reshop</a>
+
+                                <span>All Right Reserved</span></div>
+                            <div class="lower-footer__payment">
+                                <ul>
+                                    <li><i class="fab fa-cc-stripe"></i></li>
+                                    <li><i class="fab fa-cc-paypal"></i></li>
+                                    <li><i class="fab fa-cc-mastercard"></i></li>
+                                    <li><i class="fab fa-cc-visa"></i></li>
+                                    <li><i class="fab fa-cc-discover"></i></li>
+                                    <li><i class="fab fa-cc-amex"></i></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+<!--====== End - Main App ======-->
+
+
+<!--====== Google Analytics: change UA-XXXXX-Y to be your site's ID ======-->
+<script>
+    window.ga = function() {
+        ga.q.push(arguments)
+    };
+    ga.q = [];
+    ga.l = +new Date;
+    ga('create', 'UA-XXXXX-Y', 'auto');
+    ga('send', 'pageview')
+</script>
+<script src="https://www.google-analytics.com/analytics.js" async defer></script>
+
+<!--====== Vendor Js ======-->
+<script th:src="@{/js/vendor.js}"></script>
+
+<!--====== jQuery Shopnav plugin ======-->
+<script th:src="@{/js/jquery.shopnav.js}"></script>
+
+<!--====== App ======-->
+<script th:src="@{/js/app.js}"></script>
+
+<script>
+    document.getElementById("generateCodeButton").addEventListener("click", function() {
+        // Generate a random 9-character code
+        var code = Math.random().toString(36).substring(2, 11).toUpperCase();
+        // Set the value of the input field
+        document.getElementById("codeInput").value = code;
+    });
+
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+
+    // Đặt giá trị min cho input End Date
+    document.getElementById("endDateInput").min = today;
+</script>
+
+
+<!--====== Noscript ======-->
+<noscript>
+    <div class="app-setting">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="app-setting__wrap">
+                        <h1 class="app-setting__h1">JavaScript is disabled in your browser.</h1>
+
+                        <span class="app-setting__text">Please enable JavaScript in your browser or upgrade to a JavaScript-capable browser.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</noscript>
+</body>
+</html>

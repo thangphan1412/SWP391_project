@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List Product</title>
+</head>
+<body>
+<h1>List Product</h1>
+<div>
+
+
+</div>
+
+<div>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Product ID</th>
+            <th>Product Image</th>
+            <th>Product Description</th>
+            <th>Product Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.productId}"></td>
+            <td><img th:src="${product.primaryImage}" alt="Product Image" /></td>
+            <td th:text="${product.description}"></td>
+            <td th:text="${product.productName}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
