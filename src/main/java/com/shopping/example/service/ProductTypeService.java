@@ -18,4 +18,7 @@ public interface ProductTypeService {
 
 
     Optional<ProductType> getProductTypeById(Long productTypeId);
+
+
+    List<ProductType> getBestSellerProductTypes();
 }

@@ -35,4 +35,9 @@ public class ProductTypeServiceImpl implements ProductTypeService {
     public Optional<ProductType> getProductTypeById(Long productTypeId) {
         return productTypeRepository.findById(productTypeId);
     }
+
+    @Override
+    public List<ProductType> getBestSellerProductTypes() {
+        return productTypeRepository.productBestSeller();
+    }
 }
