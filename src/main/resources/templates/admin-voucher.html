@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link th:href="@{/images/favicon.png}" rel="shortcut icon">
-    <title>Ludus - Electronics, Apparel, Computers, Books, DVDs & more</title>
+    <title>CellphoneZDB</title>
 
     <!--====== Google Font ======-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
@@ -39,13 +39,13 @@
                             <ul class="breadcrumb__list">
                                 <li class="has-separator">
 
-                                    <a th:href="@{/}">Home</a></li>
+                                    <a href="/">Home</a></li>
                                 <li class="has-separator">
 
-                                    <a th:href="@{/adminDashBoard}">Admin Dashboard</a></li>
+                                    <a href="/update">Admin Dashboard</a></li>
                                 <li class="is-marked">
 
-                                    <a th:href="@{/createVoucher}">Manage Voucher</a></li>
+                                    <a href="/createVoucher">Manage Voucher</a></li>
                             </ul>
                         </div>
                     </div>
@@ -56,33 +56,26 @@
 
 
         <!--====== Section 2 ======-->
-        <div class="u-s-p-b-60">
+
 
             <!--====== Section Content ======-->
             <div class="section__content">
-                <div class="dash">
                     <div class="container">
-                        <div class="row">
-                            <div class="col-lg-3 col-md-12">
-
-                                <!--====== Dashboard Features ======-->
-
-
-                                <!--====== End - Dashboard Features ======-->
-                            </div>
-
+                        <div class="row row--center">
+                            <div class="col-lg-10 col-md-8 u-s-m-b-30">
+                                <div class="l-f-o">
+                                    <div class="l-f-o__pad-box">
                                     <h1 class="dash__h1 u-s-m-b-30">Manage Voucher</h1>
 
 
-                            <div th:if="${addMessage}" class="alert alert-success" role="alert">
-                                <p style="color: green" th:text="${addMessage}"></p>
-                            </div>
+
 
                             <form class="l-f-o__form" th:action="@{/addVoucher}" method="post">
                                 <div class="u-s-m-b-30">
                                     <label class="gl-label">Voucher Code</label>
                                     <input class="input-text input-text--primary-style" type="text" placeholder="Enter the code or generate random code" name="code" id="codeInput">
-                                    <button type="button" id="generateCodeButton">Generate Code Random</button>
+
+                                    <button style="margin-top: 1.2em" type="button" id="generateCodeButton">Generate Code Random</button>
                                 </div>
 
                                 <div class="u-s-m-b-30">
@@ -109,7 +102,9 @@
                                 <p style="color: green" th:text="${changeMessage}"></p>
                             </div>
 
-
+                                        <div th:if="${addMessage}" class="alert alert-success" role="alert">
+                                            <p style="color: green" th:text="${addMessage}"></p>
+                                        </div>
 
                                     <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
                                         <div class="dash__table-wrap gl-scroll">
@@ -163,153 +158,24 @@
                                         </div>
                                     </div>
 
-
-
-
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-
-
-
-
                             </div>
-
                         </div>
                     </div>
-                </div>
-            </div>
+
+
             <!--====== End - Section Content ======-->
-        </div>
+
         <!--====== End - Section 2 ======-->
     </div>
     <!--====== End - App Content ======-->
 
 
     <!--====== Main Footer ======-->
-    <footer>
-        <div class="outer-footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="outer-footer__content u-s-m-b-40">
-
-                            <span class="outer-footer__content-title">Contact Us</span>
-                            <div class="outer-footer__text-wrap"><i class="fas fa-home"></i>
-
-                                <span>4247 Ashford Drive Virginia VA-20006 USA</span></div>
-                            <div class="outer-footer__text-wrap"><i class="fas fa-phone-volume"></i>
-
-                                <span>(+0) 900 901 904</span></div>
-                            <div class="outer-footer__text-wrap"><i class="far fa-envelope"></i>
-
-                                <span>contact@domain.com</span></div>
-                            <div class="outer-footer__social">
-                                <ul>
-                                    <li>
-
-                                        <a class="s-fb--color-hover" href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                    <li>
-
-                                        <a class="s-tw--color-hover" href="#"><i class="fab fa-twitter"></i></a></li>
-                                    <li>
-
-                                        <a class="s-youtube--color-hover" href="#"><i class="fab fa-youtube"></i></a></li>
-                                    <li>
-
-                                        <a class="s-insta--color-hover" href="#"><i class="fab fa-instagram"></i></a></li>
-                                    <li>
-
-                                        <a class="s-gplus--color-hover" href="#"><i class="fab fa-google-plus-g"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="row">
-                            <div class="col-lg-6 col-md-6">
-                                <div class="outer-footer__content u-s-m-b-40">
-
-                                    <span class="outer-footer__content-title">Information</span>
-                                    <div class="outer-footer__list-wrap">
-                                        <ul>
-                                            <li>
-
-                                                <a href="cart.html">Cart</a></li>
-                                            <li>
-
-                                                <a href="dashboard.html">Account</a></li>
-                                            <li>
-
-                                                <a href="shop-side-version-2.html">Manufacturer</a></li>
-                                            <li>
-
-                                                <a href="dash-payment-option.html">Finance</a></li>
-                                            <li>
-
-                                                <a href="shop-side-version-2.html">Shop</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6">
-                                <div class="outer-footer__content u-s-m-b-40">
-                                    <div class="outer-footer__list-wrap">
-
-                                        <span class="outer-footer__content-title">Our Company</span>
-                                        <ul>
-                                            <li>
-
-                                                <a href="about.html">About us</a></li>
-                                            <li>
-
-                                                <a href="contact.html">Contact Us</a></li>
-                                            <li>
-
-                                                <a href="index.html">Sitemap</a></li>
-                                            <li>
-
-                                                <a href="dash-my-order.html">Delivery</a></li>
-                                            <li>
-
-                                                <a href="shop-side-version-2.html">Store</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="lower-footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="lower-footer__content">
-                            <div class="lower-footer__copyright">
-
-                                <span>Copyright © 2018</span>
-
-                                <a href="index.html">Reshop</a>
-
-                                <span>All Right Reserved</span></div>
-                            <div class="lower-footer__payment">
-                                <ul>
-                                    <li><i class="fab fa-cc-stripe"></i></li>
-                                    <li><i class="fab fa-cc-paypal"></i></li>
-                                    <li><i class="fab fa-cc-mastercard"></i></li>
-                                    <li><i class="fab fa-cc-visa"></i></li>
-                                    <li><i class="fab fa-cc-discover"></i></li>
-                                    <li><i class="fab fa-cc-amex"></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+<div th:insert="~{partials/footer :: footer}"></div>
 </div>
 <!--====== End - Main App ======-->
 
