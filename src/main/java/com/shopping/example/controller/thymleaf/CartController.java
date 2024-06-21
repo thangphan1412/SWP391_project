@@ -2,6 +2,7 @@ package com.shopping.example.controller.thymleaf;
 
 import com.shopping.example.entity.*;
 import com.shopping.example.service.*;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -119,7 +120,28 @@ public class CartController {
         }
 
 
+    @PostMapping("/deleteSelectedCartItems")
+    public String deleteSelectedCartItems(@RequestParam(required = false) List<Long> selectedCartItems, Model model, RedirectAttributes redirectAttributes) {
+        if (selectedCartItems == null || selectedCartItems.isEmpty()) {
+            redirectAttributes.addFlashAttribute("delMessage", "No items selected for deletion");
+            return "redirect:/viewCart";
+        }
 
-
+        for (Long cartItemId : selectedCartItems) {
+            cartItemsService.delete(cartItemId);
+        }
+        Account currentAccount = accountService.getCurrentAccount();
+        Customer existCustomer = currentAccount.getCustomer();
+        if (existCustomer != null) {
+            Customer customer = currentAccount.getCustomer();
+            Cart customerCart = cartService.getCartByCustomer(customer);
+            List<CartItems> listCartItems = cartItemsService.findByCartId(customerCart.getCartId());
+            model.addAttribute("ListCart", listCartItems);
+            redirectAttributes.addFlashAttribute("delMessage", "Delete successfully");
+            return  "redirect:/viewCart";
+        }
+        redirectAttributes.addFlashAttribute("delMessage", "Delete fail");
+        return "redirect:/viewCart";
+    }
 }
 

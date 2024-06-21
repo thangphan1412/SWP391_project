@@ -23,7 +23,10 @@ public class CartServiceImpl implements CartService {
         return cartRepository.findByCustomer_Id(customer.getId());
     }
 
-
+    @Override
+    public Cart deleteCartByCart(Long cart) {
+        return deleteCartByCart(cart);
+    }
 
 
 }

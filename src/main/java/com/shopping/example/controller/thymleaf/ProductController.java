@@ -424,7 +424,7 @@ public class ProductController {
     private String saveProductImage(MultipartFile file, String fileName) {
 
         //Change the path after clone
-        String uploadDir = "D:\\Temp3.2\\SWP391_project\\src\\main\\resources\\static\\product_img";
+        String uploadDir = "D:\\Study\\SWP391\\SWP391_Project_Final\\SWP391_project\\src\\main\\resources\\static\\product_img";
         File uploadDirFile = new File(uploadDir);
 
         // Kiểm tra và tạo thư mục nếu chưa tồn tại
@@ -452,9 +452,9 @@ public class ProductController {
         if (optionalProductType.isPresent()) {
             ProductType productType = optionalProductType.get();
             // Thay đổi trạng thái
-            if ("close".equals(productType.getProduct_type_status())) {
-                productType.setProduct_type_status("available");
-            } else if ("available".equals(productType.getProduct_type_status())) {
+            if ("close".toLowerCase().equals(productType.getProduct_type_status())) {
+                productType.setProduct_type_status("active");
+            } else if ("active".toLowerCase().equals(productType.getProduct_type_status())) {
                 productType.setProduct_type_status("close");
             }
             // Lưu lại thay đổi

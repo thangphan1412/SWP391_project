@@ -132,7 +132,7 @@
                                                 <div class="u-s-m-b-30">
 
                                                     <label class="gl-label" for="reg-lname">Product description</label>
-                                                    <textarea style="background: #f1f1f1" rows="5" cols="40" name="description" th:value="${product.productDescription}"></textarea>
+                                                    <textarea style="background: #f1f1f1" rows="5" cols="40" name="description"  th:text="${product.productDescription}" ></textarea>
                                                 </div>
                                                 <div style="font-weight: 600;" class="u-s-m-b-15 col-lg-12">
                                                     <input style="padding: 18px 18px; border: 2px solid #ff4500; border-radius: 6px; margin-top: 20px;" class="btn btn--e-transparent-brand-b-2" type="submit" value="Submit">
