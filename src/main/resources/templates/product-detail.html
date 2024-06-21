@@ -49,10 +49,10 @@
 
                                     <a href="index.hml">Home</a></li>
                                 <li class="has-separator">
-                                    <a th:text="${product.category.categoryName}" th:ref="@{/category/{cateId}(cateId = ${product.category.categoryId})}"></a>
+                                    <a th:text="${product.category.categoryName}" th:href="@{/ListProduct( name=${param.name}, categoryId=${product.category.categoryId}, minPrice=${param.minPrice}, maxPrice=${param.maxPrice}, colorId=${param.colorId}, memory=${param.memory}, ram=${param.ram}, minSize=${param.minSize}, maxSize=${param.maxSize})}" ></a>
                                 </li>
                                 <li class="has-separator">
-                                    <a th:text="${product.productName}"></a>
+                                    <a th:text="${product.productName}"  th:href="@{/ProductDetail/{id}(id = ${product.productId})}"></a>
                                 </li>
 
                             </ul>

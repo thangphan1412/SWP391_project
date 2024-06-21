@@ -113,11 +113,13 @@ public class CartController {
             }
         }
 
-        @PostMapping("/deleteCartItem")
-        public String deleteIte(@RequestParam("cartItemId") Long id, RedirectAttributes redirectAttributes){
-            cartItemsService.delete(id);
-            return "redirect:/viewCart";
-        }
+
+
+//        @PostMapping("/deleteCartItem")
+//        public String deleteIte(@RequestParam("cartItemId") Long id, RedirectAttributes redirectAttributes){
+//            cartItemsService.delete(id);
+//            return "redirect:/viewCart";
+//        }
 
 
     @PostMapping("/deleteSelectedCartItems")
