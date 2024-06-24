@@ -40,7 +40,7 @@ public class ProductType {
     private int product_type_quantity;
 
     @Column
-    private String product_type_status ="Active";
+    private String product_type_status ="available";
 
     public void setProduct_type_quantity(int product_type_quantity) {
         this.product_type_quantity = product_type_quantity;

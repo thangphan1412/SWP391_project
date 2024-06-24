@@ -171,7 +171,7 @@
                                         <div class="u-s-m-b-30">
                                             <label class="gl-label" for="reg-brand">Product Color</label>
                                             <select class="input-text input-text--primary-style"  name="selectedColor" required>
-                                                <option value="" disabled selected>Choose a brand</option>
+                                                <option value="" disabled selected>Choose a color</option>
                                                 <th:block th:each="color : ${colorList}">
                                                     <option th:value="${color.colorId}" th:text="${color.colorName}"></option>
                                                 </th:block>
@@ -179,7 +179,7 @@
                                         </div>
                                         <div class="u-s-m-b-30">
                                             <label class="gl-label">Product price</label>
-                                            <input class="input-text input-text--primary-style" type="number" placeholder="Enter the price" name="price" required step="any" pattern="[0-9]+(\.[0-9]+)?" title="Enter a valid decimal number" min="0">
+                                            <input class="input-text input-text--primary-style" type="number" placeholder="Enter the price" name="price" required step="any" pattern="[0-9]+(\.[0-9]+)?" title="Enter a valid price" min="0">
                                         </div>
 
                                         <div class="u-s-m-b-30">
@@ -216,7 +216,11 @@
                                                     </td>
 
                                                     <td>
-                                                        <span th:text="${type.product_type_price}"></span>
+                                                        <form th:action="@{/updatePrice}" method="post">
+                                                        <input type="text" th:value="${type.product_type_id}" hidden="" name="typeId">
+                                                        <input type="number" th:value="${type.product_type_price}" required step="any" pattern="[0-9]+(\.[0-9]+)?" name="price">
+                                                        <button type="submit">Update</button>
+                                                        </form>
                                                     </td>
 
                                                     <td>
@@ -228,7 +232,11 @@
                                                     </td>
 
                                                     <td>
-                                                        <span th:text="${type.product_type_quantity}"></span>
+                                                        <form th:action="@{/updateQuantity}" method="post">
+                                                        <input type="text" th:value="${type.product_type_id}" hidden="" name="typeId">
+                                                        <input type="number"   th:value="${type.product_type_quantity}" required step="1" name="quantity">
+                                                        <button type="submit"> Update</button>
+                                                        </form>
                                                     </td>
                                                     <td>
                                                         <span th:text="${type.product_type_status}"></span>

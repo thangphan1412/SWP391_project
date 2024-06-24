@@ -804,12 +804,12 @@
             var addToCartButton = document.getElementById('addToCartButton');
 
             if (status === 'close') {
-                stockStatusElement.innerText = 'Hết hàng';
+                stockStatusElement.innerText = 'out of stock';
                 stockStatusElement.style.color = 'red';
                 addToCartButton.disabled = true; // Vô hiệu hóa nút Add to Cart
                 addToCartButton.classList.add('disabled'); // Thêm lớp CSS
             } else {
-                stockStatusElement.innerText = 'Còn hàng';
+                stockStatusElement.innerText = 'available';
                 stockStatusElement.style.color = 'green';
                 addToCartButton.disabled = false; // Kích hoạt lại nút Add to Cart
                 addToCartButton.classList.remove('disabled'); // Loại bỏ lớp CSS

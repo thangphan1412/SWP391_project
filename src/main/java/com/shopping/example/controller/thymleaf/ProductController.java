@@ -86,6 +86,8 @@ public class ProductController {
 
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Product> products = productService.filterProducts(name, categoryId, minPrice, maxPrice, colorId, memory, ram, minSize, maxSize, pageable);
+//        model.addAttribute("minPrice", minPrice);
+//        model.addAttribute("maxPrice", maxPrice);
         model.addAttribute("products", products.getContent());
         model.addAttribute("totalPages", products.getTotalPages());
         model.addAttribute("currentPage", page);
@@ -192,9 +194,21 @@ public class ProductController {
 
     @PostMapping("/createCategory")
     public String createCategory(@RequestParam("name") String name,RedirectAttributes redirectAttributes){
+        if(name.isBlank()){
+            redirectAttributes.addFlashAttribute("cateMessage", "category name is empty");
+            return "redirect:/createSupBraCate";
+        }
+
+        List<Category> categoryList = categoryService.findAll();
+        for (Category category : categoryList) {
+            if (category.getCategoryName().toLowerCase().equals(name.toLowerCase())) {
+                redirectAttributes.addFlashAttribute("cateMessage", "Category '" + name + "' already exists");
+                return "redirect:/createSupBraCate";
+            }
+        }
         Category newCategory = new Category();
         newCategory.setCategoryName(name);
-        redirectAttributes.addFlashAttribute("successMessage", "Category added successfully");
+        redirectAttributes.addFlashAttribute("cateMessage", "Category added successfully");
         categoryService.save(newCategory);
         return "redirect:/createSupBraCate";
     }
@@ -208,6 +222,22 @@ public class ProductController {
                          @RequestParam("description") String description,
                          Model model,
                          RedirectAttributes redirectAttributes) {
+
+        if(name.isBlank()){
+            redirectAttributes.addFlashAttribute("proMessage", "Add fail the name of product is empty");
+            return "redirect:/create";
+        }
+
+
+        List<Product> productList = productService.getAllProducts();
+        for (Product product: productList){
+            if(product.getProductName().equalsIgnoreCase(name)){
+                redirectAttributes.addFlashAttribute("proMessage", "Add fail the name is availiable");
+                return "redirect:/create";
+            }
+        }
+
+
         Product newProduct = new Product();
 
         try {
@@ -237,34 +267,57 @@ public class ProductController {
             productService.addProduct(newProduct);
 
 
-            redirectAttributes.addFlashAttribute("successMessage", "Product added successfully");
+            redirectAttributes.addFlashAttribute("proMessage", "Product added successfully");
         } catch (Exception e) {
 
-            redirectAttributes.addFlashAttribute("errorMessage", "Failed to add product: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("proMessage", "Failed to add product: " + e.getMessage());
         }
 
         return "redirect:/create";
     }
 
-
     @PostMapping("/createBrand")
-    public String createBrand(@RequestParam("name") String name,RedirectAttributes redirectAttributes){
+    public String createBrand(@RequestParam("name") String name, RedirectAttributes redirectAttributes) {
+
+        if(name.isBlank()){
+            redirectAttributes.addFlashAttribute("brandMessage", "Add fail the name of brand is empty");
+            return "redirect:/createSupBraCate";
+        }
+
+
+        List<Brand> existingBrands = brandService.findAll();
+        for (Brand brand : existingBrands) {
+            if (brand.getBrandName().toLowerCase().equals(name.toLowerCase())) {
+                redirectAttributes.addFlashAttribute("brandMessage", "Brand '" + name + "' already exists");
+                return "redirect:/createSupBraCate";
+            }
+        }
+
         Brand newBrand = new Brand();
         newBrand.setBrandName(name);
         brandService.save(newBrand);
-        redirectAttributes.addFlashAttribute("successMessage", "Brand added successfully");
+        redirectAttributes.addFlashAttribute("brandMessage", "Brand added successfully");
         return "redirect:/createSupBraCate";
-
     }
 
     @PostMapping("/createTech")
     public String createTech(@RequestParam("Ram") int ram,@RequestParam("Memory") int memory,@RequestParam("Size") double size,RedirectAttributes redirectAttributes){
         ProductTech tech = new ProductTech();
+
+
+
+        List<ProductTech> productTechList = productTechService.getAllProductTechs();
+        for (ProductTech productTech : productTechList) {
+            if(productTech.getRam() == ram && productTech.getMemory() == memory && productTech.getSize() == size){
+                redirectAttributes.addFlashAttribute("techMessage", "Tech is already exist");
+                return "redirect:/create";
+            }
+        }
         tech.setSize(size);
         tech.setRam(ram);
         tech.setMemory(memory);
         productTechService.saveProductTech(tech);
-        redirectAttributes.addFlashAttribute("successMessage", "Product tech added successfully");
+        redirectAttributes.addFlashAttribute("techMessage", "Product tech added successfully");
         return "redirect:/create";
     }
 
@@ -276,13 +329,28 @@ public class ProductController {
 
     //Create Supplier
     @PostMapping("/createSupplies")
-    public String createSup(@RequestParam("name") String name,@RequestParam("address") String address, RedirectAttributes redirectAttributes){
-        Supplier newSup = new Supplier();
-        newSup.setSupplierAddress(address);
-        newSup.setSupplierName(name);
-        supplierService.saveSupplier(newSup);
-        redirectAttributes.addFlashAttribute("successMessage", "Supplier added successfully");
-        return "redirect:/createSupBra";
+    public String createSup(@RequestParam("name") String name, @RequestParam("address") String address, RedirectAttributes redirectAttributes) {
+        if(name.isBlank() || address.isBlank()){
+            redirectAttributes.addFlashAttribute("supMessage", "Supplier name or address is empty");
+            return "redirect:/createSupBraCate";
+        }
+
+
+        List<Supplier> supplierList = supplierService.findAllSuppliers();
+        for (Supplier supplier : supplierList) {
+            if (supplier.getSupplierName().equalsIgnoreCase(name) && supplier.getSupplierAddress().equalsIgnoreCase(address)) {
+                redirectAttributes.addFlashAttribute("supMessage", "Supplier '" + name + "' already exists at address '" + address + "'");
+                return "redirect:/createSupBraCate";
+            }
+        }
+        // If supplier doesn't exist, proceed to create a new one
+        Supplier newSupplier = new Supplier();
+        newSupplier.setSupplierName(name);
+        newSupplier.setSupplierAddress(address);
+        supplierService.saveSupplier(newSupplier);
+
+        redirectAttributes.addFlashAttribute("supMessage", "Supplier '" + name + "' created successfully");
+        return "redirect:/createSupBraCate";
     }
 
 
@@ -325,9 +393,15 @@ public class ProductController {
                                 @RequestParam("selectedBrand") Long brandId,
                                 @RequestParam("selectedCate") Long cateId,
                                 RedirectAttributes redirectAttributes) {
+
+
+
+
         Optional<Product> optionalProduct = productService.getProductById(proId);
+
         if (optionalProduct.isPresent()) {
             Product existProduct = optionalProduct.get();
+
             existProduct.setProductName(name);
             existProduct.setProductDescription(description);
 
@@ -379,20 +453,32 @@ public class ProductController {
                                  @RequestParam("quantity") int quantity,
                                  RedirectAttributes redirectAttributes) {
         Optional<Product> optionalProduct = productService.getProductById(proId);
+
+
         if (optionalProduct.isPresent()) {
             Product existProduct = optionalProduct.get();
+
 
             ProductType newProductType = new ProductType();
             newProductType.setProduct(existProduct);
 
             Optional<ProductTech> optionalTech = productTechService.getProductTechById(techId);
             ProductTech newProductTech = optionalTech.orElseThrow(() -> new RuntimeException("ProductTech not found"));
-            newProductType.setProductTech(newProductTech);
 
             Optional<Color> optionalColor = colorService.getColorById(colorId);
             Color newColor = optionalColor.orElse(null);
-            newProductType.setColor(newColor);
 
+            //Validate the product type is exist or not
+            List<ProductType> productTypeList = productTypeService.findByProduct(existProduct);
+            for (ProductType productType : productTypeList){
+                if(productType.getProductTech().getRam() == newProductTech.getRam() && productType.getProductTech().getMemory() == newProductTech.getMemory() && productType.getProductTech().getSize() == newProductTech.getSize() && productType.getColor().getColorName().equalsIgnoreCase(newColor.getColorName())){
+                    redirectAttributes.addFlashAttribute("successMessage", "Product type already exist");
+                    return "redirect:/updateProduct/" + proId;
+                }
+            }
+
+            newProductType.setProductTech(newProductTech);
+            newProductType.setColor(newColor);
             newProductType.setProduct_type_price(price);
             newProductType.setProduct_type_quantity(quantity);
 
@@ -453,8 +539,8 @@ public class ProductController {
             ProductType productType = optionalProductType.get();
             // Thay đổi trạng thái
             if ("close".toLowerCase().equals(productType.getProduct_type_status())) {
-                productType.setProduct_type_status("active");
-            } else if ("active".toLowerCase().equals(productType.getProduct_type_status())) {
+                productType.setProduct_type_status("available");
+            } else if ("available".toLowerCase().equals(productType.getProduct_type_status())) {
                 productType.setProduct_type_status("close");
             }
             // Lưu lại thay đổi
@@ -467,6 +553,34 @@ public class ProductController {
         }
 
     }
+
+
+    @PostMapping("/updatePrice")
+    public String updatePriceType(@RequestParam("typeId") Long typeId, @RequestParam("price") double price ){
+        Optional<ProductType> optionalProductType = productTypeService.getProductTypeById(typeId);
+        ProductType existType = new ProductType();
+        if(optionalProductType.isPresent()){
+              existType = optionalProductType.get();
+              existType.setProduct_type_price(price);
+              productTypeService.saveProductType(existType);
+              return "redirect:/updateProduct/" + existType.getProduct().getProductId();
+        }
+        return null;
+    }
+
+    @PostMapping("/updateQuantity")
+    public String updatePriceType(@RequestParam("typeId") Long typeId, @RequestParam("quantity") int quantity ){
+        Optional<ProductType> optionalProductType = productTypeService.getProductTypeById(typeId);
+        ProductType existType = new ProductType();
+        if(optionalProductType.isPresent()){
+            existType = optionalProductType.get();
+            existType.setProduct_type_quantity(quantity);
+            productTypeService.saveProductType(existType);
+            return "redirect:/updateProduct/" + existType.getProduct().getProductId();
+        }
+        return null;
+    }
+
 
 
 }

@@ -141,7 +141,7 @@
                                                                    type="text" name="quantity"
                                                                    th:value="${cartItem.quantity}"
                                                                    th:data-max="${cartItem.productType.product_type_quantity}"
-                                                                   data-min="1" data-max="1000">
+                                                                   data-min="1" step="1">
                                                             <span class="input-counter__plus fas fa-plus"></span>
                                                         </div>
                                                         <input type="hidden" name="cartItemId" th:value="${cartItem.cartItemsId}">
@@ -482,19 +482,17 @@
     <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', function() {
             const inputCounters = document.querySelectorAll('.input-counter');
-
             inputCounters.forEach(function(counter) {
                 const minusBtn = counter.querySelector('.input-counter__minus');
                 const plusBtn = counter.querySelector('.input-counter__plus');
                 const inputField = counter.querySelector('.input-counter__text');
                 const priceElement = counter.closest('tr').querySelector('.table-p__price-total');
-                const singlePriceElement = counter.closest('tr').querySelector('.table-p__price-single');
                 const hiddenPriceField = counter.closest('tr').querySelector('.product-price');
 
                 minusBtn.addEventListener('click', function() {
                     let value = parseInt(inputField.value);
                     if (value > 1) {
-                        inputField.value = value - 1;
+                        inputField.value = value ;
                         updatePrice(inputField, priceElement, hiddenPriceField);
                     }
                 });
@@ -503,7 +501,7 @@
                     let value = parseInt(inputField.value);
                     let max = parseInt(inputField.getAttribute('data-max'));
                     if (value < max) {
-                        inputField.value = value + 1;
+                        inputField.value = value ;
                         updatePrice(inputField, priceElement, hiddenPriceField);
                     }
                 });
@@ -517,7 +515,7 @@
                 let quantity = parseInt(inputField.value);
                 let price = parseFloat(hiddenPriceField.value);
                 let totalPrice = quantity * price;
-                priceElement.textContent = totalPrice.toFixed(2);  // Hiển thị với 2 chữ số thập phân
+                priceElement.textContent = totalPrice.toFixed(2);
             }
         });
     </script>

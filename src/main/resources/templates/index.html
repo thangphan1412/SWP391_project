@@ -217,6 +217,11 @@
                                                     <a th:href="@{/ProductDetail/{id}(id=${producType.product.productId})}" th:text="${producType.product.productName}" ></a></span>
 
 
+                                                <span class="product-o__category">
+
+                                                    <a th:text=" ' Ram: '+ ${producType.productTech.ram} + ' |Memory: '+ ${producType.productTech.memory} + ' |Size: '+ ${producType.productTech.size} + ' |Color: '+${producType.color.colorName}"></a></span>
+
+
                                                 <form id="name-filter-form" class="shop-w__form-p" action="/ListProduct"
                                                       method="get">
                                                     <div class="shop-w__form-p">
