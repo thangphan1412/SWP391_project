@@ -160,7 +160,7 @@
                                                 <span>CONTINUE SHOPPING</span>
                                             </a>
                                         </div>
-                                        <div th:if="${delMessage}" class="alert alert-success" role="alert">
+                                        <div style="margin-right: 0.7em" th:if="${delMessage}" class="alert alert-success" role="alert">
                                             <p style="color: green" th:text="${delMessage}"></p>
                                         </div>
                                         <div class="route-box__g2" th:if="${not #lists.isEmpty(ListCart)}">

@@ -207,7 +207,7 @@ public class ProductController {
             }
         }
         Category newCategory = new Category();
-        newCategory.setCategoryName(name);
+        newCategory.setCategoryName(name.trim());
         redirectAttributes.addFlashAttribute("cateMessage", "Category added successfully");
         categoryService.save(newCategory);
         return "redirect:/createSupBraCate";
@@ -250,7 +250,7 @@ public class ProductController {
 
             newProduct.setCategory(category);
             newProduct.setBrand(brand);
-            newProduct.setProductName(name);
+            newProduct.setProductName(name.trim());
             newProduct.setSupplier(supplier);
             newProduct.setProductDescription(description);
 
@@ -294,7 +294,7 @@ public class ProductController {
         }
 
         Brand newBrand = new Brand();
-        newBrand.setBrandName(name);
+        newBrand.setBrandName(name.trim());
         brandService.save(newBrand);
         redirectAttributes.addFlashAttribute("brandMessage", "Brand added successfully");
         return "redirect:/createSupBraCate";
@@ -345,8 +345,8 @@ public class ProductController {
         }
         // If supplier doesn't exist, proceed to create a new one
         Supplier newSupplier = new Supplier();
-        newSupplier.setSupplierName(name);
-        newSupplier.setSupplierAddress(address);
+        newSupplier.setSupplierName(name.trim());
+        newSupplier.setSupplierAddress(address.trim());
         supplierService.saveSupplier(newSupplier);
 
         redirectAttributes.addFlashAttribute("supMessage", "Supplier '" + name + "' created successfully");
@@ -441,7 +441,7 @@ public class ProductController {
             redirectAttributes.addFlashAttribute("successMessage", "Update successful");
             return "redirect:/updateProduct/" + proId;
         }
-        redirectAttributes.addFlashAttribute("errorMessage", "Update not successful");
+        redirectAttributes.addFlashAttribute("successMessage", "Update not successful");
         return "redirect:/updateProduct/" + proId;
     }
 
@@ -545,7 +545,7 @@ public class ProductController {
             }
             // Lưu lại thay đổi
             productTypeService.saveProductType(productType);
-            redirectAttributes.addFlashAttribute("successMessage", "Status changed successfully");
+            redirectAttributes.addFlashAttribute("statusMessage", "Status changed successfully");
             return "redirect:/updateProduct/" + productType.getProduct().getProductId();
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", "ProductType not found");
@@ -556,26 +556,29 @@ public class ProductController {
 
 
     @PostMapping("/updatePrice")
-    public String updatePriceType(@RequestParam("typeId") Long typeId, @RequestParam("price") double price ){
+    public String updatePriceType(@RequestParam("typeId") Long typeId, @RequestParam("price") double price, RedirectAttributes redirectAttributes){
         Optional<ProductType> optionalProductType = productTypeService.getProductTypeById(typeId);
         ProductType existType = new ProductType();
         if(optionalProductType.isPresent()){
               existType = optionalProductType.get();
               existType.setProduct_type_price(price);
               productTypeService.saveProductType(existType);
+              redirectAttributes.addFlashAttribute("priceMessage", "Price product type is update");
               return "redirect:/updateProduct/" + existType.getProduct().getProductId();
+
         }
         return null;
     }
 
     @PostMapping("/updateQuantity")
-    public String updatePriceType(@RequestParam("typeId") Long typeId, @RequestParam("quantity") int quantity ){
+    public String updatePriceType(@RequestParam("typeId") Long typeId, @RequestParam("quantity") int quantity , RedirectAttributes redirectAttributes){
         Optional<ProductType> optionalProductType = productTypeService.getProductTypeById(typeId);
         ProductType existType = new ProductType();
         if(optionalProductType.isPresent()){
             existType = optionalProductType.get();
             existType.setProduct_type_quantity(quantity);
             productTypeService.saveProductType(existType);
+            redirectAttributes.addFlashAttribute("quantityMessage", " product type quantity is update");
             return "redirect:/updateProduct/" + existType.getProduct().getProductId();
         }
         return null;
