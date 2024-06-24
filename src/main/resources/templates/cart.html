@@ -164,7 +164,7 @@
                                             <p style="color: green" th:text="${delMessage}"></p>
                                         </div>
                                         <div class="route-box__g2" th:if="${not #lists.isEmpty(ListCart)}">
-                                            <button type="submit">Delete Selected Items</button>
+                                            <button style="border: none" class="fas fa-trash u-s-m-r-8" type="submit"></button>
                                         </div>
                                     </div>
                                 </div>
@@ -517,6 +517,15 @@
                 let totalPrice = quantity * price;
                 priceElement.textContent = totalPrice.toFixed(2);
             }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('keypress', function(e) {
+                var key = e.which || e.keyCode;
+                if (key === 13) { // 13 là mã ASCII cho phím Enter
+                    e.preventDefault();
+                }
+            });
         });
     </script>
 

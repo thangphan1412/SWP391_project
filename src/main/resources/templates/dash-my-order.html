@@ -159,25 +159,28 @@
                                                             <div>
                                                                 <div class="dash__link dash__link--brand">
 
-                                                                    <a th:href="@{/viewOrder/{orderId}(orderId=${order.orderId})}">MANAGE</a></div>
+                                                                    <a th:href="@{/viewOrder/{orderId}(orderId=${order.orderId})}">VIEW</a></div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="manage-o__description">
-                                                        <div class="description__container">
-
+                                                        <div style="gap: 1.2em" class="description__container">
+                                                            <div style="flex-direction: column">
                                                             <div class="description-title">Address  </div>
-                                                            <div class= "manage-o__text u-c-silver" th:text="${order.addressOfReceiver}"></div>
-
+                                                            <div style="margin-left: 0.8em" class= "manage-o__text u-c-silver" th:text="${order.addressOfReceiver}"></div>
+                                                            </div>
+                                                            <div>
                                                             <div class="description-title">Payment Method</div>
-                                                            <div class="manage-o__text u-c-silver" th:text=" ${order.paymentMethod}"></div>
-
+                                                            <div style="margin-left: 0.8em" class="manage-o__text u-c-silver" th:text=" ${order.paymentMethod}"></div>
+                                                            </div>
+                                                            <div>
                                                             <div class="description-title">Payment Status  </div>
-                                                            <div class= "manage-o__text u-c-silver" th:text="${order.paymentStatus}"></div>
-
+                                                            <div style="margin-left: 0.8em" class= "manage-o__text u-c-silver" th:text="${order.paymentStatus}"></div>
+                                                            </div>
+                                                            <div>
                                                             <div class="description-title">Phone Receiver  </div>
-                                                            <div class= "manage-o__text u-c-silver" th:text="${order.phoneOfReceiver}"></div>
-
+                                                            <div style="margin-left: 0.8em" class= "manage-o__text u-c-silver" th:text="${order.phoneOfReceiver}"></div>
+                                                            </div>
                                                         </div>
                                                         <div class="description__info-wrap">
                                                             <div>
