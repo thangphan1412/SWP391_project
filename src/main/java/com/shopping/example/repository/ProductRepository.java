@@ -53,5 +53,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
 
+    @Query(value = "SELECT TOP 5 * FROM dbo.product ORDER BY product_id DESC", nativeQuery = true)
+    List<Product> findNewArrivalProducts();
+
+
+
 
 }

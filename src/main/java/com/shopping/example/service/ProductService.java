@@ -41,4 +41,6 @@ public interface ProductService {
 
 
 
+    List<Product> NewArrivalProduct();
+
 }
