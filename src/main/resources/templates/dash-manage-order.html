@@ -158,8 +158,9 @@
                                                                 <img class="u-img-fluid" th:src="@{'/product_img/' + ${orderDetail.productType.product.productImage}}" alt="">
                                                             </div>
                                                             <div class="description-title" th:text="${orderDetail.productType.product.productName}"></div>
-                                                            <small th:text="'RAM: ' + ${orderDetail.productType.productTech.ram} + ' | Memory: ' + ${orderDetail.productType.productTech.memory} + ' | Size: ' + ${orderDetail.productType.productTech.size} + ' | Color: ' + ${orderDetail.productType.color.colorName}"></small>
+<!--                                                            <strong th:text="'RAM: ' + ${orderDetail.productType.productTech.ram} + ' | Memory: ' + ${orderDetail.productType.productTech.memory} + ' | Size: ' + ${orderDetail.productType.productTech.size} + ' | Color: ' + ${orderDetail.productType.color.colorName}"></strong>-->
                                                         </div>
+                                                        <strong th:text="'RAM: ' + ${orderDetail.productType.productTech.ram} + ' | Memory: ' + ${orderDetail.productType.productTech.memory} + ' | Size: ' + ${orderDetail.productType.productTech.size} + ' | Color: ' + ${orderDetail.productType.color.colorName}"></strong>
                                                         <div class="description__info-wrap">
                                                             <div>
                                                             <span class="manage-o__text-2 u-c-silver">Quantity:
@@ -194,15 +195,15 @@
                                                     <h2 class="dash__h2 u-s-m-b-8">Total Summary</h2>
                                                     <div class="dash-l-r u-s-m-b-8">
                                                         <div class="manage-o__text-2 u-c-secondary">Subtotal</div>
-                                                        <div class="manage-o__text-2 u-c-secondary" th:text="${totalPrice}"> </div>
+                                                        <div class="manage-o__text-2 u-c-secondary" th:text="${#numbers.formatDecimal(totalPrice, 1, 2)}"> </div>
                                                     </div>
                                                     <div class="dash-l-r u-s-m-b-8">
                                                         <div class="manage-o__text-2 u-c-secondary">Shipping Fee</div>
-                                                        <div class="manage-o__text-2 u-c-secondary" th:text="${shippingFee}"></div>
+                                                        <div class="manage-o__text-2 u-c-secondary" th:text="${#numbers.formatDecimal(shippingFee, 1, 2)}"></div>
                                                     </div>
                                                     <div class="dash-l-r u-s-m-b-8">
                                                         <div class="manage-o__text-2 u-c-secondary">Total</div>
-                                                        <div class="manage-o__text-2 u-c-secondary" th:text="${totalPrice + shippingFee}"></div>
+                                                        <div class="manage-o__text-2 u-c-secondary" th:text="${#numbers.formatDecimal(totalPrice + shippingFee, 1, 2)}"></div>
                                                     </div>
                                                     <span class="dash__text-2" th:text="${order.paymentStatus}"></span>
                                                 </div>

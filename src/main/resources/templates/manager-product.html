@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
@@ -7,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link th:href="@{/images/favicon.png}" rel="shortcut icon">
-    <title>Ludus - Electronics, Apparel, Computers, Books, DVDs & more</title>
+    <title>CellphoneZDB</title>
 
     <!--====== Google Font ======-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
@@ -39,10 +40,10 @@
                             <ul class="breadcrumb__list">
                                 <li class="has-separator">
 
-                                    <a href="index.html">Home</a></li>
+                                    <a href="/">Home</a></li>
                                 <li class="is-marked">
 
-                                    <a href="admin-manage-order.html">Admin Dashboard</a></li>
+                                    <a href="/update">Admin Dashboard</a></li>
                             </ul>
                         </div>
                     </div>
@@ -85,7 +86,10 @@
                                                 <a href="#">Manage Order</a></li>
                                             <li>
 
-                                                <a href="#">Manage Supply</a></li>
+                                                <a href="/createVoucher">Manage Voucher</a></li>
+                                            <li>
+
+                                                <a href="/receipt">Manage Supply</a></li>
 
                                         </ul>
                                     </div>

@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link href="images/favicon.png" rel="shortcut icon">
-    <title>Ludus - Electronics, Apparel, Computers, Books, DVDs & more</title>
+    <title>CellphoneZDB</title>
 
     <!--====== Google Font ======-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
@@ -50,10 +50,10 @@
                                 <ul class="breadcrumb__list">
                                     <li class="has-separator">
 
-                                        <a href="index.html">Home</a></li>
+                                        <a href="/">Home</a></li>
                                     <li class="is-marked">
 
-                                        <a href="cart.html">Cart</a></li>
+                                        <a href="/viewCart">Cart</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -84,92 +84,112 @@
                 <!--====== Section Content ======-->
                 <div class="section__content">
                     <div class="container">
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 u-s-m-b-30">
-                                <div class="table-responsive">
-                                    <table class="table-p">
-                                        <tbody>
-                                        <!--====== Row ======-->
-                                            |<tr th:each="cartItems : ${ListCart}">
+                        <form th:action="@{/deleteSelectedCartItems}" method="post">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 u-s-m-b-30">
+                                    <div class="table-responsive">
+                                        <table class="table-p">
+                                            <tbody>
+                                            <tr th:if="${ListCart == null or ListCart.isEmpty()}">
+                                                <td colspan="4">
+                                                    <div class="text-center">
+                                                        <span style="color: red">Cart is empty</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr th:each="cartItem : ${ListCart}">
+                                                <td>
+                                                    <input type="checkbox" name="selectedCartItems" th:value="${cartItem.cartItemsId}">
+                                                </td>
                                                 <td>
                                                     <div class="table-p__box">
                                                         <div class="table-p__img-wrap">
-
-                                                            <img class="u-img-fluid" th:src="@{'/product_img/' + ${cartItems.productType.product.productImage}}" alt=""></div>
+                                                            <img class="u-img-fluid" th:src="@{'/product_img/' + ${cartItem.productType.product.productImage}}" alt="">
+                                                        </div>
                                                         <div class="table-p__info">
-
-                                                            <span class="table-p__name">
-
-                                                                <a href="product-detail.html" th:text="${cartItems.productType.product.productName}"></a></span>
-
+                                        <span class="table-p__name">
+                                            <a th:href="@{/ProductDetail/{id}(id = ${cartItem.productType.product.productId})}"
+                                               th:text="${cartItem.productType.product.productName}"></a>
+                                        </span>
                                                             <span class="table-p__category">
-
-                                                                <a href="shop-side-version-2.html" th:text="${cartItems.productType.product.category.categoryName}"></a></span>
+                                            <a th:href="@{/ListProduct(name=${param.name},
+                                                                       categoryId=${cartItem.productType.product.category.categoryId},
+                                                                       minPrice=${param.minPrice},
+                                                                       maxPrice=${param.maxPrice},
+                                                                       colorId=${param.colorId},
+                                                                       memory=${param.memory},
+                                                                       ram=${param.ram},
+                                                                       minSize=${param.minSize},
+                                                                       maxSize=${param.maxSize})}"
+                                               th:text="${cartItem.productType.product.category.categoryName}"></a>
+                                        </span>
                                                             <ul class="table-p__variant-list">
                                                                 <li>
-
-                                                                    <span th:text="'Ram: '+ ' ' + ${cartItems.productType.productTech.ram} + ' |Memory ' + ' ' +${cartItems.productType.productTech.memory}   + ' |Size ' + ' ' +${cartItems.productType.productTech.size} "></span></li>
+                                                <span th:text="'Ram: ' + ${cartItem.productType.productTech.ram} +
+                                                               ' | Memory: ' + ${cartItem.productType.productTech.memory} +
+                                                               ' | Size: ' + ${cartItem.productType.productTech.size}"></span>
+                                                                </li>
                                                                 <li>
-
-                                                                    <span></span></li>
+                                                                    <span th:text="'Color: ' + ${cartItem.productType.color.colorName}"></span>
+                                                                </li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <span class="table-p__price-single" th:text="${cartItems.productType.product_type_price}" hidden=""></span>
-                                                    <span class="table-p__price-total" th:text="${cartItems.productType.product_type_price * cartItems.quantity}"></span>
-                                                    <input type="hidden" class="product-price" th:value="${cartItems.productType.product_type_price}">
+                                                    <span class="table-p__price-total" th:text="${cartItem.productType.product_type_price * cartItem.quantity}"></span>
+                                                    <input type="hidden" class="product-price" th:value="${cartItem.productType.product_type_price}">
+                                                </td>
                                                 <td>
                                                     <div class="table-p__input-counter-wrap">
-
-                                                        <!--====== Input Counter ======-->
-                                                            <div class="input-counter">
-                                                                <span class="input-counter__minus fas fa-minus"></span>
-                                                                <input class="input-counter__text input-counter--text-primary-style" type="text" name="quantity" value="1" data-min="1" data-max="1000" th:value="${cartItems.quantity}" th:data-max="${cartItems.productType.product_type_quantity}">
-                                                                <span class="input-counter__plus fas fa-plus"></span>
-                                                            </div>
-                                                            <!-- You can add a hidden input for cart item ID or other necessary data -->
-                                                            <input type="hidden" name="cartItemId" th:value="${cartItems.cartItemsId}">
-
-                                                </td>
-                                                <td>
-                                                    <form id="deleteCartItemForm" th:action="@{/deleteCartItem}" method="post">
-                                                        <!-- Thêm trường ẩn để chứa cartItemId -->
-                                                        <input type="hidden" name="cartItemId" id="cartItemId" th:value="${cartItems.cartItemsId}">
-                                                        <!-- Thêm nút ẩn để gửi form -->
-                                                        <button type="submit" id="deleteCartItemButton"> Delete</button>
-                                                    </form>
+                                                        <div class="input-counter">
+                                                            <span class="input-counter__minus fas fa-minus"></span>
+                                                            <input class="input-counter__text input-counter--text-primary-style"
+                                                                   type="text" name="quantity"
+                                                                   th:value="${cartItem.quantity}"
+                                                                   th:data-max="${cartItem.productType.product_type_quantity}"
+                                                                   data-min="1" step="1">
+                                                            <span class="input-counter__plus fas fa-plus"></span>
+                                                        </div>
+                                                        <input type="hidden" name="cartItemId" th:value="${cartItem.cartItemsId}">
+                                                    </div>
                                                 </td>
                                             </tr>
-                                            <!--====== End - Row ======-->
-
-
-
-                                            <!--====== End - Row ======-->
-                                        </tbody>
-                                    </table>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="route-box">
+                                        <div class="route-box__g1">
+                                            <a class="route-box__link" href="/ListProduct">
+                                                <i class="fas fa-long-arrow-alt-left"></i>
+                                                <span>CONTINUE SHOPPING</span>
+                                            </a>
+                                        </div>
+                                        <div style="margin-right: 0.7em" th:if="${delMessage}" class="alert alert-success" role="alert">
+                                            <p style="color: green" th:text="${delMessage}"></p>
+                                        </div>
+                                        <div class="route-box__g2" th:if="${not #lists.isEmpty(ListCart)}">
+                                            <button style="border: none" class="fas fa-trash u-s-m-r-8" type="submit"></button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-lg-12">
-                                <div class="route-box">
-                                    <div class="route-box__g1">
+                        </form>
 
-                                        <a class="route-box__link" href="shop-side-version-2.html"><i class="fas fa-long-arrow-alt-left"></i>
-
-                                            <span>CONTINUE SHOPPING</span></a></div>
-                                    <div class="route-box__g2">
-
-                                        <a class="route-box__link" href="cart.html"><i class="fas fa-trash"></i>
-
-                                            <span>CLEAR CART</span></a>
-
-                                        <a class="route-box__link" href="cart.html"><i class="fas fa-sync"></i>
-
-                                            <span>UPDATE CART</span></a></div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Hidden form for price filtering -->
+                        <form id="price-filter-form" class="shop-w__form-p" action="/ListProduct" method="get">
+                            <input type="hidden" name="name" th:value="${param.name}">
+                            <input type="hidden" name="categoryId" th:value="${param.categoryId}">
+                            <input type="hidden" name="minPrice" th:value="${param.minPrice}">
+                            <input type="hidden" name="maxPrice" th:value="${param.maxPrice}">
+                            <input type="hidden" name="colorId" th:value="${param.colorId}">
+                            <input type="hidden" name="memory" th:value="${param.memory}">
+                            <input type="hidden" name="ram" th:value="${param.ram}">
+                            <input type="hidden" name="minSize" th:value="${param.minSize}">
+                            <input type="hidden" name="maxSize" th:value="${param.maxSize}">
+                        </form>
                     </div>
                 </div>
                 <!--====== End - Section Content ======-->
@@ -202,6 +222,8 @@
                                                         <option value="uk">United Kingdom (UK)</option>
                                                         <option value="us">United States (US)</option>
                                                     </select>
+
+
                                                     <!--====== End - Select Box ======-->
                                                 </div>
                                                 <div class="u-s-m-b-30">
@@ -453,6 +475,8 @@
     </script>
     <script src="https://www.google-analytics.com/analytics.js" async defer></script>
 
+
+
     <!--====== Vendor Js ======-->
     <script src="js/vendor.js"></script>
 
@@ -465,19 +489,17 @@
     <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', function() {
             const inputCounters = document.querySelectorAll('.input-counter');
-
             inputCounters.forEach(function(counter) {
                 const minusBtn = counter.querySelector('.input-counter__minus');
                 const plusBtn = counter.querySelector('.input-counter__plus');
                 const inputField = counter.querySelector('.input-counter__text');
                 const priceElement = counter.closest('tr').querySelector('.table-p__price-total');
-                const singlePriceElement = counter.closest('tr').querySelector('.table-p__price-single');
                 const hiddenPriceField = counter.closest('tr').querySelector('.product-price');
 
                 minusBtn.addEventListener('click', function() {
                     let value = parseInt(inputField.value);
                     if (value > 1) {
-                        inputField.value = value - 1;
+                        inputField.value = value ;
                         updatePrice(inputField, priceElement, hiddenPriceField);
                     }
                 });
@@ -486,7 +508,7 @@
                     let value = parseInt(inputField.value);
                     let max = parseInt(inputField.getAttribute('data-max'));
                     if (value < max) {
-                        inputField.value = value + 1;
+                        inputField.value = value ;
                         updatePrice(inputField, priceElement, hiddenPriceField);
                     }
                 });
@@ -500,8 +522,17 @@
                 let quantity = parseInt(inputField.value);
                 let price = parseFloat(hiddenPriceField.value);
                 let totalPrice = quantity * price;
-                priceElement.textContent = totalPrice.toFixed(2);  // Hiển thị với 2 chữ số thập phân
+                priceElement.textContent = totalPrice.toFixed(2);
             }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('keypress', function(e) {
+                var key = e.which || e.keyCode;
+                if (key === 13) { // 13 là mã ASCII cho phím Enter
+                    e.preventDefault();
+                }
+            });
         });
     </script>
 

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Entity
 @AllArgsConstructor
 @Data
@@ -24,7 +26,7 @@ public class Receipt {
     private Employee employee;
 
     @Column
-    private String receiptDate;
+    private LocalDate receiptDate;
 
 
     @OneToOne

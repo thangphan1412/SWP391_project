@@ -165,7 +165,10 @@
                                                             <td th:text="${order.getOrderStatus()}"></td>
                                                             <td th:text="${order.getPaymentMethod()}"></td>
                                                             <td th:text="${order.getPaymentStatus()}"></td>
-                                                            <td><a th:href="@{'/viewOrderDetail/' + ${order.orderId}}">Detail</a></td>
+                                                            <td>
+                                                                <button type="button" th:href="@{/viewOrderDetail/{orderid}(orderid =${order.orderId})}"> view</button>
+<!--                                                                <button type="button" th:href=""> edit</button>-->
+                                                            </td>
                                                         </tr>
                                                 </table>
                                             </div>
