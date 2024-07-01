@@ -1,5 +1,6 @@
 package com.shopping.example.controller.api;
 
+import com.shopping.example.DTO.request.ChangePasswordRequest;
 import com.shopping.example.DTO.request.ForgotPasswordRequest;
 import com.shopping.example.DTO.request.LoginRequest;
 import com.shopping.example.DTO.request.ResetPasswordRequest;
@@ -33,6 +34,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -102,18 +104,28 @@ public class AccountController {
         }
     }
     @PostMapping("/forgot-password")
-    public ResponseEntity<?> createForgotPassword(@RequestParam String email) {
+    public ResponseEntity<?> createForgotPassword(@RequestParam(name = "email") String email) {
         var command = new ForgotPasswordRequest(email);
         accountService.forgotPassword(command);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<String> changePassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body("Validation errors occurred");
-        }
+    public ResponseEntity<String> resetPassword(@RequestParam(name = "token", required = false) String token,
+                                                 @RequestParam(name = "newPassword", required = false) String newPassword) {
+        ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest(token, newPassword);
         accountService.resetPassword(resetPasswordRequest);
         return ResponseEntity.ok("Thay đổi mật khẩu thành công");
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<String> changePasswords(
+            @RequestParam(name = "currentPassword", required = false) String currentPassword,
+            @RequestParam(name = "newPassword", required = false) String newPassword,
+            @RequestParam(name = "confirmNewPassword", required = false) String confirmNewPassword,
+            Principal principal){
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(currentPassword, newPassword, confirmNewPassword);
+        accountService.changePassword(changePasswordRequest, principal);
+        return ResponseEntity.ok("Thay doi mat khau thanh cong");
     }
 }

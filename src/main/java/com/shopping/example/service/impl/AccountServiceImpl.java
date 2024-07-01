@@ -1,5 +1,6 @@
 package com.shopping.example.service.impl;
 
+import com.shopping.example.DTO.request.ChangePasswordRequest;
 import com.shopping.example.DTO.request.ForgotPasswordRequest;
 import com.shopping.example.DTO.request.ResetPasswordRequest;
 import com.shopping.example.entity.Account;
@@ -18,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsPasswordService;
 import org.springframework.stereotype.Component;
 
+import java.security.Principal;
 import java.security.SignatureException;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,7 +61,7 @@ public class AccountServiceImpl implements AccountService {
         String token = jwtService.generateToken(claims, 15*60*1000);
         var to = account.get().getEmail();
         var subject = "Reset Password" ;
-        var url = appProperties.getHost() + "/reset-password?token=" + token;
+        var url = appProperties.getHost() + "/resetPassword?token=" + token;
         var content = "Nhấn vào link sau để reset password: " + url;
         CompletableFuture.runAsync(() -> {
             try {
@@ -109,5 +111,10 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account findByEmail(String email) {
       return   accountRepository.findByEmail(email).get();
+    }
+
+    @Override
+    public void changePassword(ChangePasswordRequest changePasswordRequest, Principal principal) {
+
     }
 }
