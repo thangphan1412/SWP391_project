@@ -2,6 +2,7 @@ package com.shopping.example.repository;
 
 import com.shopping.example.entity.Category;
 import com.shopping.example.entity.Product;
+import com.shopping.example.entity.Supplier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -51,12 +52,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                                  Pageable pageable);
 
 
-
-
-    @Query(value = "SELECT TOP 5 * FROM dbo.product ORDER BY product_id DESC", nativeQuery = true)
-    List<Product> findNewArrivalProducts();
-
-
-
-
+    List<Product> findBySupplier(Supplier supplier);
 }

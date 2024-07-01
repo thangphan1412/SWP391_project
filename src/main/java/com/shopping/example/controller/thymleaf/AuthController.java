@@ -22,9 +22,6 @@ import java.util.stream.Collectors;
 @Controller
 public class AuthController {
 
-
-
-
     @Autowired
     private AccountService accountService;
 
@@ -33,13 +30,6 @@ public class AuthController {
 
     @Autowired
     private OrderService orderService;
-
-
-//    public String navbar(Model model) {
-//        Account currentAccount = accountService.getCurrentAccount();
-//        model.addAttribute("account", currentAccount);
-//        return "partials/navbar";
-//    }
 
 
     @GetMapping("/register")

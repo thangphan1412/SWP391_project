@@ -8,14 +8,19 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link href="images/favicon.png" rel="shortcut icon">
-    <title>CellphoneZDB</title>
+    <title>Ludus - Electronics, Apparel, Computers, Books, DVDs & more</title>
 
     <!--====== Google Font ======-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
 
-    <link rel="stylesheet"   th:href="@{/css/vendor.css}" />
-    <link rel="stylesheet" th:href="@{/css/utility.css}" />
-    <link rel="stylesheet" th:href="@{/css/app.css}" />
+    <!--====== Vendor Css ======-->
+    <link rel="stylesheet" href="css/vendor.css">
+
+    <!--====== Utility-Spacing ======-->
+    <link rel="stylesheet" href="css/utility.css">
+
+    <!--====== App ======-->
+    <link rel="stylesheet" href="css/app.css">
 </head>
 <body class="config">
     <div class="preloader is-active">
@@ -46,10 +51,10 @@
                                 <ul class="breadcrumb__list">
                                     <li class="has-separator">
 
-                                        <a href="/">Home</a></li>
+                                        <a href="index.html">Home</a></li>
                                     <li class="is-marked">
 
-                                        <a href="/UserDetail">My Account</a></li>
+                                        <a href="dash-my-profile.html">My Account</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -79,7 +84,7 @@
                                                     <a th:href="@{/EditProfile}">Manage My Account</a></li>
                                                 <li>
 
-                                                    <a style="font-weight: bold" th:href="@{/UserDetail}">My Profile</a></li>
+                                                    <a th:href="@{/UserDetail}">My Profile</a></li>
 
                                                 <li>
 
@@ -177,7 +182,7 @@
                                                         <a class="dash__custom-link btn--e-transparent-brand-b-2" th:href="@{/EditProfile}">Edit Profile</a></div>
                                                     <div>
 
-                                                        <a class="dash__custom-link btn--e-brand-b-2" href="#">Change Password</a></div>
+                                                        <a class="dash__custom-link btn--e-brand-b-2" th:href="@{/changPassword}">Change Password</a></div>
                                                 </div>
                                             </div>
                                         </div>

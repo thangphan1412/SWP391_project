@@ -2,6 +2,7 @@ package com.shopping.example.service.impl;
 
 import com.shopping.example.entity.Category;
 import com.shopping.example.entity.Product;
+import com.shopping.example.entity.Supplier;
 import com.shopping.example.repository.ProductRepository;
 import com.shopping.example.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,8 +67,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> NewArrivalProduct() {
-        return productRepository.findNewArrivalProducts();
+    public List<Product> findBySuppliers(Supplier supplier) {
+        return productRepository.findBySupplier(supplier);
     }
 
 

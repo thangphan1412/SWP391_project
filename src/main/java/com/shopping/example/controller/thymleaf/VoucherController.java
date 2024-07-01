@@ -39,29 +39,10 @@ public class VoucherController {
                              @RequestParam("endDate")LocalDate endDate,
                              RedirectAttributes redirectAttributes, Model model) {
         Voucher voucher = new Voucher();
-
-
-        if(code.isEmpty()){
-            redirectAttributes.addFlashAttribute("addMessage", "Code cannot be empty ");
-            return "redirect:/createVoucher";
-        }
-        List<Voucher> listVouchers = voucherService.findAll();
-        for(Voucher v : listVouchers){
-            if (code.equalsIgnoreCase(v.getVoucherCode())) {
-                redirectAttributes.addFlashAttribute("addMessage", "Voucher already exist ");
-                return "redirect:/createVoucher";
-            }
-        }
-
-        voucher.setVoucherCode(code.trim());
+        voucher.setVoucherCode(code);
         voucher.setPercentageDiscount(percentage);
         voucher.setQuantity(quantity);
         voucher.setCreateDate(LocalDate.now());
-        if (endDate.isEqual(voucher.getCreateDate())) {
-            redirectAttributes.addFlashAttribute("addMessage", " Must be availiable than 1 day ");
-            return "redirect:/createVoucher";
-        }
-
         voucher.setEndDate(endDate);
         voucher.setStatus("active");
         voucherService.save(voucher);
@@ -83,8 +64,6 @@ public class VoucherController {
         redirectAttributes.addFlashAttribute("changeMessage", "Fail to changed");
         return "redirect:/createVoucher";
     }
-
-
 
 
 

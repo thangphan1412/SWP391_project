@@ -46,10 +46,10 @@
                                 <ul class="breadcrumb__list">
                                     <li class="has-separator">
 
-                                        <a href="/">Home</a></li>
+                                        <a href="index.html">Home</a></li>
                                     <li class="is-marked">
 
-                                        <a href="/UserDetail">My Account</a></li>
+                                        <a href="dash-my-order.html">My Account</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -80,11 +80,11 @@
                                                     <a th:href="@{/EditProfile}">Manage My Account</a></li>
                                                 <li>
 
-                                                    <a th:href="@{/UserDetail}">My Profile</a></li>
+                                                    <a class="dash-active" th:href="@{/UserDetail}">My Profile</a></li>
 
                                                 <li>
 
-                                                    <a style="font-weight: bold" th:href="@{/viewOrderList}">My Orders & Track Order</a></li>
+                                                    <a th:href="@{/viewOrderList}">My Orders & Track Order</a></li>
 
                                                 <li>
 
@@ -159,28 +159,25 @@
                                                             <div>
                                                                 <div class="dash__link dash__link--brand">
 
-                                                                    <a th:href="@{/viewOrder/{orderId}(orderId=${order.orderId})}">VIEW</a></div>
+                                                                    <a th:href="@{/viewOrder/{orderId}(orderId=${order.orderId})}">MANAGE</a></div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="manage-o__description">
-                                                        <div style="gap: 1.2em" class="description__container">
-                                                            <div style="flex-direction: column">
+                                                        <div class="description__container">
+
                                                             <div class="description-title">Address  </div>
-                                                            <div style="margin-left: 0.8em" class= "manage-o__text u-c-silver" th:text="${order.addressOfReceiver}"></div>
-                                                            </div>
-                                                            <div>
+                                                            <div class= "manage-o__text u-c-silver" th:text="${order.addressOfReceiver}"></div>
+
                                                             <div class="description-title">Payment Method</div>
-                                                            <div style="margin-left: 0.8em" class="manage-o__text u-c-silver" th:text=" ${order.paymentMethod}"></div>
-                                                            </div>
-                                                            <div>
+                                                            <div class="manage-o__text u-c-silver" th:text=" ${order.paymentMethod}"></div>
+
                                                             <div class="description-title">Payment Status  </div>
-                                                            <div style="margin-left: 0.8em" class= "manage-o__text u-c-silver" th:text="${order.paymentStatus}"></div>
-                                                            </div>
-                                                            <div>
+                                                            <div class= "manage-o__text u-c-silver" th:text="${order.paymentStatus}"></div>
+
                                                             <div class="description-title">Phone Receiver  </div>
-                                                            <div style="margin-left: 0.8em" class= "manage-o__text u-c-silver" th:text="${order.phoneOfReceiver}"></div>
-                                                            </div>
+                                                            <div class= "manage-o__text u-c-silver" th:text="${order.phoneOfReceiver}"></div>
+
                                                         </div>
                                                         <div class="description__info-wrap">
                                                             <div>

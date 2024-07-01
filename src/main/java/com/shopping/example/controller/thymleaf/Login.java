@@ -10,4 +10,9 @@ public class Login {
         return "login";
 
     }
+    @GetMapping("/reset-password")
+    public String test(){
+        return "login";
+
+    }
 }
