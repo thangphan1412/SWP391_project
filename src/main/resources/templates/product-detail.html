@@ -108,22 +108,28 @@
 
                             <div>
                                 <form class="pd-detail__form" th:action="@{/addToCart}" method="post">
-                                    <div class="pd-detail__inline" th:each="productType : ${ListProductType}">
-                                        <ul class="price-list">
-                                            <li class="pd-detail__price" style="list-style: none">
-                                                <label class="price-radio">
-                                                    <input style="color: red" type="radio" name="productType"
-                                                           th:data-status="${productType.product_type_status}"
-                                                           th:data-price="${productType.product_type_price}"
-                                                           th:data-quantity="${productType.product_type_quantity}" onclick="updateStockStatus(this)" th:value="${productType.product_type_id}"
-                                                    >
-                                                    <span class="price-circle"></span><span>
-                            <small th:text="'RAM: ' + ${productType.productTech.ram} + ' | Memory: ' + ${productType.productTech.memory} + ' | Size: ' + ${productType.productTech.size} + ' | Color: ' + ${productType.color.colorName}"></small>
-                         </span>
-                                                </label>
-                                            </li>
-                                        </ul>
+                                    <div th:if="${#lists.isEmpty(ListProductType)}">
+                                        <p>Không có loại sản phẩm nào.</p>
                                     </div>
+                                    <div th:unless="${#lists.isEmpty(ListProductType)}">
+                                        <div class="pd-detail__inline" th:each="productType : ${ListProductType}">
+                                            <ul class="price-list">
+                                                <li class="pd-detail__price" style="list-style: none">
+                                                    <label class="price-radio">
+                                                        <input style="color: red" type="radio" name="productType"
+                                                               th:data-status="${productType.product_type_status}"
+                                                               th:data-price="${productType.product_type_price}"
+                                                               th:data-quantity="${productType.product_type_quantity}" onclick="updateStockStatus(this)" th:value="${productType.product_type_id}">
+                                                        <span class="price-circle"></span>
+                                                        <span>
+                        <small th:text="'RAM: ' + ${productType.productTech.ram} + ' | Memory: ' + ${productType.productTech.memory} + ' | Size: ' + ${productType.productTech.size} + ' | Color: ' + ${productType.color.colorName}"></small>
+                    </span>
+                                                    </label>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
                                     <p id="stock-status"></p>
                                     <p id="stock-price"></p>
                                     <div class="u-s-m-b-15">

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html  lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link th:href="@{/images/favicon.png}" rel="shortcut icon">
+    <title>CellphoneZDB</title>
+
+    <!--====== Google Font ======-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
+
+    <!--====== Vendor Css ======-->
+    <link rel="stylesheet"   th:href="@{/css/vendor.css}" />>
+    <link rel="stylesheet" th:href="@{/css/utility.css}" />
+    <link rel="stylesheet" th:href="@{/css/app.css}" />
+</head>
+<body class="config">
+<div id="app">
+
+    <!--====== Main Header ======-->
+    <div th:insert="~{partials/navbar :: navbar}"></div>
+    <!--====== End - Main Header ======-->
+
+
+    <!--====== App Content ======-->
+    <div class="app-content">
+
+        <!--====== Section 1 ======-->
+        <div class="u-s-p-y-60">
+
+            <!--====== Section Content ======-->
+            <div class="section__content">
+                <div class="container">
+                    <div class="breadcrumb">
+                        <div class="breadcrumb__wrap">
+                            <ul class="breadcrumb__list">
+                                <li class="has-separator">
+
+                                    <a href="/">Home</a></li>
+                                <li class="has-separator">
+
+                                    <a href="/update">Admin Dashboard</a></li>
+                                <li class="is-marked">
+
+                                    <a href="/createVoucher">Manage Voucher</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--====== End - Section 1 ======-->
+
+
+        <!--====== Section 2 ======-->
+
+
+        <!--====== Section Content ======-->
+        <div class="section__content">
+            <div class="container">
+                <div class="row row--center">
+                    <div class="col-lg-10 col-md-8 u-s-m-b-30">
+                        <div class="l-f-o">
+                            <div class="l-f-o__pad-box">
+                                <h1 class="dash__h1 u-s-m-b-30">Manage Receipt</h1>
+
+                                <div th:if="${receiptMessage}" class="alert alert-success" role="alert">
+                                    <p style="color: green" th:text="${receiptMessage}"></p>
+                                </div>
+
+
+                                <form class="m-order u-s-m-b-30" th:action="@{/createReceipt}" method="post">
+                                    <div class="m-order__select-wrapper">
+                                        <label class="u-s-m-r-8" for="my-order-sort">Choose supplier to add receipt</label>
+                                        <select class="select-box select-box--primary-style" id="my-order-sort" name="selectedSupplier">
+                                            <option th:value="${supplier.supplierId}" th:text="${supplier.supplierName}" th:each="supplier : ${supplierList}"></option>
+                                        </select>
+                                    </div>
+                                    <button type="submit">Submit</button>
+                                    <label class="u-s-m-r-8" for="my-order-sort">If dont have supplier </label>
+                                    <a th:href="@{/createSupBraCate}" class="btn">Add new Supplier</a>
+                                </form>
+
+
+
+                                <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
+                                    <div class="dash__table-wrap gl-scroll">
+                                        <table class="dash__table">
+                                            <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Supplier Name</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody th:each="receipt : ${receiptList}">
+                                            <tr>
+                                                <td th:text="${receipt.receiptId}"></td>
+
+                                                <td th:text="${receipt.supplier.supplierName}"></td>
+                                                <td>
+                                                    <span th:text="${receipt.receiptDate}"></span>
+                                                </td>
+                                                <td th:text="${receipt.receiptStatus}"></td>
+                                                <td >
+                                                    <a th:href="@{/receiptDetail/{receiptId}(receiptId = ${receipt.receiptId})}"> Manage</a>
+                                                </td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--====== End - Section Content ======-->
+
+    <!--====== End - Section 2 ======-->
+</div>
+<!--====== End - App Content ======-->
+
+
+<!--====== Main Footer ======-->
+<div th:insert="~{partials/footer :: footer}"></div>
+</div>
+<!--====== End - Main App ======-->
+
+
+<!--====== Google Analytics: change UA-XXXXX-Y to be your site's ID ======-->
+<script>
+    window.ga = function() {
+        ga.q.push(arguments)
+    };
+    ga.q = [];
+    ga.l = +new Date;
+    ga('create', 'UA-XXXXX-Y', 'auto');
+    ga('send', 'pageview')
+</script>
+<script src="https://www.google-analytics.com/analytics.js" async defer></script>
+
+<!--====== Vendor Js ======-->
+<script th:src="@{/js/vendor.js}"></script>
+
+<!--====== jQuery Shopnav plugin ======-->
+<script th:src="@{/js/jquery.shopnav.js}"></script>
+
+<!--====== App ======-->
+<script th:src="@{/js/app.js}"></script>
+
+
+
+<!--====== Noscript ======-->
+<noscript>
+    <div class="app-setting">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="app-setting__wrap">
+                        <h1 class="app-setting__h1">JavaScript is disabled in your browser.</h1>
+
+                        <span class="app-setting__text">Please enable JavaScript in your browser or upgrade to a JavaScript-capable browser.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</noscript>
+</body>
+</html>

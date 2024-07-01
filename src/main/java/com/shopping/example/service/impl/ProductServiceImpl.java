@@ -65,6 +65,11 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.filterProducts(name, categoryId, minPrice, maxPrice, colorId, memory, ram, minSize, maxSize, pageable);
     }
 
+    @Override
+    public List<Product> NewArrivalProduct() {
+        return productRepository.findNewArrivalProducts();
+    }
+
 
     @Override
     public List<Product> getProductsByPriceRange(double minPrice, double maxPrice) {

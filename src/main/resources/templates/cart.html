@@ -90,6 +90,13 @@
                                     <div class="table-responsive">
                                         <table class="table-p">
                                             <tbody>
+                                            <tr th:if="${ListCart == null or ListCart.isEmpty()}">
+                                                <td colspan="4">
+                                                    <div class="text-center">
+                                                        <span style="color: red">Cart is empty</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                             <tr th:each="cartItem : ${ListCart}">
                                                 <td>
                                                     <input type="checkbox" name="selectedCartItems" th:value="${cartItem.cartItemsId}">
