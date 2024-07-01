@@ -101,6 +101,9 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
         }
     }
+
+
+
     @PostMapping("/forgot-password")
     public ResponseEntity<?> createForgotPassword(@RequestParam String email) {
         var command = new ForgotPasswordRequest(email);
