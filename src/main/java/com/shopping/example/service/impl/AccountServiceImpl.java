@@ -14,9 +14,12 @@ import com.shopping.example.utility.AppProperties;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsPasswordService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.security.Principal;
@@ -39,9 +42,14 @@ public class AccountServiceImpl implements AccountService {
     private MailService mailService;
     @Autowired
     private MyUserDetailService myUserDetailService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserDetailsPasswordService userDetailsService;
+
+    public AccountServiceImpl(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public boolean existsByEmail(String email) {
@@ -115,6 +123,21 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void changePassword(ChangePasswordRequest changePasswordRequest, Principal principal) {
+        var user = (User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
 
+        // check if the current password is correct
+        if (!passwordEncoder.matches(changePasswordRequest.getCurrentPassword(), user.getPassword())) {
+            throw new IllegalStateException("Wrong password");
+        }
+        // check if the two new passwords are the same
+        if (!changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmNewPassword())) {
+            throw new IllegalStateException("Password are not the same");
+        }
+
+        // update the password
+//        user.getPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+
+        // save the new password
+//        accountRepository.save(user);
     }
 }
