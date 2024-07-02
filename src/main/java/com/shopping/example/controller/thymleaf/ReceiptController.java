@@ -1,20 +1,17 @@
 package com.shopping.example.controller.thymleaf;
 
-import com.shopping.example.entity.Account;
-import com.shopping.example.entity.Employee;
-import com.shopping.example.entity.Receipt;
-import com.shopping.example.entity.Supplier;
+import com.shopping.example.entity.*;
 import com.shopping.example.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -42,26 +39,6 @@ public class ReceiptController {
         model.addAttribute("receiptList", receiptService.getReceipts());
         return "admin-receipt";
     }
-
-//    @PostMapping("viewPro")
-//    public String viewPro(Model model, @RequestParam("supId") String supId) {
-//        model.addAttribute("supplierList", supplierService.findAllSuppliers());
-//
-//        if (!"All".equals(supId)) {
-//            Long supplierId = Long.parseLong(supId);
-//            model.addAttribute("proTypeList", productTypeService.getProductTypeBySupplier(supplierId));
-//            model.addAttribute("selectedSupId", supplierId);
-//        } else {
-//            model.addAttribute("proTypeList", productTypeService.getProductTypeByAll());
-//            model.addAttribute("selectedSupId", null);
-//        }
-//
-//        return "admin-receipt";
-//    }
-
-
-
-
 
     //Create Receipt
 
@@ -91,6 +68,46 @@ public class ReceiptController {
             }
         }
     }
+
+
+    //List all the receipt detail
+    @GetMapping("/receiptDetail/{receiptId}")
+    public String managerReceiptDetail(@PathVariable Long receiptId, Model model) {
+        List<ReceiptDetail> receiptDetailList = receiptDetailService.findAllbyReceiptId(receiptId);
+        model.addAttribute("receiptDetailList", receiptDetailList);
+
+        // Tính tổng giá tiền
+        double totalAmount = receiptDetailList.stream()
+                .mapToDouble(rd -> rd.getPrice() * rd.getQuantity())
+                .sum();
+        model.addAttribute("totalAmount", totalAmount);
+
+        Optional<Receipt> optionalReceipt = receiptService.getReceipt(receiptId);
+        if (optionalReceipt.isPresent()) {
+            Receipt existReceipt = optionalReceipt.get();
+            model.addAttribute("existReceipt", existReceipt);
+            List<ProductType> productTypeList = productTypeService.getProductTypeBySupplier(existReceipt.getSupplier().getSupplierId());
+            model.addAttribute("productTypeList", productTypeList);
+            return "admin-receipt-detail";
+        }
+        return "admin-receipt-detail";
+    }
+
+
+    @PostMapping("/deleteReceiptDetail")
+    public String deleteReceiptDetail(@RequestParam("receiptDetailId") Long receiptDetailId,
+                                      @RequestParam("receiptId") Long receiptId,
+                                      RedirectAttributes redirectAttributes) {
+        try {
+            receiptDetailService.deleteByReceiptDetailId(receiptDetailId);
+            redirectAttributes.addFlashAttribute("successMessage", "Receipt detail deleted successfully");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error deleting receipt detail: " + e.getMessage());
+        }
+        return "redirect:/receiptDetail/" + receiptId;
+    }
+
+
 
 
 

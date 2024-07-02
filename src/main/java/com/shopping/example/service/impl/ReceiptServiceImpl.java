@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Component
@@ -26,8 +27,10 @@ public class ReceiptServiceImpl implements ReceiptService {
         return receiptRepository.findAll();
     }
 
-
-
+    @Override
+    public Optional<Receipt> getReceipt(Long id) {
+        return receiptRepository.findById(id);
+    }
 
 
 }

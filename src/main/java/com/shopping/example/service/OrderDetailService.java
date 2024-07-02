@@ -10,6 +10,6 @@ import java.util.Optional;
 @Service
 public interface OrderDetailService {
     List<OrderDetail> getOrderDetailsByOrder(Order order);
-
+    void saveOrderDetail(OrderDetail orderDetail);
     Optional<OrderDetail> getOrderDetailById(Long orderDetailId);
 }

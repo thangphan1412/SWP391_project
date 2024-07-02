@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html  lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link th:href="@{/images/favicon.png}" rel="shortcut icon">
+    <title>CellphoneZDB</title>
+
+    <!--====== Google Font ======-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
+
+    <!--====== Vendor Css ======-->
+    <link rel="stylesheet"   th:href="@{/css/vendor.css}" />>
+    <link rel="stylesheet" th:href="@{/css/utility.css}" />
+    <link rel="stylesheet" th:href="@{/css/app.css}" />
+</head>
+<body class="config">
+<div id="app">
+
+    <!--====== Main Header ======-->
+    <div th:insert="~{partials/navbar :: navbar}"></div>
+    <!--====== End - Main Header ======-->
+
+
+    <!--====== App Content ======-->
+    <div class="app-content">
+
+        <!--====== Section 1 ======-->
+        <div class="u-s-p-y-60">
+
+            <!--====== Section Content ======-->
+            <div class="section__content">
+                <div class="container">
+                    <div class="breadcrumb">
+                        <div class="breadcrumb__wrap">
+                            <ul class="breadcrumb__list">
+                                <li class="has-separator">
+
+                                    <a href="/static">Home</a></li>
+                                <li class="has-separator">
+
+                                    <a href="/update">Admin Dashboard</a></li>
+                                <li class="is-marked">
+
+                                    <a href="/receipt">Manage Receipt</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--====== End - Section 1 ======-->
+
+
+        <!--====== Section 2 ======-->
+
+
+        <!--====== Section Content ======-->
+        <div class="section__content">
+            <div class="container">
+                <div class="row row--center">
+                    <div class="col-lg-10 col-md-8 u-s-m-b-30">
+                        <div class="l-f-o">
+                            <div class="l-f-o__pad-box">
+                                <h1 class="dash__h1 u-s-m-b-30">Receipt Detail</h1>
+                                <h2 class="dash__h1 u-s-m-b-30" th:text="'Total amount: ' + ${totalAmount}"></h2>
+
+                                <div th:if="${sucesstMessage}" class="alert alert-success" role="alert">
+                                    <p style="color: green" th:text="${successMessage}"></p>
+                                </div>
+
+                                <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
+                                    <div class="dash__table-wrap gl-scroll">
+                                        <table class="dash__table">
+                                            <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Product Name</th>
+                                                <th>Product Image</th>
+                                                <th>Product Tech</th>
+                                                <th>Quantity</th>
+                                                <th></th>
+                                                <th>Price</th>
+                                                <th></th>
+                                                <th>Action</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody th:each="receipt : ${receiptDetailList}" >
+                                            <tr>
+                                                <td th:text="${receipt.receiptDetailId}"></td>
+
+                                                <td th:text="${receipt.productTypes.product.productName}"></td>
+
+                                                <td>
+                                                    <img  th:src="@{'/product_img/' + ${receipt.productTypes.product.productImage}}" alt="404">
+                                                </td>
+
+                                                <td>
+                                                    <span th:text="'RAM: ' + ${receipt.productTypes.productTech.ram} + ' | Memory: ' + ${receipt.productTypes.productTech.memory} + ' | Size: ' + ${receipt.productTypes.productTech.size} + ' | Color: ' + ${receipt.productTypes.color.colorName}"></span>
+
+                                                </td>
+
+                                                <td>
+                                                    <form th:action="@{/updateReceiptQuantity}" method="post">
+                                                        <input type="text" th:value="${receipt.receiptDetailId}" hidden="" name="receiptId">
+                                                        <input style="width: 80%" type="number"   th:value="${receipt.quantity}" required step="1" name="quantity" min="0">
+                                                        <td><button style="border: none; background: white !important; font-size: 1.5em" class="fa fa-wrench" type="submit"></button></td>
+                                                    </form>
+                                                </td>
+                                                <td>
+                                                    <form th:action="@{/updateReceiptPrice}" method="post">
+                                                        <input type="text" th:value="${receipt.receiptDetailId}" hidden="" name="receiptId">
+                                                        <input style="width: 100%" type="number"   th:value="${receipt.price}" required step="any" name="quantity" min="0">
+                                                        <td><button style="border: none; background: white !important; font-size: 1.5em" class="fa fa-wrench" type="submit"></button></td>
+                                                    </form>
+                                                </td>
+
+
+                                                <td>
+                                                    <form th:action="@{/deleteReceiptDetail}" method="post">
+                                                        <input type="text" th:value="${receiptId}" name="receiptId" hidden="">
+                                                        <input type="text" th:value="${receipt.receiptDetailId}" hidden="" name="receiptDetailId">
+                                                        <button type="submit"> Delete</button>
+                                                    </form>
+
+                                                </td>
+                                            </tr>
+
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <form th:action="@{/processPayment}"
+                                      method="post"
+                                      th:if="${receiptDetailList != null and !receiptDetailList.isEmpty() and existReceipt != null and existReceipt.receiptStatus != 'Complete'}">
+                                    <input type="text" th:value="${receiptId}" name="receiptId" hidden>
+                                    <input type="number" th:value="${totalAmount}" name="totalPrice" hidden>
+                                    <input style="padding: 18px 18px; border: 2px solid #ff4500; border-radius: 6px; margin-top: 20px;"
+                                           class="btn btn--e-transparent-brand-b-2"
+                                           type="submit"
+                                           value="Process to payment">
+                                </form>
+
+
+                            </div>
+
+
+                            <div class="l-f-o__pad-box">
+                                <h1 class="dash__h1 u-s-m-b-30">Product of supplier</h1>
+
+                                <div th:if="${receiptMessage}" class="alert alert-success" role="alert">
+                                    <p style="color: green" th:text="${receiptMessage}"></p>
+                                </div>
+
+                                <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
+                                    <div class="dash__table-wrap gl-scroll">
+                                        <table class="dash__table">
+                                            <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Product Name</th>
+                                                <th>Product Image</th>
+                                                <th>Product Tech</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody th:each="productTypes : ${productTypeList}" >
+                                            <tr>
+                                                <td th:text="${productTypes.product_type_id}"></td>
+
+                                                <td th:text="${productTypes.product.productName}"></td>
+
+                                                <td>
+                                                    <img  th:src="@{'/product_img/' + ${productTypes.product.productImage}}" alt="404">
+                                                </td>
+
+                                                <td>
+                                                    <span th:text="'RAM: ' + ${productTypes.productTech.ram} + ' | Memory: ' + ${productTypes.productTech.memory} + ' | Size: ' + ${productTypes.productTech.size} + ' | Color: ' + ${productTypes.color.colorName}"></span>
+
+                                                </td>
+
+
+                                                <td >
+                                                    <form th:action="@{/addToReceipt}" method="Post">
+                                                        <input type="text" th:value="${productTypes.product_type_id}" hidden="">
+                                                        <button type="submit">Add</button>
+                                                    </form>
+
+                                                </td>
+                                            </tr>
+
+                                            </tbody>
+                                            <tbody th:if="${receiptDetailList == null}">
+                                            <tr>
+                                                <td colspan="4">Not found</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--====== End - Section Content ======-->
+
+    <!--====== End - Section 2 ======-->
+</div>
+<!--====== End - App Content ======-->
+
+
+<!--====== Main Footer ======-->
+<div th:insert="~{partials/footer :: footer}"></div>
+</div>
+<!--====== End - Main App ======-->
+
+
+<!--====== Google Analytics: change UA-XXXXX-Y to be your site's ID ======-->
+<script>
+    window.ga = function() {
+        ga.q.push(arguments)
+    };
+    ga.q = [];
+    ga.l = +new Date;
+    ga('create', 'UA-XXXXX-Y', 'auto');
+    ga('send', 'pageview')
+</script>
+<script src="https://www.google-analytics.com/analytics.js" async defer></script>
+
+<!--====== Vendor Js ======-->
+<script th:src="@{/js/vendor.js}"></script>
+
+<!--====== jQuery Shopnav plugin ======-->
+<script th:src="@{/js/jquery.shopnav.js}"></script>
+
+<!--====== App ======-->
+<script th:src="@{/js/app.js}"></script>
+
+
+
+<!--====== Noscript ======-->
+<noscript>
+    <div class="app-setting">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="app-setting__wrap">
+                        <h1 class="app-setting__h1">JavaScript is disabled in your browser.</h1>
+
+                        <span class="app-setting__text">Please enable JavaScript in your browser or upgrade to a JavaScript-capable browser.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</noscript>
+</body>
+</html>

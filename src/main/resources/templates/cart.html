@@ -2,7 +2,8 @@
 <html class="no-js" lang="en">
 <head>
     <meta charset="UTF-8">
-    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+    <!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -22,96 +23,92 @@
     <link rel="stylesheet" href="css/app.css">
 </head>
 <body class="config">
-    <div class="preloader is-active">
-        <div class="preloader__wrap">
+<div class="preloader is-active">
+    <div class="preloader__wrap">
 
-            <img class="preloader__img" src="images/preloader.png" alt=""></div>
-    </div>
+        <img class="preloader__img" src="images/preloader.png" alt=""></div>
+</div>
 
-    <!--====== Main App ======-->
-    <div id="app">
+<!--====== Main App ======-->
+<div id="app">
 
-        <!--====== Main Header ======-->
-        <div th:insert="~{partials/navbar :: navbar}"></div>
-        <!--====== End - Main Header ======-->
+    <!--====== Main Header ======-->
+    <div th:insert="~{partials/navbar :: navbar}"></div>
+    <!--====== End - Main Header ======-->
 
 
-        <!--====== App Content ======-->
-        <div class="app-content">
+    <!--====== App Content ======-->
+    <div class="app-content">
 
-            <!--====== Section 1 ======-->
-            <div class="u-s-p-y-60">
+        <!--====== Section 1 ======-->
+        <div class="u-s-p-y-60">
 
-                <!--====== Section Content ======-->
-                <div class="section__content">
-                    <div class="container">
-                        <div class="breadcrumb">
-                            <div class="breadcrumb__wrap">
-                                <ul class="breadcrumb__list">
-                                    <li class="has-separator">
+            <!--====== Section Content ======-->
+            <div class="section__content">
+                <div class="container">
+                    <div class="breadcrumb">
+                        <div class="breadcrumb__wrap">
+                            <ul class="breadcrumb__list">
+                                <li class="has-separator">
 
-                                        <a href="/">Home</a></li>
-                                    <li class="is-marked">
+                                    <a href="/">Home</a></li>
+                                <li class="is-marked">
 
-                                        <a href="/viewCart">Cart</a></li>
-                                </ul>
+                                    <a href="/viewCart">Cart</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--====== End - Section 1 ======-->
+
+
+        <!--====== Section 2 ======-->
+        <div class="u-s-p-b-60">
+
+            <!--====== Section Intro ======-->
+            <div class="section__intro u-s-m-b-60">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="section__text-wrap">
+                                <h1 class="section__heading u-c-secondary">SHOPPING CART</h1>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!--====== End - Section 1 ======-->
+            <!--====== End - Section Intro ======-->
 
 
-            <!--====== Section 2 ======-->
-            <div class="u-s-p-b-60">
-
-                <!--====== Section Intro ======-->
-                <div class="section__intro u-s-m-b-60">
-                    <div class="container">
+            <!--====== Section Content ======-->
+            <div class="section__content">
+                <div class="container">
+                    <form th:action="@{/deleteSelectedCartItems}" method="post">
                         <div class="row">
-                            <div class="col-lg-12">
-                                <div class="section__text-wrap">
-                                    <h1 class="section__heading u-c-secondary">SHOPPING CART</h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--====== End - Section Intro ======-->
-
-
-                <!--====== Section Content ======-->
-                <div class="section__content">
-                    <div class="container">
-                        <form th:action="@{/deleteSelectedCartItems}" method="post">
-                            <div class="row">
-                                <div class="col-lg-12 col-md-12 col-sm-12 u-s-m-b-30">
-                                    <div class="table-responsive">
-                                        <table class="table-p">
-                                            <tbody>
-                                            <tr th:if="${ListCart == null or ListCart.isEmpty()}">
-                                                <td colspan="4">
-                                                    <div class="text-center">
-                                                        <span style="color: red">Cart is empty</span>
+                            <div class="col-lg-12 col-md-12 col-sm-12 u-s-m-b-30">
+                                <div class="table-responsive">
+                                    <table class="table-p">
+                                        <tbody>
+                                        <tr th:each="cartItem : ${ListCart}">
+                                            <td>
+                                                <input type="checkbox" name="selectedCartItems"
+                                                       th:value="${cartItem.cartItemsId}">
+                                            </td>
+                                            <td>
+                                                <div class="table-p__box">
+                                                    <div class="table-p__img-wrap">
+                                                        <img class="u-img-fluid"
+                                                             th:src="@{'/product_img/' + ${cartItem.productType.product.productImage}}"
+                                                             alt="">
                                                     </div>
-                                                </td>
-                                            </tr>
-                                            <tr th:each="cartItem : ${ListCart}">
-                                                <td>
-                                                    <input type="checkbox" name="selectedCartItems" th:value="${cartItem.cartItemsId}">
-                                                </td>
-                                                <td>
-                                                    <div class="table-p__box">
-                                                        <div class="table-p__img-wrap">
-                                                            <img class="u-img-fluid" th:src="@{'/product_img/' + ${cartItem.productType.product.productImage}}" alt="">
-                                                        </div>
-                                                        <div class="table-p__info">
+                                                    <div class="table-p__info">
                                         <span class="table-p__name">
                                             <a th:href="@{/ProductDetail/{id}(id = ${cartItem.productType.product.productId})}"
                                                th:text="${cartItem.productType.product.productName}"></a>
                                         </span>
-                                                            <span class="table-p__category">
+                                                        <span class="table-p__category">
                                             <a th:href="@{/ListProduct(name=${param.name},
                                                                        categoryId=${cartItem.productType.product.category.categoryId},
                                                                        minPrice=${param.minPrice},
@@ -123,436 +120,440 @@
                                                                        maxSize=${param.maxSize})}"
                                                th:text="${cartItem.productType.product.category.categoryName}"></a>
                                         </span>
-                                                            <ul class="table-p__variant-list">
-                                                                <li>
+                                                        <ul class="table-p__variant-list">
+                                                            <li>
                                                 <span th:text="'Ram: ' + ${cartItem.productType.productTech.ram} +
                                                                ' | Memory: ' + ${cartItem.productType.productTech.memory} +
                                                                ' | Size: ' + ${cartItem.productType.productTech.size}"></span>
-                                                                </li>
-                                                                <li>
-                                                                    <span th:text="'Color: ' + ${cartItem.productType.color.colorName}"></span>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
+                                                            </li>
+                                                            <li>
+                                                                <span th:text="'Color: ' + ${cartItem.productType.color.colorName}"></span>
+                                                            </li>
+                                                        </ul>
                                                     </div>
-                                                </td>
-                                                <td>
-                                                    <span class="table-p__price-total" th:text="${cartItem.productType.product_type_price * cartItem.quantity}"></span>
-                                                    <input type="hidden" class="product-price" th:value="${cartItem.productType.product_type_price}">
-                                                </td>
-                                                <td>
-                                                    <div class="table-p__input-counter-wrap">
-                                                        <div class="input-counter">
-                                                            <span class="input-counter__minus fas fa-minus"></span>
-                                                            <input class="input-counter__text input-counter--text-primary-style"
-                                                                   type="text" name="quantity"
-                                                                   th:value="${cartItem.quantity}"
-                                                                   th:data-max="${cartItem.productType.product_type_quantity}"
-                                                                   data-min="1" step="1">
-                                                            <span class="input-counter__plus fas fa-plus"></span>
-                                                        </div>
-                                                        <input type="hidden" name="cartItemId" th:value="${cartItem.cartItemsId}">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="table-p__price-total"
+                                                      th:text="${cartItem.productType.product_type_price * cartItem.quantity}"></span>
+                                                <input type="hidden" class="product-price"
+                                                       th:value="${cartItem.productType.product_type_price}">
+                                            </td>
+                                            <td>
+                                                <div class="table-p__input-counter-wrap">
+                                                    <div class="input-counter">
+                                                        <span class="input-counter__minus fas fa-minus"></span>
+                                                        <input class="input-counter__text input-counter--text-primary-style"
+                                                               type="text" name="quantity"
+                                                               th:value="${cartItem.quantity}"
+                                                               th:data-max="${cartItem.productType.product_type_quantity}"
+                                                               data-min="1" step="1">
+                                                        <span class="input-counter__plus fas fa-plus"></span>
                                                     </div>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="route-box">
-                                        <div class="route-box__g1">
-                                            <a class="route-box__link" href="/ListProduct">
-                                                <i class="fas fa-long-arrow-alt-left"></i>
-                                                <span>CONTINUE SHOPPING</span>
-                                            </a>
-                                        </div>
-                                        <div style="margin-right: 0.7em" th:if="${delMessage}" class="alert alert-success" role="alert">
-                                            <p style="color: green" th:text="${delMessage}"></p>
-                                        </div>
-                                        <div class="route-box__g2" th:if="${not #lists.isEmpty(ListCart)}">
-                                            <button style="border: none" class="fas fa-trash u-s-m-r-8" type="submit"></button>
-                                        </div>
-                                    </div>
+                                                    <input type="hidden" name="cartItemId"
+                                                           th:value="${cartItem.cartItemsId}">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                        </form>
-
-                        <!-- Hidden form for price filtering -->
-                        <form id="price-filter-form" class="shop-w__form-p" action="/ListProduct" method="get">
-                            <input type="hidden" name="name" th:value="${param.name}">
-                            <input type="hidden" name="categoryId" th:value="${param.categoryId}">
-                            <input type="hidden" name="minPrice" th:value="${param.minPrice}">
-                            <input type="hidden" name="maxPrice" th:value="${param.maxPrice}">
-                            <input type="hidden" name="colorId" th:value="${param.colorId}">
-                            <input type="hidden" name="memory" th:value="${param.memory}">
-                            <input type="hidden" name="ram" th:value="${param.ram}">
-                            <input type="hidden" name="minSize" th:value="${param.minSize}">
-                            <input type="hidden" name="maxSize" th:value="${param.maxSize}">
-                        </form>
-                    </div>
-                </div>
-                <!--====== End - Section Content ======-->
-            </div>
-            <!--====== End - Section 2 ======-->
-
-
-            <!--====== Section 3 ======-->
-            <div class="u-s-p-b-60">
-
-                <!--====== Section Content ======-->
-                <div class="section__content">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12 u-s-m-b-30">
-                                <form class="f-cart">
-                                    <div class="row">
-                                        <div class="col-lg-4 col-md-6 u-s-m-b-30">
-                                            <div class="f-cart__pad-box">
-                                                <h1 class="gl-h1">ESTIMATE SHIPPING AND TAXES</h1>
-
-                                                <span class="gl-text u-s-m-b-30">Enter your destination to get a shipping estimate.</span>
-                                                <div class="u-s-m-b-30">
-
-                                                    <!--====== Select Box ======-->
-
-                                                    <label class="gl-label" for="shipping-country">COUNTRY *</label><select class="select-box select-box--primary-style" id="shipping-country">
-                                                        <option selected value="">Choose Country</option>
-                                                        <option value="uae">United Arab Emirate (UAE)</option>
-                                                        <option value="uk">United Kingdom (UK)</option>
-                                                        <option value="us">United States (US)</option>
-                                                    </select>
-
-
-                                                    <!--====== End - Select Box ======-->
-                                                </div>
-                                                <div class="u-s-m-b-30">
-
-                                                    <!--====== Select Box ======-->
-
-                                                    <label class="gl-label" for="shipping-state">STATE/PROVINCE *</label><select class="select-box select-box--primary-style" id="shipping-state">
-                                                        <option selected value="">Choose State/Province</option>
-                                                        <option value="al">Alabama</option>
-                                                        <option value="al">Alaska</option>
-                                                        <option value="ny">New York</option>
-                                                    </select>
-                                                    <!--====== End - Select Box ======-->
-                                                </div>
-                                                <div class="u-s-m-b-30">
-
-                                                    <label class="gl-label" for="shipping-zip">ZIP/POSTAL CODE *</label>
-
-                                                    <input class="input-text input-text--primary-style" type="text" id="shipping-zip" placeholder="Zip/Postal Code"></div>
-                                                <div class="u-s-m-b-30">
-
-                                                    <a class="f-cart__ship-link btn--e-transparent-brand-b-2" href="cart.html">CALCULATE SHIPPING</a></div>
-
-                                                <span class="gl-text">Note: There are some countries where free shipping is available otherwise our flat rate charges or country delivery charges will be apply.</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-md-6 u-s-m-b-30">
-                                            <div class="f-cart__pad-box">
-                                                <h1 class="gl-h1">NOTE</h1>
-
-                                                <span class="gl-text u-s-m-b-30">Add Special Note About Your Product</span>
-                                                <div>
-
-                                                    <label for="f-cart-note"></label><textarea class="text-area text-area--primary-style" id="f-cart-note"></textarea></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-md-6 u-s-m-b-30">
-                                            <div class="f-cart__pad-box">
-                                                <div class="u-s-m-b-30">
-                                                    <table class="f-cart__table">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>SHIPPING</td>
-                                                                <td>$4.00</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>TAX</td>
-                                                                <td>$0.00</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>SUBTOTAL</td>
-                                                                <td>$379.00</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>GRAND TOTAL</td>
-                                                                <td>$379.00</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <div>
-
-                                                    <button class="btn btn--e-brand-b-2" type="submit"> PROCEED TO CHECKOUT</button></div>
-                                            </div>
-                                        </div>
+                            <div class="col-lg-12">
+                                <div class="route-box">
+                                    <div class="route-box__g1">
+                                        <a class="route-box__link" href="/ListProduct">
+                                            <i class="fas fa-long-arrow-alt-left"></i>
+                                            <span>CONTINUE SHOPPING</span>
+                                        </a>
                                     </div>
-                                </form>
+                                    <div th:if="${delMessage}" class="alert alert-success" role="alert">
+                                        <p style="color: green" th:text="${delMessage}"></p>
+                                    </div>
+                                    <div class="route-box__g2" th:if="${not #lists.isEmpty(ListCart)}">
+                                        <button type="submit">Delete Selected Items</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
+
+                    <!-- Hidden form for price filtering -->
+                    <form id="price-filter-form" class="shop-w__form-p" action="/ListProduct" method="get">
+                        <input type="hidden" name="name" th:value="${param.name}">
+                        <input type="hidden" name="categoryId" th:value="${param.categoryId}">
+                        <input type="hidden" name="minPrice" th:value="${param.minPrice}">
+                        <input type="hidden" name="maxPrice" th:value="${param.maxPrice}">
+                        <input type="hidden" name="colorId" th:value="${param.colorId}">
+                        <input type="hidden" name="memory" th:value="${param.memory}">
+                        <input type="hidden" name="ram" th:value="${param.ram}">
+                        <input type="hidden" name="minSize" th:value="${param.minSize}">
+                        <input type="hidden" name="maxSize" th:value="${param.maxSize}">
+                    </form>
                 </div>
-                <!--====== End - Section Content ======-->
             </div>
-            <!--====== End - Section 3 ======-->
+            <!--====== End - Section Content ======-->
         </div>
-        <!--====== End - App Content ======-->
+        <!--====== End - Section 2 ======-->
 
 
-        <!--====== Main Footer ======-->
-        <footer>
-            <div class="outer-footer">
+        <!--====== Section 3 ======-->
+        <div class="u-s-p-b-60">
+
+            <!--====== Section Content ======-->
+            <div class="section__content">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-4 col-md-6">
-                            <div class="outer-footer__content u-s-m-b-40">
-
-                                <span class="outer-footer__content-title">Contact Us</span>
-                                <div class="outer-footer__text-wrap"><i class="fas fa-home"></i>
-
-                                    <span>4247 Ashford Drive Virginia VA-20006 USA</span></div>
-                                <div class="outer-footer__text-wrap"><i class="fas fa-phone-volume"></i>
-
-                                    <span>(+0) 900 901 904</span></div>
-                                <div class="outer-footer__text-wrap"><i class="far fa-envelope"></i>
-
-                                    <span>contact@domain.com</span></div>
-                                <div class="outer-footer__social">
-                                    <ul>
-                                        <li>
-
-                                            <a class="s-fb--color-hover" href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                        <li>
-
-                                            <a class="s-tw--color-hover" href="#"><i class="fab fa-twitter"></i></a></li>
-                                        <li>
-
-                                            <a class="s-youtube--color-hover" href="#"><i class="fab fa-youtube"></i></a></li>
-                                        <li>
-
-                                            <a class="s-insta--color-hover" href="#"><i class="fab fa-instagram"></i></a></li>
-                                        <li>
-
-                                            <a class="s-gplus--color-hover" href="#"><i class="fab fa-google-plus-g"></i></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6">
-                                    <div class="outer-footer__content u-s-m-b-40">
-
-                                        <span class="outer-footer__content-title">Information</span>
-                                        <div class="outer-footer__list-wrap">
-                                            <ul>
-                                                <li>
-
-                                                    <a href="cart.html">Cart</a></li>
-                                                <li>
-
-                                                    <a href="dashboard.html">Account</a></li>
-                                                <li>
-
-                                                    <a href="shop-side-version-2.html">Manufacturer</a></li>
-                                                <li>
-
-                                                    <a href="dash-payment-option.html">Finance</a></li>
-                                                <li>
-
-                                                    <a href="shop-side-version-2.html">Shop</a></li>
-                                            </ul>
+                        <div class="col-lg-12 col-md-12 col-sm-12 u-s-m-b-30">
+                            <form class="f-cart" method="GET" action="checkout">
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-6 u-s-m-b-30">
+                                        <div class="f-cart__pad-box">
+                                            <div class="u-s-m-b-30">
+                                                <table class="f-cart__table">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>SHIPPING</td>
+                                                        <td id="shipping-cost">$0.00</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>TAX</td>
+                                                        <td id="tax-cost">$0.00</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>SUBTOTAL</td>
+                                                        <td id="subtotal">$0.00</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>GRAND TOTAL</td>
+                                                        <td id="grand-total"></td>
+                                                        <input id="total-price-input" type="hidden">
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div>
+                                                <button  class="btn btn--e-brand-b-2" type="submit">
+                                                    PROCEED TO CHECKOUT
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6">
-                                    <div class="outer-footer__content u-s-m-b-40">
-                                        <div class="outer-footer__list-wrap">
-
-                                            <span class="outer-footer__content-title">Our Company</span>
-                                            <ul>
-                                                <li>
-
-                                                    <a href="about.html">About us</a></li>
-                                                <li>
-
-                                                    <a href="contact.html">Contact Us</a></li>
-                                                <li>
-
-                                                    <a href="index.html">Sitemap</a></li>
-                                                <li>
-
-                                                    <a href="dash-my-order.html">Delivery</a></li>
-                                                <li>
-
-                                                    <a href="shop-side-version-2.html">Store</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-12">
-                            <div class="outer-footer__content">
-
-                                <span class="outer-footer__content-title">Join our Newsletter</span>
-                                <form class="newsletter">
-                                    <div class="u-s-m-b-15">
-                                        <div class="radio-box newsletter__radio">
-
-                                            <input type="radio" id="male" name="gender">
-                                            <div class="radio-box__state radio-box__state--primary">
-
-                                                <label class="radio-box__label" for="male">Male</label></div>
-                                        </div>
-                                        <div class="radio-box newsletter__radio">
-
-                                            <input type="radio" id="female" name="gender">
-                                            <div class="radio-box__state radio-box__state--primary">
-
-                                                <label class="radio-box__label" for="female">Female</label></div>
-                                        </div>
-                                    </div>
-                                    <div class="newsletter__group">
-
-                                        <label for="newsletter"></label>
-
-                                        <input class="input-text input-text--only-white" type="text" id="newsletter" placeholder="Enter your Email">
-
-                                        <button class="btn btn--e-brand newsletter__btn" type="submit">SUBSCRIBE</button></div>
-
-                                    <span class="newsletter__text">Subscribe to the mailing list to receive updates on promotions, new arrivals, discount and coupons.</span>
-                                </form>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="lower-footer">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="lower-footer__content">
-                                <div class="lower-footer__copyright">
-
-                                    <span>Copyright © 2018</span>
-
-                                    <a href="index.html">Reshop</a>
-
-                                    <span>All Right Reserved</span></div>
-                                <div class="lower-footer__payment">
-                                    <ul>
-                                        <li><i class="fab fa-cc-stripe"></i></li>
-                                        <li><i class="fab fa-cc-paypal"></i></li>
-                                        <li><i class="fab fa-cc-mastercard"></i></li>
-                                        <li><i class="fab fa-cc-visa"></i></li>
-                                        <li><i class="fab fa-cc-discover"></i></li>
-                                        <li><i class="fab fa-cc-amex"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
+            <!--====== End - Section Content ======-->
+        </div>
+        <!--====== End - Section 3 ======-->
     </div>
-    <!--====== End - Main App ======-->
+    <!--====== End - App Content ======-->
 
 
-    <!--====== Google Analytics: change UA-XXXXX-Y to be your site's ID ======-->
-    <script>
-        window.ga = function() {
-            ga.q.push(arguments)
-        };
-        ga.q = [];
-        ga.l = +new Date;
-        ga('create', 'UA-XXXXX-Y', 'auto');
-        ga('send', 'pageview')
-    </script>
-    <script src="https://www.google-analytics.com/analytics.js" async defer></script>
-
-
-
-    <!--====== Vendor Js ======-->
-    <script src="js/vendor.js"></script>
-
-    <!--====== jQuery Shopnav plugin ======-->
-    <script src="js/jquery.shopnav.js"></script>
-
-    <!--====== App ======-->
-    <script src="js/app.js"></script>
-
-    <script th:inline="javascript">
-        document.addEventListener('DOMContentLoaded', function() {
-            const inputCounters = document.querySelectorAll('.input-counter');
-            inputCounters.forEach(function(counter) {
-                const minusBtn = counter.querySelector('.input-counter__minus');
-                const plusBtn = counter.querySelector('.input-counter__plus');
-                const inputField = counter.querySelector('.input-counter__text');
-                const priceElement = counter.closest('tr').querySelector('.table-p__price-total');
-                const hiddenPriceField = counter.closest('tr').querySelector('.product-price');
-
-                minusBtn.addEventListener('click', function() {
-                    let value = parseInt(inputField.value);
-                    if (value > 1) {
-                        inputField.value = value ;
-                        updatePrice(inputField, priceElement, hiddenPriceField);
-                    }
-                });
-
-                plusBtn.addEventListener('click', function() {
-                    let value = parseInt(inputField.value);
-                    let max = parseInt(inputField.getAttribute('data-max'));
-                    if (value < max) {
-                        inputField.value = value ;
-                        updatePrice(inputField, priceElement, hiddenPriceField);
-                    }
-                });
-
-                inputField.addEventListener('change', function() {
-                    updatePrice(inputField, priceElement, hiddenPriceField);
-                });
-            });
-
-            function updatePrice(inputField, priceElement, hiddenPriceField) {
-                let quantity = parseInt(inputField.value);
-                let price = parseFloat(hiddenPriceField.value);
-                let totalPrice = quantity * price;
-                priceElement.textContent = totalPrice.toFixed(2);
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            document.addEventListener('keypress', function(e) {
-                var key = e.which || e.keyCode;
-                if (key === 13) { // 13 là mã ASCII cho phím Enter
-                    e.preventDefault();
-                }
-            });
-        });
-    </script>
-
-
-
-    <!--====== Noscript ======-->
-    <noscript>
-        <div class="app-setting">
+    <!--====== Main Footer ======-->
+    <footer>
+        <div class="outer-footer">
             <div class="container">
                 <div class="row">
-                    <div class="col-12">
-                        <div class="app-setting__wrap">
-                            <h1 class="app-setting__h1">JavaScript is disabled in your browser.</h1>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="outer-footer__content u-s-m-b-40">
 
-                            <span class="app-setting__text">Please enable JavaScript in your browser or upgrade to a JavaScript-capable browser.</span>
+                            <span class="outer-footer__content-title">Contact Us</span>
+                            <div class="outer-footer__text-wrap"><i class="fas fa-home"></i>
+
+                                <span>4247 Ashford Drive Virginia VA-20006 USA</span></div>
+                            <div class="outer-footer__text-wrap"><i class="fas fa-phone-volume"></i>
+
+                                <span>(+0) 900 901 904</span></div>
+                            <div class="outer-footer__text-wrap"><i class="far fa-envelope"></i>
+
+                                <span>contact@domain.com</span></div>
+                            <div class="outer-footer__social">
+                                <ul>
+                                    <li>
+
+                                        <a class="s-fb--color-hover" href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li>
+
+                                        <a class="s-tw--color-hover" href="#"><i class="fab fa-twitter"></i></a></li>
+                                    <li>
+
+                                        <a class="s-youtube--color-hover" href="#"><i class="fab fa-youtube"></i></a>
+                                    </li>
+                                    <li>
+
+                                        <a class="s-insta--color-hover" href="#"><i class="fab fa-instagram"></i></a>
+                                    </li>
+                                    <li>
+
+                                        <a class="s-gplus--color-hover" href="#"><i
+                                                class="fab fa-google-plus-g"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6">
+                                <div class="outer-footer__content u-s-m-b-40">
+
+                                    <span class="outer-footer__content-title">Information</span>
+                                    <div class="outer-footer__list-wrap">
+                                        <ul>
+                                            <li>
+
+                                                <a href="cart.html">Cart</a></li>
+                                            <li>
+
+                                                <a href="dashboard.html">Account</a></li>
+                                            <li>
+
+                                                <a href="shop-side-version-2.html">Manufacturer</a></li>
+                                            <li>
+
+                                                <a href="dash-payment-option.html">Finance</a></li>
+                                            <li>
+
+                                                <a href="shop-side-version-2.html">Shop</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="outer-footer__content u-s-m-b-40">
+                                    <div class="outer-footer__list-wrap">
+
+                                        <span class="outer-footer__content-title">Our Company</span>
+                                        <ul>
+                                            <li>
+
+                                                <a href="about.html">About us</a></li>
+                                            <li>
+
+                                                <a href="contact.html">Contact Us</a></li>
+                                            <li>
+
+                                                <a href="index.html">Sitemap</a></li>
+                                            <li>
+
+                                                <a href="dash-my-order.html">Delivery</a></li>
+                                            <li>
+
+                                                <a href="shop-side-version-2.html">Store</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12">
+                        <div class="outer-footer__content">
+
+                            <span class="outer-footer__content-title">Join our Newsletter</span>
+                            <form class="newsletter">
+                                <div class="u-s-m-b-15">
+                                    <div class="radio-box newsletter__radio">
+
+                                        <input type="radio" id="male" name="gender">
+                                        <div class="radio-box__state radio-box__state--primary">
+
+                                            <label class="radio-box__label" for="male">Male</label></div>
+                                    </div>
+                                    <div class="radio-box newsletter__radio">
+
+                                        <input type="radio" id="female" name="gender">
+                                        <div class="radio-box__state radio-box__state--primary">
+
+                                            <label class="radio-box__label" for="female">Female</label></div>
+                                    </div>
+                                </div>
+                                <div class="newsletter__group">
+
+                                    <label for="newsletter"></label>
+
+                                    <input class="input-text input-text--only-white" type="text" id="newsletter"
+                                           placeholder="Enter your Email">
+
+                                    <button class="btn btn--e-brand newsletter__btn" type="submit">SUBSCRIBE</button>
+                                </div>
+
+                                <span class="newsletter__text">Subscribe to the mailing list to receive updates on promotions, new arrivals, discount and coupons.</span>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </noscript>
+        <div class="lower-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="lower-footer__content">
+                            <div class="lower-footer__copyright">
+
+                                <span>Copyright © 2018</span>
+
+                                <a href="index.html">Reshop</a>
+
+                                <span>All Right Reserved</span></div>
+                            <div class="lower-footer__payment">
+                                <ul>
+                                    <li><i class="fab fa-cc-stripe"></i></li>
+                                    <li><i class="fab fa-cc-paypal"></i></li>
+                                    <li><i class="fab fa-cc-mastercard"></i></li>
+                                    <li><i class="fab fa-cc-visa"></i></li>
+                                    <li><i class="fab fa-cc-discover"></i></li>
+                                    <li><i class="fab fa-cc-amex"></i></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+<!--====== End - Main App ======-->
+
+
+<!--====== Google Analytics: change UA-XXXXX-Y to be your site's ID ======-->
+<script>
+    window.ga = function () {
+        ga.q.push(arguments)
+    };
+    ga.q = [];
+    ga.l = +new Date;
+    ga('create', 'UA-XXXXX-Y', 'auto');
+    ga('send', 'pageview')
+</script>
+<script src="https://www.google-analytics.com/analytics.js" async defer></script>
+
+
+<!--====== Vendor Js ======-->
+<script src="js/vendor.js"></script>
+
+<!--====== jQuery Shopnav plugin ======-->
+<script src="js/jquery.shopnav.js"></script>
+
+<!--====== App ======-->
+<script src="js/app.js"></script>
+
+<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        const updateTotalAndGrandTotal = () => {
+            let itemTotals = document.querySelectorAll('.table-p__price-total');
+            let subtotal = 0;
+            itemTotals.forEach((item) => {
+                const itemValue = parseFloat(item.textContent.replace('$', ''));
+                subtotal += itemValue;
+            });
+
+            const tax = parseFloat(document.getElementById('tax-cost').textContent.replace('$', ''));
+            const shipping = parseFloat(document.getElementById('shipping-cost').textContent.replace('$', ''));
+            const grandTotal = subtotal + tax + shipping;
+
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('grand-total').textContent = `$${grandTotal.toFixed(2)}`;
+
+            const totalPriceInput = document.getElementById('total-price-input');
+            totalPriceInput.value = `${grandTotal.toFixed(2)}`; // Set the value here
+        };
+
+        const inputCounters = document.querySelectorAll('.input-counter');
+
+        inputCounters.forEach(function (counter) {
+            const minusBtn = counter.querySelector('.input-counter__minus');
+            const plusBtn = counter.querySelector('.input-counter__plus');
+            const inputField = counter.querySelector('.input-counter__text');
+            const priceElement = counter.closest('tr').querySelector('.table-p__price-total');
+            const hiddenPriceField = counter.closest('tr').querySelector('.product-price');
+            const cartItemId = counter.closest('tr').querySelector('input[name="cartItemId"]').value;
+
+            const updateCartItemQuantity = (quantity) => {
+                fetch('/updateCartItem', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: new URLSearchParams({
+                        'cartItemId': cartItemId,
+                        'quantity': quantity
+                    })
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        if (data === 'success') {
+                            updatePrice(inputField, priceElement, hiddenPriceField);
+                            updateTotalAndGrandTotal();
+                        } else {
+                            alert('Error updating cart item');
+                        }
+                    });
+            };
+
+            minusBtn.addEventListener('click', function () {
+                let value = parseInt(inputField.value);
+                if (value > 0) {
+                    // value -= 1;
+                    inputField.value = value;
+                    updateCartItemQuantity(value);
+                }
+            });
+
+            plusBtn.addEventListener('click', function () {
+                let value = parseInt(inputField.value);
+                let max = parseInt(inputField.getAttribute('data-max'));
+                if (value < max) {
+                    // value += 1;
+                    inputField.value = value;
+                    updateCartItemQuantity(value);
+                }
+            });
+
+            inputField.addEventListener('change', function () {
+                let value = parseInt(inputField.value);
+                let max = parseInt(inputField.getAttribute('data-max'));
+
+                if (value < 1) {
+                    value = 1;
+                } else if (value > max) {
+                    value = max;
+                }
+                inputField.value = value;
+                updateCartItemQuantity(value);
+            });
+        });
+
+        function updatePrice(inputField, priceElement, hiddenPriceField) {
+            let quantity = parseInt(inputField.value);
+            let price = parseFloat(hiddenPriceField.value);
+            let totalPrice = quantity * price;
+            priceElement.textContent = `${totalPrice.toFixed(2)}`;
+        }
+
+        updateTotalAndGrandTotal(); // Initial calculation on load
+    });
+</script>
+
+
+
+<!--====== Noscript ======-->
+<noscript>
+    <div class="app-setting">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="app-setting__wrap">
+                        <h1 class="app-setting__h1">JavaScript is disabled in your browser.</h1>
+
+                        <span class="app-setting__text">Please enable JavaScript in your browser or upgrade to a JavaScript-capable browser.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</noscript>
 </body>
 </html>
