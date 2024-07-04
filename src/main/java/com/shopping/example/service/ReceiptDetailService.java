@@ -17,4 +17,6 @@ public interface ReceiptDetailService {
     void deleteByReceiptDetailId(Long receiptDetailId);
 
     Optional<ReceiptDetail> getReceiptDetail(Long id);
+
+    void saveReceiptDetail(ReceiptDetail receiptDetail);
 }

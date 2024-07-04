@@ -33,9 +33,10 @@ public class ReceiptDetailServiceImpl implements ReceiptDetailService {
         return receiptDetailRepository.findById(id);
     }
 
-
-
-
+    @Override
+    public void saveReceiptDetail(ReceiptDetail receiptDetail) {
+        receiptDetailRepository.save(receiptDetail);
+    }
 
 
 }

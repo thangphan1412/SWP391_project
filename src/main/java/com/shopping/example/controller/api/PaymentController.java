@@ -23,10 +23,15 @@ public class PaymentController {
 
 
     @PostMapping("/processPayment")
-    public void processPayment(@RequestParam("amount") String amountStr, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public void processPayment(@RequestParam("amount")  String amountStr,@RequestParam("type") String type,HttpServletRequest req, HttpServletResponse resp) throws IOException {
         long amount;
+        Long totalAmount = (long) Double.parseDouble(amountStr);
+        System.out.println("BBB: "+ amountStr);
         try {
-            amount = Long.parseLong(amountStr) * 100; // Chuyển đổi sang đơn vị xu
+            amount = totalAmount * 100;
+//            amount = totalAmount * 25454 * 100;
+            System.out.println("Payment:  " + amount);
+            // Chuyển đổi sang đơn vị xu
         } catch (NumberFormatException e) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid amount");
             return;
@@ -34,7 +39,7 @@ public class PaymentController {
 
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
-        String orderType = "other";
+        String orderType = type;
         String bankCode = req.getParameter("bankCode");
 
         String vnp_TxnRef = Config.getRandomNumber(8);
@@ -52,12 +57,24 @@ public class PaymentController {
         if (bankCode != null && !bankCode.isEmpty()) {
             vnp_Params.put("vnp_BankCode", bankCode);
         }
-        vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
-        vnp_Params.put("vnp_OrderType", orderType);
-        vnp_Params.put("vnp_Locale", "vn");
-        vnp_Params.put("vnp_ReturnUrl", "http://localhost:8080/api/payment/paymentResult");
-        vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
+
+        if(orderType.equalsIgnoreCase("receipt")){
+            vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
+            vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
+            vnp_Params.put("vnp_OrderType", orderType);
+            vnp_Params.put("vnp_Locale", "vn");
+            vnp_Params.put("vnp_ReturnUrl", "http://localhost:8080/api/payment/receiptPaymentResult");
+            vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
+        }
+        else if(orderType.equalsIgnoreCase("order")){
+            vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
+            vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
+            vnp_Params.put("vnp_OrderType", orderType);
+            vnp_Params.put("vnp_Locale", "vn");
+            vnp_Params.put("vnp_ReturnUrl", "http://localhost:8080/api/payment/orderPaymentResult");
+            vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
+
+        }
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -100,7 +117,7 @@ public class PaymentController {
     }
 
 
-    @GetMapping("/paymentResult")
+    @GetMapping("/receiptPaymentResult")
     public String paymentResult(@RequestParam Map<String, String> requestParams) {
         String vnp_ResponseCode = requestParams.get("vnp_ResponseCode");
         if ("00".equals(vnp_ResponseCode)) {
@@ -111,4 +128,7 @@ public class PaymentController {
             return "redirect:/failed.html";
         }
     }
+
+
+
 }
