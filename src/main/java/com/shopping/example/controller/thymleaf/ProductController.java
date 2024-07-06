@@ -292,7 +292,12 @@ public class ProductController {
     @PostMapping("/createSupplies")
     public String createSup(@RequestParam("name") String name,@RequestParam("address") String address, RedirectAttributes redirectAttributes){
         Supplier newSup = new Supplier();
-        newSup.setSupplierAddress(address);
+        if (address.isBlank()){
+            redirectAttributes.addFlashAttribute("supMessage", "address is required");
+            return "redirect:/createSupBraCate";
+        }
+
+        newSup.setSupplierAddress(address.trim());
         if (name.isBlank()){
             redirectAttributes.addFlashAttribute("supMessage", "Name is required");
             return "redirect:/createSupBraCate";
