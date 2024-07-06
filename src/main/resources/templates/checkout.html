@@ -115,17 +115,7 @@
                                 <div class="col-lg-6">
                                     <h1 class="checkout-f__h1">DELIVERY INFORMATION</h1>
                                     <div class="u-s-m-b-30">
-                                        <div class="u-s-m-b-15">
-                                            <!--====== Check Box ======-->
-                                            <div class="check-box">
-                                                <input type="checkbox" id="get-address">
-                                                <div class="check-box__state check-box__state--primary">
-                                                    <label class="check-box__label" for="get-address">Use default
-                                                        shipping and billing address from account</label>
-                                                </div>
-                                            </div>
-                                            <!--====== End - Check Box ======-->
-                                        </div>
+
                                         <!--====== First Name, Last Name ======-->
                                         <div class="gl-inline">
                                             <div class="u-s-m-b-15">
@@ -135,7 +125,6 @@
                                                        th:value="${customer.getCustomer().getFullname()}"
                                                        name="fullName" data-bill="">
                                             </div>
-
                                         </div>
                                         <!--====== End - First Name, Last Name ======-->
 
@@ -144,7 +133,7 @@
                                             <label class="gl-label" for="billing-email">E-MAIL *</label>
                                             <input disabled class="input-text input-text--primary-style" type="text"
                                                    th:value="${customer.email}" id="billing-email" name="email"
-                                                   data-bill="">
+                                                   data-bill="" required>
                                         </div>
                                         <!--====== End - E-MAIL ======-->
 

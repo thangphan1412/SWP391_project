@@ -106,7 +106,7 @@
                                                     <form th:action="@{/updateReceiptQuantity}" method="post" th:if="${receipt.receipt.receiptStatus != 'Complete'}">
                                                         <input type="text" th:value="${receipt.receiptDetailId}" hidden="" name="receiptDetailId">
                                                         <input type="text" th:value="${receiptId}" name="receiptId" hidden="">
-                                                        <input style="width: 80%" type="number"   th:value="${receipt.quantity}" required step="1" name="quantity" min="0">
+                                                        <input style="width: 80%" type="number"   th:value="${receipt.quantity}" required step="1" name="quantity" min="1" max="100">
                                                         <td><button style="border: none; background: white !important; font-size: 1.5em" class="fa fa-wrench" type="submit"></button></td>
                                                     </form>
                                                     <span th:if="${receipt.receipt.receiptStatus == 'Complete'}" th:text="'Quantity: ' + ${receipt.quantity}" ></span>
@@ -140,13 +140,14 @@
                                 </div>
 
                                 <form th:action="@{/api/payment/processPayment}" method="post" th:if="${receiptDetailList != null and !receiptDetailList.isEmpty() and existReceipt != null and existReceipt.receiptStatus != 'Complete'}">
-                                    <input type="text" th:value="${receiptId}" name="receiptId" hidden>
+                                    <input type="text" th:value="${receiptId}" name="Id" hidden>
                                     <input type="number" th:value="${totalAmount}" name="amount" hidden>
                                     <input type="text" th:value="receipt" name="type" hidden="">
                                     <input style="padding: 18px 18px; border: 2px solid #ff4500; border-radius: 6px; margin-top: 20px;"
                                            class="btn btn--e-transparent-brand-b-2"
-                                           type="submit"
-                                           value="Process to payment">
+                                           type="button"
+                                           value="Process to payment"
+                                           onclick="confirmPayment()">
                                 </form>
 
 
@@ -237,6 +238,16 @@
     ga('create', 'UA-XXXXX-Y', 'auto');
     ga('send', 'pageview')
 </script>
+
+<script>
+    function confirmPayment() {
+        var confirmMessage = "Are you sure you want to process this payment?";
+        if (confirm(confirmMessage)) {
+            document.getElementById('paymentForm').submit();
+        }
+    }
+</script>
+
 <script src="https://www.google-analytics.com/analytics.js" async defer></script>
 
 <!--====== Vendor Js ======-->

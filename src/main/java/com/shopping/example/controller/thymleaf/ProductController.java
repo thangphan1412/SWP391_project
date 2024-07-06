@@ -193,8 +193,14 @@ public class ProductController {
     @PostMapping("/createCategory")
     public String createCategory(@RequestParam("name") String name,RedirectAttributes redirectAttributes){
         Category newCategory = new Category();
-        newCategory.setCategoryName(name);
-        redirectAttributes.addFlashAttribute("successMessage", "Category added successfully");
+        if (name.isBlank()){
+            redirectAttributes.addFlashAttribute("cateMessage", "Name is required");
+            return "redirect:/createSupBraCate";
+        }
+
+        newCategory.setCategoryName(name.trim());
+
+        redirectAttributes.addFlashAttribute("cateMessage", "Category added successfully");
         categoryService.save(newCategory);
         return "redirect:/createSupBraCate";
     }
@@ -220,7 +226,11 @@ public class ProductController {
 
             newProduct.setCategory(category);
             newProduct.setBrand(brand);
-            newProduct.setProductName(name);
+            if (name.isBlank()){
+                redirectAttributes.addFlashAttribute("proMessage", "Name is required");
+                return "redirect:/create";
+            }
+            newProduct.setProductName(name.trim());
             newProduct.setSupplier(supplier);
             newProduct.setProductDescription(description);
 
@@ -237,10 +247,10 @@ public class ProductController {
             productService.addProduct(newProduct);
 
 
-            redirectAttributes.addFlashAttribute("successMessage", "Product added successfully");
+            redirectAttributes.addFlashAttribute("proMessage", "Product added successfully");
         } catch (Exception e) {
 
-            redirectAttributes.addFlashAttribute("errorMessage", "Failed to add product: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("proMessage", "Failed to add product: " + e.getMessage());
         }
 
         return "redirect:/create";
@@ -250,9 +260,13 @@ public class ProductController {
     @PostMapping("/createBrand")
     public String createBrand(@RequestParam("name") String name,RedirectAttributes redirectAttributes){
         Brand newBrand = new Brand();
-        newBrand.setBrandName(name);
+        if (name.isBlank()){
+            redirectAttributes.addFlashAttribute("brandMessage", "Name is required");
+            return "redirect:/createSupBraCate";
+        }
+        newBrand.setBrandName(name.trim());
         brandService.save(newBrand);
-        redirectAttributes.addFlashAttribute("successMessage", "Brand added successfully");
+        redirectAttributes.addFlashAttribute("brandMessage", "Brand added successfully");
         return "redirect:/createSupBraCate";
 
     }
@@ -264,7 +278,7 @@ public class ProductController {
         tech.setRam(ram);
         tech.setMemory(memory);
         productTechService.saveProductTech(tech);
-        redirectAttributes.addFlashAttribute("successMessage", "Product tech added successfully");
+        redirectAttributes.addFlashAttribute("techMessage", "Product tech added successfully");
         return "redirect:/create";
     }
 
@@ -279,10 +293,15 @@ public class ProductController {
     public String createSup(@RequestParam("name") String name,@RequestParam("address") String address, RedirectAttributes redirectAttributes){
         Supplier newSup = new Supplier();
         newSup.setSupplierAddress(address);
-        newSup.setSupplierName(name);
+        if (name.isBlank()){
+            redirectAttributes.addFlashAttribute("supMessage", "Name is required");
+            return "redirect:/createSupBraCate";
+        }
+        newSup.setSupplierName(name.trim());
+
         supplierService.saveSupplier(newSup);
-        redirectAttributes.addFlashAttribute("successMessage", "Supplier added successfully");
-        return "redirect:/createSupBra";
+        redirectAttributes.addFlashAttribute("supMessage", "Supplier added successfully");
+        return "redirect:/createSupBraCate";
     }
 
 
@@ -466,6 +485,35 @@ public class ProductController {
             return null;
         }
 
+    }
+
+    @PostMapping("/updatePrice")
+    public String updatePriceType(@RequestParam("typeId") Long typeId, @RequestParam("price") double price, RedirectAttributes redirectAttributes){
+        Optional<ProductType> optionalProductType = productTypeService.getProductTypeById(typeId);
+        ProductType existType = new ProductType();
+        if(optionalProductType.isPresent()){
+            existType = optionalProductType.get();
+            existType.setProduct_type_price(price);
+            productTypeService.saveProductType(existType);
+            redirectAttributes.addFlashAttribute("priceMessage", "Price product type is update");
+            return "redirect:/updateProduct/" + existType.getProduct().getProductId();
+
+        }
+        return null;
+    }
+
+    @PostMapping("/updateQuantity")
+    public String updatePriceType(@RequestParam("typeId") Long typeId, @RequestParam("quantity") int quantity , RedirectAttributes redirectAttributes){
+        Optional<ProductType> optionalProductType = productTypeService.getProductTypeById(typeId);
+        ProductType existType = new ProductType();
+        if(optionalProductType.isPresent()){
+            existType = optionalProductType.get();
+            existType.setProduct_type_quantity(quantity);
+            productTypeService.saveProductType(existType);
+            redirectAttributes.addFlashAttribute("quantityMessage", " product type quantity is update");
+            return "redirect:/updateProduct/" + existType.getProduct().getProductId();
+        }
+        return null;
     }
 
 

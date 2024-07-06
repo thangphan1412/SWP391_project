@@ -53,4 +53,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
     List<Product> findBySupplier(Supplier supplier);
+
+
+    @Query(value = "SELECT TOP 5 * FROM dbo.product ORDER BY product_id DESC", nativeQuery = true)
+    List<Product> findNewArrivalProducts();
 }

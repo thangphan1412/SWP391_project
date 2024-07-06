@@ -42,4 +42,6 @@ public interface ProductService {
 
 
     List<Product> findBySuppliers(Supplier supplier);
+
+    List<Product> NewArrival();
 }

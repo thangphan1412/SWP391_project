@@ -2,8 +2,13 @@ package com.shopping.example.controller.api;
 
 
 
+import com.shopping.example.entity.ProductType;
 import com.shopping.example.entity.Receipt;
+import com.shopping.example.entity.ReceiptDetail;
 import com.shopping.example.payment.Config;
+import com.shopping.example.service.ProductService;
+import com.shopping.example.service.ProductTypeService;
+import com.shopping.example.service.ReceiptDetailService;
 import com.shopping.example.service.ReceiptService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +31,12 @@ public class PaymentController {
 
     @Autowired
     private ReceiptService receiptService;
+
+    @Autowired
+    private ProductTypeService productTypeService;
+
+    @Autowired
+    private ReceiptDetailService receiptDetailService;
 
 
     @PostMapping("/processPayment")
@@ -133,10 +144,19 @@ public class PaymentController {
                 Receipt receipt = existReceipt.get();
                 receipt.setReceiptStatus("Complete");
                 receiptService.addReceipt(receipt);
+                List<ReceiptDetail> receiptDetailList = receiptDetailService.findAllbyReceiptId(Long.parseLong(receiptId));
+                for (ReceiptDetail receiptDetail : receiptDetailList) {
+                    Optional<ProductType> existProductType = productTypeService.getProductTypeById(receiptDetail.getProductTypes().getProduct_type_id());
+                    if (existProductType.isPresent()) {
+                        ProductType productType = existProductType.get();
+                        productType.setProduct_type_quantity(productType.getProduct_type_quantity() + receiptDetail.getQuantity());
+                        productTypeService.saveProductType(productType);
+                    }
+                }
                 return "successful";
             }
         } else {
-            return "redirect:/failed.html";
+            return "failed";
         }
         return "redirect:/receiptDetail/" + receiptId;
     }

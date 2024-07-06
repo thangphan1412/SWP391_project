@@ -144,7 +144,7 @@
                                                     <td>
                                                         <span th:text="${voucher.status}"></span>
 
-                                                        <form th:action="@{/changeVoucherStatus}" method="post">
+                                                        <form th:action="@{/changeVoucherStatus}" method="post" th:if="${voucher.status} == active">
                                                             <input type="text" th:value="${voucher.voucherId}" hidden="" name="voucherId">
                                                             <button type="submit">Change</button>
                                                         </form>

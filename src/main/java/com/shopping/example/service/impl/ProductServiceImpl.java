@@ -71,6 +71,11 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findBySupplier(supplier);
     }
 
+    @Override
+    public List<Product> NewArrival() {
+        return productRepository.findNewArrivalProducts();
+    }
+
 
     @Override
     public List<Product> getProductsByPriceRange(double minPrice, double maxPrice) {
@@ -90,6 +95,8 @@ public class ProductServiceImpl implements ProductService {
     public Page<Product> getProductsByCategory(Category category, Pageable pageable) {
         return productRepository.findByCategory(category, pageable);
     }
+
+
 
 
 }

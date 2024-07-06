@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
-import java.awt.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -40,9 +39,20 @@ public class VoucherController {
                              RedirectAttributes redirectAttributes, Model model) {
         Voucher voucher = new Voucher();
         voucher.setVoucherCode(code);
+        List<Voucher> listVouchers = voucherService.findAll();
+        for (Voucher v : listVouchers) {
+            if (v.getVoucherCode().equalsIgnoreCase(code)) {
+                redirectAttributes.addFlashAttribute("addMessage", "Voucher is already in use");
+                return "redirect:/createVoucher";
+            }
+        }
         voucher.setPercentageDiscount(percentage);
         voucher.setQuantity(quantity);
         voucher.setCreateDate(LocalDate.now());
+        if (voucher.getCreateDate().isEqual(endDate)){
+            redirectAttributes.addFlashAttribute("addMessage", "Voucher must be availiable than 1 day");
+            return "redirect:/createVoucher";
+        }
         voucher.setEndDate(endDate);
         voucher.setStatus("active");
         voucherService.save(voucher);
