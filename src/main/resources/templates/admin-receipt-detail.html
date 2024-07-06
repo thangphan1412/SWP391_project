@@ -103,30 +103,33 @@
                                                 </td>
 
                                                 <td>
-                                                    <form th:action="@{/updateReceiptQuantity}" method="post">
+                                                    <form th:action="@{/updateReceiptQuantity}" method="post" th:if="${receipt.receipt.receiptStatus != 'Complete'}">
                                                         <input type="text" th:value="${receipt.receiptDetailId}" hidden="" name="receiptDetailId">
                                                         <input type="text" th:value="${receiptId}" name="receiptId" hidden="">
                                                         <input style="width: 80%" type="number"   th:value="${receipt.quantity}" required step="1" name="quantity" min="0">
                                                         <td><button style="border: none; background: white !important; font-size: 1.5em" class="fa fa-wrench" type="submit"></button></td>
                                                     </form>
+                                                    <span th:if="${receipt.receipt.receiptStatus == 'Complete'}" th:text="'Quantity: ' + ${receipt.quantity}" ></span>
                                                 </td>
+
                                                 <td>
-                                                    <form th:action="@{/updateReceiptPrice}" method="post">
+                                                    <form th:action="@{/updateReceiptPrice}" method="post" th:if="${receipt.receipt.receiptStatus != 'Complete'}">
                                                         <input type="text" th:value="${receipt.receiptDetailId}" hidden="" name="receiptDetailId">
                                                         <input type="text" th:value="${receiptId}" name="receiptId" hidden="">
                                                         <input style="width: 100%" type="number"   th:value="${receipt.price}" required step="any" name="price" min="1">
                                                         <td><button style="border: none; background: white !important; font-size: 1.5em" class="fa fa-wrench" type="submit"></button></td>
                                                     </form>
+                                                    <span th:if="${receipt.receipt.receiptStatus == 'Complete'}" th:text="'Price: ' + ${receipt.price}"></span>
                                                 </td>
 
 
                                                 <td>
-                                                    <form th:action="@{/deleteReceiptDetail}" method="post">
+                                                    <form th:action="@{/deleteReceiptDetail}" method="post" th:if="${receipt.receipt.receiptStatus != 'Complete'}">
                                                         <input type="text" th:value="${receiptId}" name="receiptId" hidden="">
                                                         <input type="text" th:value="${receipt.receiptDetailId}" hidden="" name="receiptDetailId">
                                                         <button type="submit"> Delete</button>
                                                     </form>
-
+                                                    <span th:if="${receipt.receipt.receiptStatus == 'Complete'}">Cannot delete</span>
                                                 </td>
                                             </tr>
 

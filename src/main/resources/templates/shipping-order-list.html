@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="images/favicon.png" rel="shortcut icon">
+    <title>Ludus - Electronics, Apparel, Computers, Books, DVDs & more</title>
+    <link rel="stylesheet" th:href="@{/css/vendor.css}" />
+    <link rel="stylesheet" th:href="@{/css/utility.css}" />
+    <link rel="stylesheet" th:href="@{/css/app.css}" />
+</head>
+<body class="config">
+<div class="preloader is-active">
+    <div class="preloader__wrap">
+        <img class="preloader__img" src="images/preloader.png" alt="">
+    </div>
+</div>
+
+<div id="app">
+    <div th:insert="~{partials/navbar :: navbar}"></div>
+
+    <div class="app-content">
+        <div class="u-s-p-y-60">
+            <div class="section__content">
+                <div class="container">
+                    <div class="breadcrumb">
+                        <div class="breadcrumb__wrap">
+                            <ul class="breadcrumb__list">
+                                <li class="has-separator"><a href="index.html">Home</a></li>
+                                <li class="is-marked"><a href="dash-my-order.html">List Customer</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="u-s-p-b-60">
+            <div class="section__content">
+                <div class="dash">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-12">
+                                <div class="dash__box dash__box--bg-white dash__box--shadow u-s-m-b-30">
+                                    <div class="dash__pad-1">
+                                        <span class="dash__text u-s-m-b-16">Hello, John Doe</span>
+                                        <ul class="dash__f-list">
+                                            <li><a href="/viewCustomer">View Customer</a></li>
+                                            <li><a href="/viewBrand">View Brand</a></li>
+                                            <li><a href="/viewSuppliers">View supplier</a></li>
+                                            <li><a href="/viewOrder">View Order</a></li>
+                                            <li><a href="/shipping">Shipping</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-9 col-md-12">
+                                <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                                    <div class="dash__pad-2">
+                                        <h1 class="dash__h1 u-s-m-b-14">View Customer</h1>
+                                        <form class="m-order u-s-m-b-30">
+                                            <div class="m-order__select-wrapper">
+                                                <label class="u-s-m-r-8" for="my-order-sort">Show:</label>
+                                                <select class="select-box select-box--primary-style" id="my-order-sort">
+                                                    <option selected>5 customers</option>
+                                                    <option>15 customers</option>
+                                                    <option>30 customers</option>
+                                                    <option>60 customers</option>
+                                                    <option>100 customers</option>
+                                                    <option>All customers</option>
+                                                </select>
+                                            </div>
+                                        </form>
+                                        <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
+                                            <div class="dash__table-wrap gl-scroll">
+                                                <table class="dash__table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Address Of Receiver</th>
+                                                        <th>Approval Date</th>
+                                                        <th>Create Date</th>
+                                                        <th>Order Status</th>
+                                                        <th>Payment Method</th>
+                                                        <th>Payment Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each="order : ${orders}">
+                                                        <td th:text="${order.getOrderId()}"></td>
+                                                        <td th:text="${order.getAddressOfReceiver()}"></td>
+                                                        <td th:text="${order.getApprovalDate()}"></td>
+                                                        <td th:text="${order.getCreateDate()}"></td>
+                                                        <td>
+                                                        <td>
+                                                            <span th:if="${order.getOrderStatus() == 'Pending'}" style="color:red;" th:text="${order.getOrderStatus()}"></span>
+                                                            <span th:if="${order.getOrderStatus() == 'Complete'}" style="color:green;" th:text="${order.getOrderStatus()}"></span>
+                                                            <span th:if="${order.getOrderStatus() != 'Pending' && order.getOrderStatus() != 'Complete'}" style="color:orange;" th:text="${order.getOrderStatus()}"></span>
+                                                        </td>
+
+                                                        </td>
+                                                        <td th:text="${order.getPaymentMethod()}"></td>
+                                                        <td>
+    <span th:text="${order.getPaymentStatus()}"
+          th:style="${order.getPaymentStatus() == 'Pending'} ? 'color: red;' : 'color: green;'">
+    </span>
+                                                        </td>
+                                                        <td>
+                                                            <form th:action="@{/updateOrderStatus}" method="post" onsubmit="return confirm('Are you sure you want to Receive this order  ?')">
+                                                                <input type="hidden" name="orderId" th:value="${order.getOrderId()}" />
+                                                                <button type="submit" name="action" value="receive" th:if="${order.getEmployee() == null}">Receive</button>
+                                                                <button type="submit" name="action" value="complete" th:if="${order.getEmployee() != null && order.getPaymentStatus().equals('Success')}">Complete</button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:insert="~{partials/footer :: footer}"></div>
+</div>
+
+<script>
+    window.ga = function() { ga.q.push(arguments) };
+    ga.q = [];
+    ga.l = +new Date;
+    ga('create', 'UA-XXXXX-Y', 'auto');
+    ga('send', 'pageview')
+</script>
+<script src="https://www.google-analytics.com/analytics.js" async defer></script>
+<script src="js/vendor.js"></script>
+<script src="js/jquery.shopnav.js"></script>
+<script src="js/app.js"></script>
+<noscript>
+    <div class="app-setting">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="app-setting__wrap">
+                        <h1 class="app-setting__h1">JavaScript is disabled in your browser.</h1>
+                        <span class="app-setting__text">Please enable JavaScript in your browser or upgrade to a JavaScript-capable browser.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</noscript>
+</body>
+</html>

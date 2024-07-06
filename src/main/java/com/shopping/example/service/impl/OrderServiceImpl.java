@@ -1,17 +1,25 @@
 package com.shopping.example.service.impl;
 
+import com.shopping.example.entity.Account;
 import com.shopping.example.entity.Customer;
 import com.shopping.example.entity.Order;
 import com.shopping.example.repository.CustomerRepository;
 import com.shopping.example.repository.OrderRepository;
+import com.shopping.example.service.AccountService;
 import com.shopping.example.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class OrderServiceImpl implements OrderService {
+
+
+    @Autowired
+    private AccountService accountService;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -53,5 +61,41 @@ public class OrderServiceImpl implements OrderService {
     public Order save(Order order) {
         return orderRepository.save(order);
     }
+
+    @Override
+    public List<Order> getAllOrdersNotShip() {
+        Account currentAccount = accountService.getCurrentAccount();
+        if (currentAccount == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+        return orderRepository.getAllOrdersNotShipped(currentAccount.getEmployee().getId());
+    }
+
+    @Override
+    public void updateOrderStatus(Long orderId, String status) {
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+        if (orderOptional.isPresent()) {
+            Order order = orderOptional.get();
+            order.setOrderStatus(status);
+            order.setEmployee(accountService.getCurrentAccount().getEmployee());
+            orderRepository.save(order);
+        } else {
+            throw new RuntimeException("Order not found with id: " + orderId);
+        }
+    }
+
+    @Override
+    public void updatePaymentStatus(Long orderId, String paymentStatus) {
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+        if (orderOptional.isPresent()) {
+            Order order = orderOptional.get();
+            order.setPaymentStatus(paymentStatus);
+            order.setApprovalDate(new Date());
+            orderRepository.save(order);
+        } else {
+            throw new RuntimeException("Order not found with id: " + orderId);
+        }
+    }
+
 
 }

@@ -26,4 +26,10 @@ public interface OrderService {
     List<Order> findByCustomerEmail(String email);
 
     Order save(Order order);
+
+    List<Order> getAllOrdersNotShip();
+
+
+    void updateOrderStatus(Long orderId, String status);
+    void updatePaymentStatus(Long orderId, String paymentStatus);
 }

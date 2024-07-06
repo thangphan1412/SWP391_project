@@ -173,6 +173,10 @@ public class ReceiptController {
         }
         return "redirect:/receiptDetail/" + receiptId;
     }
+
+
+
+
 }
 
 

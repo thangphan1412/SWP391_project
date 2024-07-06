@@ -1,17 +1,20 @@
 package com.shopping.example.controller.api;
 
 
-import com.shopping.example.DTO.PaymentResDTO;
+
+import com.shopping.example.entity.Receipt;
 import com.shopping.example.payment.Config;
+import com.shopping.example.service.ReceiptService;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -21,15 +24,18 @@ import java.util.*;
 @RequestMapping("api/payment")
 public class PaymentController {
 
+    @Autowired
+    private ReceiptService receiptService;
+
 
     @PostMapping("/processPayment")
-    public void processPayment(@RequestParam("amount")  String amountStr,@RequestParam("type") String type,HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public void processPayment(@RequestParam("amount")  String amountStr,@RequestParam("type") String type,@RequestParam("Id") String id,HttpServletRequest req, HttpServletResponse resp) throws IOException {
         long amount;
         Long totalAmount = (long) Double.parseDouble(amountStr);
         System.out.println("BBB: "+ amountStr);
         try {
-            amount = totalAmount * 100;
-//            amount = totalAmount * 25454 * 100;
+//            amount = totalAmount * 100;
+            amount = totalAmount * 25454 * 100;
             System.out.println("Payment:  " + amount);
             // Chuyển đổi sang đơn vị xu
         } catch (NumberFormatException e) {
@@ -42,7 +48,7 @@ public class PaymentController {
         String orderType = type;
         String bankCode = req.getParameter("bankCode");
 
-        String vnp_TxnRef = Config.getRandomNumber(8);
+        String vnp_TxnRef = id;
         String vnp_IpAddr = Config.getIpAddress(req);
 
         String vnp_TmnCode = Config.vnp_TmnCode;
@@ -120,13 +126,19 @@ public class PaymentController {
     @GetMapping("/receiptPaymentResult")
     public String paymentResult(@RequestParam Map<String, String> requestParams) {
         String vnp_ResponseCode = requestParams.get("vnp_ResponseCode");
+        String receiptId = requestParams.get("vnp_TxnRef");
         if ("00".equals(vnp_ResponseCode)) {
-            // Thanh toán thành công
-            return "successful";
+            Optional<Receipt> existReceipt = receiptService.getReceipt(Long.parseLong(receiptId));
+            if (existReceipt.isPresent()) {
+                Receipt receipt = existReceipt.get();
+                receipt.setReceiptStatus("Complete");
+                receiptService.addReceipt(receipt);
+                return "successful";
+            }
         } else {
-            // Thanh toán thất bại
             return "redirect:/failed.html";
         }
+        return "redirect:/receiptDetail/" + receiptId;
     }
 
 
