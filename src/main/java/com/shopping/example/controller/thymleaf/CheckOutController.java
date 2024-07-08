@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 public class CheckOutController {
@@ -28,6 +29,12 @@ public class CheckOutController {
     private OrderService orderService;
     @Autowired
     private OrderDetailService orderDetailService;
+
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private EmployeeService employeeService;
 
     @GetMapping("/checkout")
     public String checkOut(Model model) {
@@ -53,12 +60,14 @@ public class CheckOutController {
     @PostMapping("/placeOrder")
     public String placeOrder(@RequestParam String phone,
                              @RequestParam String address,
+
                              @RequestParam(required = false) String payment,
                              Model model,
                              RedirectAttributes redirectAttributes) {
         Account currentAccount = accountService.getCurrentAccount();
-        Employee employee = new Employee();
-        employee.setId(1L);
+        List<Employee> existEmployeeList = employeeService.getAllEmployees();
+        Employee randomEmployee = existEmployeeList.get(new Random().nextInt(existEmployeeList.size()));
+
 
         if (currentAccount == null) {
             return "redirect:/login";
@@ -73,12 +82,16 @@ public class CheckOutController {
 
             Order order = new Order();
             order.setCustomer(customer);
-            order.setEmployee(employee); // Assuming no employee involvement
+            order.setEmployee(randomEmployee); // Assuming no employee involvement
             order.setAddressOfReceiver(address);
             order.setCreateDate(new Date());
             order.setPhoneOfReceiver(phone);
             order.setOrderStatus("Pending");
+            if(payment.equalsIgnoreCase("Pay with VnPay")){
+                return "redirect:/api/";
+            }
             order.setPaymentMethod(payment);
+
             order.setPaymentStatus("Pending");
             orderService.save(order);
             for (CartItems cartItem : listCartItems) {
@@ -94,6 +107,9 @@ public class CheckOutController {
             return "redirect:/checkout-success";
         }
     }
+
+
+
     @GetMapping("/checkout-success")
     public String home(Model model) {
         return "checkout-success";

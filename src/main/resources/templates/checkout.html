@@ -148,7 +148,7 @@
                                             <label class="gl-label" for="billing-street">ADDRESS *</label>
                                             <input required class="input-text input-text--primary-style" type="text"
                                                    id="billing-street" name="address" placeholder="Enter address"
-                                                   data-bill="">
+                                                   data-bill="" th:value="${customer.customer.addressDetail}">
                                         </div>
                                         <div id="qr-code-container" style="display: none;">
                                             <img id="qr-code-img" width="100%" src="" alt="QR Code">
@@ -242,46 +242,15 @@
                                                     <div class="u-s-m-b-10">
                                                         <div class="radio-box">
                                                             <input type="radio" id="pay-with-check" name="payment"
-                                                                   value="Pay with Check">
+                                                                   value="Pay with VnPay">
                                                             <div class="radio-box__state radio-box__state--primary">
                                                                 <label class="radio-box__label" for="pay-with-check">Pay
-                                                                    With Check</label>
+                                                                    With VnPay</label>
                                                             </div>
                                                         </div>
-                                                        <span class="gl-text u-s-m-t-6">Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</span>
+                                                        <span class="gl-text u-s-m-t-6">You will pay with VNPay you order will be accept after successfull </span>
                                                     </div>
-                                                    <div class="u-s-m-b-10">
-                                                        <div class="radio-box">
-                                                            <input type="radio" id="pay-with-card" name="payment"
-                                                                   value="Credit / Debit Card">
-                                                            <div class="radio-box__state radio-box__state--primary">
-                                                                <label class="radio-box__label" for="pay-with-card">Pay
-                                                                    With Credit / Debit Card</label>
-                                                            </div>
-                                                        </div>
-                                                        <span class="gl-text u-s-m-t-6">International Credit Cards must be eligible for use within the United States.</span>
-                                                    </div>
-                                                    <div class="u-s-m-b-10">
-                                                        <div class="radio-box">
-                                                            <input type="radio" id="pay-pal" name="payment"
-                                                                   value="PayPal">
-                                                            <div class="radio-box__state radio-box__state--primary">
-                                                                <label class="radio-box__label" for="pay-pal">Pay
-                                                                    Pal</label>
-                                                            </div>
-                                                        </div>
-                                                        <span class="gl-text u-s-m-t-6">When you click "Place Order" below we'll take you to Paypal's site to set up your billing information.</span>
-                                                    </div>
-                                                    <div class="u-s-m-b-15">
-                                                        <div class="check-box">
-                                                            <input type="checkbox" id="term-and-condition">
-                                                            <div class="check-box__state check-box__state--primary">
-                                                                <label class="check-box__label"
-                                                                       for="term-and-condition">I consent to the</label>
-                                                            </div>
-                                                        </div>
-                                                        <a class="gl-link">Terms of Service.</a>
-                                                    </div>
+
                                                     <div>
                                                         <button class="btn btn--e-brand-b-2" type="submit">PLACE ORDER
                                                         </button>
