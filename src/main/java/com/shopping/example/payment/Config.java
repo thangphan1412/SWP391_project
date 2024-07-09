@@ -14,10 +14,10 @@ public class Config {
 
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
     public static String vnp_ReturnUrl = "http://localhost:8080/paymentResult";
-    public static String vnp_TmnCode = "OWLMRUCT";
-    public static String secretKey = "R52NO8SIXMHWVWJZMPG6RNYNH5DL6CGV";
+    public static String vnp_TmnCode = "RU3IODWV";
+    public static String secretKey = "O9G9QS2K7BQMRTDUCL7M02V4Q4QHS4PV";
     public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
-
+    
     public static String md5(String message) {
         String digest = null;
         try {

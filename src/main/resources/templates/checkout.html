@@ -317,7 +317,7 @@
         const totalPrice = parseFloat(totalPriceElement.textContent.replace('$', ''));
 
         // Update the QR code URL with the latest total price
-        fetch(`https://vietqr.co/api/generate/mb/0836030804/VIETQR.CO/${parseInt(totalPrice)}/CellphoneDBZ%20Payment?isMask=0`)
+        fetch(`https://vietqr.co/api/generate/vcb/1018346878/VIETQR.CO/${parseInt(totalPrice)}/CellphoneDBZ%20Payment?isMask=0`)
             .then(response => response.blob())
             .then(blob => {
                 const qrImageUrl = URL.createObjectURL(blob);

@@ -145,11 +145,9 @@
                                     <input type="text" th:value="receipt" name="type" hidden="">
                                     <input style="padding: 18px 18px; border: 2px solid #ff4500; border-radius: 6px; margin-top: 20px;"
                                            class="btn btn--e-transparent-brand-b-2"
-                                           type="button"
-                                           value="Process to payment"
-                                           onclick="confirmPayment()">
+                                           type="submit"
+                                           value="Process to payment">
                                 </form>
-
 
                             </div>
 
@@ -239,14 +237,6 @@
     ga('send', 'pageview')
 </script>
 
-<script>
-    function confirmPayment() {
-        var confirmMessage = "Are you sure you want to process this payment?";
-        if (confirm(confirmMessage)) {
-            document.getElementById('paymentForm').submit();
-        }
-    }
-</script>
 
 <script src="https://www.google-analytics.com/analytics.js" async defer></script>
 
