@@ -79,9 +79,9 @@
                                             <option th:value="${supplier.supplierId}" th:text="${supplier.supplierName}" th:each="supplier : ${supplierList}"></option>
                                         </select>
                                     </div>
-                                    <button type="submit">Submit</button>
-                                    <label class="u-s-m-r-8" for="my-order-sort">If dont have supplier </label>
-                                    <a th:href="@{/createSupBraCate}" class="btn">Add new Supplier</a>
+                                    <button style="padding: 18px 18px; border: 2px solid #ff4500; border-radius: 6px; margin-top: 20px;" class="btn btn--e-transparent-brand-b-2" type="submit">Submit</button>
+
+
                                 </form>
 
 
@@ -114,11 +114,20 @@
 
                                             </tbody>
                                         </table>
+
                                     </div>
                                 </div>
 
                             </div>
+
                         </div>
+                        <br>
+                        <form class="m-order u-s-m-b-30" th:action="@{/createReceipt}" method="post">
+                            <label style="font-size: 1em" class="u-s-m-r-8" for="my-order-sort">Don't have supplier? </label>
+                            <br>
+                            <br>
+                            <a style="padding: 18px 18px; border: 2px solid #ff4500; border-radius: 6px; margin-top: 20px;" th:href="@{/createSupBraCate}" class="btn btn--e-transparent-brand-b-2">Add new Supplier</a>
+                        </form>
                     </div>
                 </div>
             </div>
