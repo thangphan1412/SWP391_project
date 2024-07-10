@@ -29,6 +29,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -99,10 +101,10 @@ public class AccountController {
         }
     }
     @PostMapping("/forgot-password")
-    public ResponseEntity<?> createForgotPassword(@RequestParam(name = "email") String email) {
+    public void createForgotPassword(@RequestParam(name = "email") String email, HttpServletResponse response) throws IOException {
         var command = new ForgotPasswordRequest(email);
         accountService.forgotPassword(command);
-        return ResponseEntity.ok().build();
+        response.sendRedirect("/forgotPasswordSuccess");
     }
 
     @PostMapping("/reset-password")

@@ -48,4 +48,8 @@ public class HomeController {
         return "change-passwordCurrent";
     }
 
+    @GetMapping("/forgotPasswordSuccess")
+    public String resetPasswordSuccess(){
+        return "forgot-password-success";
+    }
 }
