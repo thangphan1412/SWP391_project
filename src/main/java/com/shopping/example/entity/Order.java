@@ -53,6 +53,9 @@ public class Order {
     @JoinColumn
     private List<OrderDetail> orderDetails;
 
+    @ManyToOne
+    @JoinColumn
+    private Voucher voucher;
 
 
 

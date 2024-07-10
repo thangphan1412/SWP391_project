@@ -38,4 +38,6 @@ public class Voucher {
     @Column
     private String status;
 
+
+
 }

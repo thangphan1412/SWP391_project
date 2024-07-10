@@ -448,7 +448,7 @@ public class ProductController {
     private String saveProductImage(MultipartFile file, String fileName) {
 
         //Change the path after clone
-        String uploadDir = "D:\\Temp3.2\\SWP391_project\\src\\main\\resources\\static\\product_img";
+        String uploadDir = "D:\\Study\\SWP391\\SWP391\\SWP391_project\\src\\main\\resources\\static\\product_img";
         File uploadDirFile = new File(uploadDir);
 
         // Kiểm tra và tạo thư mục nếu chưa tồn tại
