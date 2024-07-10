@@ -44,6 +44,14 @@ public class CheckOutController {
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private ProductTypeService productTypeService;
+
+    @Autowired
+    private VoucherService voucherService;
+
+
+
     @GetMapping("/checkout")
     public String checkOut(Model model) {
         Account currentAccount = accountService.getCurrentAccount();
@@ -64,6 +72,8 @@ public class CheckOutController {
         }
     }
 
+
+    //place order
     @PostMapping("/placeOrder")
     public String placeOrder(@RequestParam String phone,
                              @RequestParam String address,
@@ -79,13 +89,20 @@ public class CheckOutController {
         if (currentAccount == null) {
             return "redirect:/login";
         } else {
+
             if (payment == null || payment.isEmpty()) {
                 redirectAttributes.addFlashAttribute("errorMessage", "Payment method is required.");
                 return "redirect:/checkout";
             }
+
             Customer customer = currentAccount.getCustomer();
             Cart customerCart = cartService.getCartByCustomer(customer);
             List<CartItems> listCartItems = cartItemsService.findByCartId(customerCart.getCartId());
+
+            double total = 0.0;
+            for (CartItems cartItem : listCartItems) {
+                total += cartItem.getQuantity() * cartItem.getProductType().getProduct_type_price();
+            }
 
             Order order = new Order();
             order.setCustomer(customer);
@@ -96,13 +113,10 @@ public class CheckOutController {
             order.setOrderStatus("Pending");
             order.setPaymentMethod(payment);
             order.setPaymentStatus("Pending");
+            order.setOrderAmount(total);
             orderService.save(order);
 
             if(payment.equalsIgnoreCase("Pay with VnPay")){
-                double total = 0.0;
-                for (CartItems cartItem : listCartItems) {
-                    total += cartItem.getQuantity() * cartItem.getProductType().getProduct_type_price();
-                }
                 req.getSession().setAttribute("type", "order");
                 req.getSession().setAttribute("amount", total);
                 req.getSession().setAttribute("Id", order.getOrderId());
@@ -118,13 +132,17 @@ public class CheckOutController {
                 orderDetail.setPrice(cartItem.getProductType().getProduct_type_price());
                 orderDetailService.saveOrderDetail(orderDetail);
                 cartItemsService.delete(cartItem.getCartItemsId());
+
+                ProductType productType = cartItem.getProductType();
+                productType.setProduct_type_quantity(productType.getProduct_type_quantity() - cartItem.getQuantity());
+                productTypeService.saveProductType(productType);
             }
             model.addAttribute("order", order);
             return "redirect:/checkout-success";
         }
     }
 
-
+   //check out with vnpay
     @GetMapping("/initiate-vnpay-payment")
     public void processVnPayment(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         long amount;
@@ -218,5 +236,9 @@ public class CheckOutController {
     public String home(Model model) {
         return "checkout-success";
     }
+
+
+
+
 
 }

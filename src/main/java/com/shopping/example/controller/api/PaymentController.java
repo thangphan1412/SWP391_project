@@ -184,6 +184,8 @@ public class PaymentController {
         Cart customerCart = cartService.getCartByCustomer(customer);
         List<CartItems> listCartItems = cartItemsService.findByCartId(customerCart.getCartId());
         if ("00".equals(vnp_ResponseCode)) {
+            existOrder.setPaymentStatus("Complete");
+            orderService.save(existOrder);
             // Thiết lập chi tiết đơn hàng
             for (CartItems cartItem : listCartItems) {
                 OrderDetail orderDetail = new OrderDetail();
@@ -193,6 +195,10 @@ public class PaymentController {
                 orderDetail.setPrice(cartItem.getProductType().getProduct_type_price());
                 orderDetailService.saveOrderDetail(orderDetail);
                 cartItemsService.delete(cartItem.getCartItemsId());
+
+                ProductType productType = cartItem.getProductType();
+                productType.setProduct_type_quantity(productType.getProduct_type_quantity() - cartItem.getQuantity());
+                productTypeService.saveProductType(productType);
             }
             response.sendRedirect("/checkout-success"); // Chuyển hướng tới trang "checkout-success"
         } else {

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -150,5 +151,21 @@ public class CartController {
         }
         redirectAttributes.addFlashAttribute("delMessage", "Delete fail");
         return "redirect:/viewCart";
+    }
+
+
+    @PostMapping("/updateCartItem")
+    @ResponseBody
+    public String updateCartItemQuantity(@RequestParam("cartItemId") Long cartItemId, @RequestParam("quantity") int quantity) {
+        Optional<CartItems> optionalCartItem = cartItemsService.findById(cartItemId);
+
+        if (optionalCartItem.isPresent()) {
+            CartItems cartItem = optionalCartItem.get();
+            cartItem.setQuantity(quantity);
+            cartItemsService.save(cartItem);
+            return "success";
+        } else {
+            return "error";
+        }
     }
 }

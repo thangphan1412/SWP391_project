@@ -49,6 +49,9 @@ public class Order {
     @Column(nullable = false)
     private String orderStatus;
 
+    @Column
+    private double orderAmount;
+
     @OneToMany
     @JoinColumn
     private List<OrderDetail> orderDetails;

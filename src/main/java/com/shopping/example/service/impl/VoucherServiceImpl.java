@@ -40,4 +40,11 @@ public class VoucherServiceImpl implements VoucherService {
     public Optional<Voucher> findById(Long id) {
         return voucherRepository.findById(id);
     }
+
+    @Override
+    public double VoucherDiscount(String voucherCode) {
+        return voucherRepository.findPercentageDiscountByVoucherCode(voucherCode);
+    }
+
+
 }

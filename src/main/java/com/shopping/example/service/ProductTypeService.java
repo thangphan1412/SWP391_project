@@ -24,4 +24,6 @@ public interface ProductTypeService {
     List<ProductType> getBestSellerProductTypes();
 
     List<ProductType> getProductTypeBySupplier(Long id);
+
+
 }
