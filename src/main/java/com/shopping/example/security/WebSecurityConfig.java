@@ -62,7 +62,8 @@ public class WebSecurityConfig {
                     login.failureUrl("/login?error=true");
                     login.defaultSuccessUrl("/");
                 }).logout(logout -> {
-                    logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+//                    logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+
                     logout.logoutSuccessUrl("/");
                     logout.deleteCookies("JSESSIONID");
                     logout.invalidateHttpSession(true);
@@ -107,8 +108,4 @@ public class WebSecurityConfig {
         return tokenRepository;
     }
 
-    @Bean
-    public JwtConfig tokenService(){
-        return new JwtConfig(userDetailsService.toString()) ;
-    }
 }

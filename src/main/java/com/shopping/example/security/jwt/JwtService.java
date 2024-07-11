@@ -47,12 +47,12 @@ public class JwtService {
     public boolean isTokenExpired(String token) throws SignatureException {
         return getValue(token, Claims::getExpiration).before(new Date());
     }
-
-    public String getTokenFromRequest(HttpServletRequest request) {
-        return null;
-    }
-
-    public void invalidateToken(String token) {
-
-    }
+//
+//    public String getTokenFromRequest(HttpServletRequest request) {
+//        return null;
+//    }
+//
+//    public void invalidateToken(String token) {
+//
+//    }
 }

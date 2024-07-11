@@ -129,10 +129,10 @@ public class AccountController {
         return ResponseEntity.ok("Thay doi mat khau thanh cong");
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request){
-        String token = tokenService.getTokenFromRequest(request);
-        tokenService.invalidateToken(token);
-        return ResponseEntity.ok("logout success");
-    }
+//    @PostMapping("/logout")
+//    public ResponseEntity<?> logout(HttpServletRequest request){
+//        String token = tokenService.getTokenFromRequest(request);
+//        tokenService.invalidateToken(token);
+//        return ResponseEntity.ok("logout success");
+//    }
 }

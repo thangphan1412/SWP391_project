@@ -2,18 +2,14 @@ package com.shopping.example.controller.api;
 
 
 
-import com.shopping.example.entity.ProductType;
-import com.shopping.example.entity.Receipt;
-import com.shopping.example.entity.ReceiptDetail;
+import com.shopping.example.entity.*;
 import com.shopping.example.payment.Config;
-import com.shopping.example.service.ProductService;
-import com.shopping.example.service.ProductTypeService;
-import com.shopping.example.service.ReceiptDetailService;
-import com.shopping.example.service.ReceiptService;
+import com.shopping.example.service.*;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
+
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,6 +33,22 @@ public class PaymentController {
 
     @Autowired
     private ReceiptDetailService receiptDetailService;
+
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private CartService cartService;
+
+    @Autowired
+    private CartItemsService cartItemsService;
+
+    @Autowired
+    private OrderDetailService orderDetailService;
+
 
 
     @PostMapping("/processPayment")
@@ -135,7 +147,7 @@ public class PaymentController {
 
 
     @GetMapping("/receiptPaymentResult")
-    public String paymentResult(@RequestParam Map<String, String> requestParams) {
+    public void paymentResult(@RequestParam Map<String, String> requestParams,HttpServletResponse response) throws IOException {
         String vnp_ResponseCode = requestParams.get("vnp_ResponseCode");
         String receiptId = requestParams.get("vnp_TxnRef");
         if ("00".equals(vnp_ResponseCode)) {
@@ -153,14 +165,52 @@ public class PaymentController {
                         productTypeService.saveProductType(productType);
                     }
                 }
-                return "successful";
+                response.sendRedirect("/receiptDetail" + receiptId);
             }
         } else {
-            return "failed";
+            response.sendRedirect("/error");
         }
-        return "redirect:/receiptDetail/" + receiptId;
     }
 
 
 
+    @GetMapping("/orderPaymentResult")
+    public void paymentOrderResult(@RequestParam Map<String, String> requestParams, Model model, HttpServletResponse response) throws IOException {
+        String vnp_ResponseCode = requestParams.get("vnp_ResponseCode");
+        String orderId = requestParams.get("vnp_TxnRef");
+        Order existOrder = orderService.getOrderById(Long.parseLong(orderId));
+        Account currentAccount = accountService.getCurrentAccount();
+        Customer customer = currentAccount.getCustomer();
+        Cart customerCart = cartService.getCartByCustomer(customer);
+        List<CartItems> listCartItems = cartItemsService.findByCartId(customerCart.getCartId());
+        if ("00".equals(vnp_ResponseCode)) {
+            existOrder.setPaymentStatus("Complete");
+            orderService.save(existOrder);
+            // Thiết lập chi tiết đơn hàng
+            for (CartItems cartItem : listCartItems) {
+                OrderDetail orderDetail = new OrderDetail();
+                orderDetail.setOrder(existOrder);
+                orderDetail.setProductType(cartItem.getProductType());
+                orderDetail.setQuantity(cartItem.getQuantity());
+                orderDetail.setPrice(cartItem.getProductType().getProduct_type_price());
+                orderDetailService.saveOrderDetail(orderDetail);
+                cartItemsService.delete(cartItem.getCartItemsId());
+
+                ProductType productType = cartItem.getProductType();
+                productType.setProduct_type_quantity(productType.getProduct_type_quantity() - cartItem.getQuantity());
+                productTypeService.saveProductType(productType);
+            }
+            response.sendRedirect("/checkout-success"); // Chuyển hướng tới trang "checkout-success"
+        } else {
+            response.sendRedirect("/error"); // Chuyển hướng tới trang "failed"
+        }
+    }
+
 }
+
+
+
+
+
+
+

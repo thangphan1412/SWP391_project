@@ -120,7 +120,7 @@
                                                 <input disabled class="input-text input-text--primary-style" type="text"
                                                        id="billing-fname"
                                                        th:value="${customer.getCustomer().getFullname()}"
-                                                       name="fullName" data-bill="">
+                                                       name="fullName" data-bill="" placeholder="If empty update in profile">
                                             </div>
                                         </div>
                                         <!--====== End - First Name, Last Name ======-->
@@ -128,9 +128,9 @@
                                         <!--====== E-MAIL ======-->
                                         <div class="u-s-m-b-15">
                                             <label class="gl-label" for="billing-email">E-MAIL *</label>
-                                            <input disabled class="input-text input-text--primary-style" type="text"
+                                            <input disabled class="input-text input-text--primary-style" type="email"
                                                    th:value="${customer.email}" id="billing-email" name="email"
-                                                   data-bill="" required>
+                                                   data-bill="" required placeholder=" Update in profile or enter email in here " >
                                         </div>
                                         <!--====== End - E-MAIL ======-->
 
@@ -139,7 +139,7 @@
                                             <label class="gl-label" for="billing-phone">PHONE *</label>
                                             <input required class="input-text input-text--primary-style" type="text"
                                                    id="billing-phone" th:value="${customer.getCustomer().getPhone()}"
-                                                   name="phone" data-bill="">
+                                                   name="phone" data-bill="" placeholder="Update in profile or enter phone number of receiver in here">
                                         </div>
                                         <!--====== End - PHONE ======-->
 
@@ -147,9 +147,18 @@
                                         <div class="u-s-m-b-15">
                                             <label class="gl-label" for="billing-street">ADDRESS *</label>
                                             <input required class="input-text input-text--primary-style" type="text"
-                                                   id="billing-street" name="address" placeholder="Enter address"
-                                                   data-bill="">
+                                                   id="billing-street" name="address" placeholder="Enter the address"
+                                                   data-bill="" th:value="${customer.customer.addressDetail}" >
                                         </div>
+
+                                        <div class="u-s-m-b-15">
+                                                <label class="gl-label" for="billing-voucher">Voucher</label>
+                                                <input class="input-text input-text--primary-style" type="text"
+                                                       id="billing-voucher" name="voucher" placeholder="Enter the voucher if you have"
+                                                       data-bill="" required>
+                                        </div>
+
+
                                         <div id="qr-code-container" style="display: none;">
                                             <img id="qr-code-img" width="100%" src="" alt="QR Code">
                                         </div>
@@ -197,8 +206,8 @@
                                                         <td>$0.00</td>
                                                     </tr>
                                                     <tr>
-                                                        <td>SUBTOTAL</td>
-                                                        <td>$0.00</td>
+                                                        <td>Discount</td>
+                                                        <td th:text="${discount}"></td>
                                                     </tr>
                                                     <tr>
                                                         <td>GRAND TOTAL</td>
@@ -242,46 +251,15 @@
                                                     <div class="u-s-m-b-10">
                                                         <div class="radio-box">
                                                             <input type="radio" id="pay-with-check" name="payment"
-                                                                   value="Pay with Check">
+                                                                   value="Pay with VnPay">
                                                             <div class="radio-box__state radio-box__state--primary">
                                                                 <label class="radio-box__label" for="pay-with-check">Pay
-                                                                    With Check</label>
+                                                                    With VnPay</label>
                                                             </div>
                                                         </div>
-                                                        <span class="gl-text u-s-m-t-6">Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</span>
+                                                        <span class="gl-text u-s-m-t-6">You will pay with VNPay you order will be accept after successfull </span>
                                                     </div>
-                                                    <div class="u-s-m-b-10">
-                                                        <div class="radio-box">
-                                                            <input type="radio" id="pay-with-card" name="payment"
-                                                                   value="Credit / Debit Card">
-                                                            <div class="radio-box__state radio-box__state--primary">
-                                                                <label class="radio-box__label" for="pay-with-card">Pay
-                                                                    With Credit / Debit Card</label>
-                                                            </div>
-                                                        </div>
-                                                        <span class="gl-text u-s-m-t-6">International Credit Cards must be eligible for use within the United States.</span>
-                                                    </div>
-                                                    <div class="u-s-m-b-10">
-                                                        <div class="radio-box">
-                                                            <input type="radio" id="pay-pal" name="payment"
-                                                                   value="PayPal">
-                                                            <div class="radio-box__state radio-box__state--primary">
-                                                                <label class="radio-box__label" for="pay-pal">Pay
-                                                                    Pal</label>
-                                                            </div>
-                                                        </div>
-                                                        <span class="gl-text u-s-m-t-6">When you click "Place Order" below we'll take you to Paypal's site to set up your billing information.</span>
-                                                    </div>
-                                                    <div class="u-s-m-b-15">
-                                                        <div class="check-box">
-                                                            <input type="checkbox" id="term-and-condition">
-                                                            <div class="check-box__state check-box__state--primary">
-                                                                <label class="check-box__label"
-                                                                       for="term-and-condition">I consent to the</label>
-                                                            </div>
-                                                        </div>
-                                                        <a class="gl-link">Terms of Service.</a>
-                                                    </div>
+
                                                     <div>
                                                         <button class="btn btn--e-brand-b-2" type="submit">PLACE ORDER
                                                         </button>
@@ -348,7 +326,7 @@
         const totalPrice = parseFloat(totalPriceElement.textContent.replace('$', ''));
 
         // Update the QR code URL with the latest total price
-        fetch(`https://vietqr.co/api/generate/mb/0836030804/VIETQR.CO/${parseInt(totalPrice)}/CellphoneDBZ%20Payment?isMask=0`)
+        fetch(`https://vietqr.co/api/generate/vcb/1018346878/VIETQR.CO/${parseInt(totalPrice)* 25454}/CellphoneDBZ%20Payment?isMask=0`)
             .then(response => response.blob())
             .then(blob => {
                 const qrImageUrl = URL.createObjectURL(blob);
