@@ -1,5 +1,7 @@
 package com.shopping.example.security;
 
+import com.shopping.example.security.jwt.JwtConfig;
+import com.shopping.example.security.jwt.JwtService;
 import com.shopping.example.utility.Contant;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +17,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.token.TokenService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -36,6 +39,7 @@ public class WebSecurityConfig {
     private final UserDetailsService userDetailsService;
 
     private final PasswordEncoder passwordEncoder;
+
 
     private DataSource dataSource;
 
@@ -101,5 +105,10 @@ public class WebSecurityConfig {
         var tokenRepository = new JdbcTokenRepositoryImpl();
         tokenRepository.setDataSource(dataSource);
         return tokenRepository;
+    }
+
+    @Bean
+    public JwtConfig tokenService(){
+        return new JwtConfig(userDetailsService.toString()) ;
     }
 }

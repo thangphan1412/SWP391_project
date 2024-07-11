@@ -42,6 +42,8 @@ public class AccountController {
 
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private JwtService tokenService;
 
     @Autowired
     private AccountService accountService;
@@ -108,11 +110,12 @@ public class AccountController {
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<String> resetPassword(@RequestParam(name = "token", required = false) String token,
-                                                 @RequestParam(name = "newPassword", required = false) String newPassword) {
+    public void resetPassword(@RequestParam(name = "token", required = false) String token,
+                                                 @RequestParam(name = "newPassword", required = false) String newPassword,
+                                        HttpServletResponse response) throws IOException {
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest(token, newPassword);
         accountService.resetPassword(resetPasswordRequest);
-        return ResponseEntity.ok("Thay đổi mật khẩu thành công");
+        response.sendRedirect("/resetPasswordSuccess");
     }
 
     @PostMapping("/change-password")
@@ -124,5 +127,12 @@ public class AccountController {
         ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(currentPassword, newPassword, confirmNewPassword);
         accountService.changePassword(changePasswordRequest, principal);
         return ResponseEntity.ok("Thay doi mat khau thanh cong");
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request){
+        String token = tokenService.getTokenFromRequest(request);
+        tokenService.invalidateToken(token);
+        return ResponseEntity.ok("logout success");
     }
 }

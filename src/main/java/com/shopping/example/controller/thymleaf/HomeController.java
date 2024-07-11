@@ -49,7 +49,11 @@ public class HomeController {
     }
 
     @GetMapping("/forgotPasswordSuccess")
-    public String resetPasswordSuccess(){
+    public String forgotPasswordSuccess(){
         return "forgot-password-success";
+    }
+    @GetMapping("/resetPasswordSuccess")
+    public String resetPasswordSuccess(){
+        return "reset-password-success";
     }
 }
