@@ -63,7 +63,7 @@ public class WebSecurityConfig {
                     login.defaultSuccessUrl("/");
                 }).logout(logout -> {
 //                    logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
-
+                    logout.logoutUrl("/logout");
                     logout.logoutSuccessUrl("/");
                     logout.deleteCookies("JSESSIONID");
                     logout.invalidateHttpSession(true);
