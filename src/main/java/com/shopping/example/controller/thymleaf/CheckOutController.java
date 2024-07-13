@@ -273,20 +273,18 @@ public class CheckOutController {
 
     @PostMapping("/checkDiscount")
     public String checkDiscount(@RequestParam("voucherCode") String code, Model model, RedirectAttributes redirectAttributes) {
-
-        if(code.isBlank()){
+        if (code.isBlank()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Voucher code must not be empty.");
             return "redirect:/checkout";
         }
 
-
-        double discount = voucherService.VoucherDiscount(code.trim());
-
-        if (discount == 0.0) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Voucher does not exist.");
+        Voucher existVoucher = voucherService.findVoucherWithCoce(code);
+        if (existVoucher == null || existVoucher.getStatus().equals("inactive")) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Voucher is no longer available.");
             return "redirect:/checkout";
         }
 
+        double discount = voucherService.VoucherDiscount(code.trim());
         Account currentAccount = accountService.getCurrentAccount();
         if (currentAccount == null) {
             return "redirect:/login";
