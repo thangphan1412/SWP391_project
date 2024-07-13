@@ -74,12 +74,12 @@
                                     <div class="collapse" id="have-coupon" data-parent="#checkout-msg-group">
                                         <div class="c-f u-s-m-b-16">
                                             <span class="gl-text u-s-m-b-16">Enter your coupon code if you have one.</span>
-                                            <form class="c-f__form">
+                                            <form class="c-f__form"  method="post" th:action="@{/checkDiscount}">
                                                 <div class="u-s-m-b-16">
                                                     <div class="u-s-m-b-15">
                                                         <label for="coupon"></label>
                                                         <input class="input-text input-text--primary-style" type="text"
-                                                               id="coupon" placeholder="Coupon Code">
+                                                               id="coupon" placeholder="Coupon Code" name="voucherCode">
                                                     </div>
                                                     <div class="u-s-m-b-15">
                                                         <button class="btn btn--e-transparent-brand-b-2" type="submit">
@@ -151,12 +151,9 @@
                                                    data-bill="" th:value="${customer.customer.addressDetail}" >
                                         </div>
 
-                                        <div class="u-s-m-b-15">
-                                                <label class="gl-label" for="billing-voucher">Voucher</label>
-                                                <input class="input-text input-text--primary-style" type="text"
-                                                       id="billing-voucher" name="voucher" placeholder="Enter the voucher if you have"
-                                                       data-bill="" required>
-                                        </div>
+                                        <input type="text" th:value="${voucherCode}" hidden="" name="voucherCode">
+
+
 
 
                                         <div id="qr-code-container" style="display: none;">
@@ -198,20 +195,12 @@
                                                 <table class="o-summary__table">
                                                     <tbody>
                                                     <tr>
-                                                        <td>SHIPPING</td>
-                                                        <td>$0.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>TAX</td>
-                                                        <td>$0.00</td>
-                                                    </tr>
-                                                    <tr>
                                                         <td>Discount</td>
-                                                        <td th:text="${discount}"></td>
+                                                        <td th:text="${discount} +'%'"></td>
                                                     </tr>
                                                     <tr>
                                                         <td>GRAND TOTAL</td>
-                                                        <td id="grand-total" th:text="${total}">$379.00</td>
+                                                        <td id="grand-total" th:text="${total}"></td>
                                                     </tr>
                                                     </tbody>
                                                 </table>

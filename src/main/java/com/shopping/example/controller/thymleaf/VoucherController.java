@@ -38,7 +38,12 @@ public class VoucherController {
                              @RequestParam("endDate")LocalDate endDate,
                              RedirectAttributes redirectAttributes, Model model) {
         Voucher voucher = new Voucher();
-        voucher.setVoucherCode(code);
+        if(code.isBlank()||code.isEmpty()){
+            redirectAttributes.addFlashAttribute("addMessage", "Please enter a valid code");
+            return "redirect:/createVoucher";
+        }
+
+        voucher.setVoucherCode(code.trim());
         List<Voucher> listVouchers = voucherService.findAll();
         for (Voucher v : listVouchers) {
             if (v.getVoucherCode().equalsIgnoreCase(code)) {
@@ -66,7 +71,7 @@ public class VoucherController {
         Optional<Voucher> optionalVoucher = voucherService.findById(id);
         if (optionalVoucher.isPresent()) {
             Voucher voucher = optionalVoucher.get();
-            voucher.setStatus("inative");
+            voucher.setStatus("inactive");
             voucherService.save(voucher);
             redirectAttributes.addFlashAttribute("changeMessage", "Voucher successfully changed");
             return "redirect:/createVoucher";

@@ -51,10 +51,11 @@ public class CheckOutController {
     private VoucherService voucherService;
 
 
-
     @GetMapping("/checkout")
     public String checkOut(Model model) {
         Account currentAccount = accountService.getCurrentAccount();
+        Double discount = 0.0;
+
         if (currentAccount == null) {
             return "redirect:/login";
         } else {
@@ -68,6 +69,7 @@ public class CheckOutController {
             model.addAttribute("ListCart", listCartItems);
             model.addAttribute("total", total);
             model.addAttribute("customer", currentAccount);
+            model.addAttribute("discount", discount);
             return "checkout";
         }
     }
@@ -78,6 +80,7 @@ public class CheckOutController {
     public String placeOrder(@RequestParam String phone,
                              @RequestParam String address,
                              @RequestParam(required = false) String payment,
+                             @RequestParam String voucherCode,
                              Model model,
                              HttpServletRequest req,
                              RedirectAttributes redirectAttributes) {
@@ -85,11 +88,9 @@ public class CheckOutController {
         List<Employee> existEmployeeList = employeeService.getAllEmployees();
         Employee randomEmployee = existEmployeeList.get(new Random().nextInt(existEmployeeList.size()));
 
-
         if (currentAccount == null) {
             return "redirect:/login";
         } else {
-
             if (payment == null || payment.isEmpty()) {
                 redirectAttributes.addFlashAttribute("errorMessage", "Payment method is required.");
                 return "redirect:/checkout";
@@ -98,13 +99,45 @@ public class CheckOutController {
             Customer customer = currentAccount.getCustomer();
             Cart customerCart = cartService.getCartByCustomer(customer);
             List<CartItems> listCartItems = cartItemsService.findByCartId(customerCart.getCartId());
+            Order order = new Order();
 
-            double total = 0.0;
+            double total = 0;
             for (CartItems cartItem : listCartItems) {
                 total += cartItem.getQuantity() * cartItem.getProductType().getProduct_type_price();
             }
 
-            Order order = new Order();
+            if (voucherCode == null || voucherCode.isEmpty()) {
+                // Không có mã voucher, lưu đơn hàng với tổng số tiền
+                order.setOrderAmount(total);
+            } else {
+                // Fetch voucher details
+                Voucher voucher = voucherService.findVoucherWithCoce(voucherCode);
+
+                // Check if voucher is valid
+                if (voucher == null) {
+                    redirectAttributes.addFlashAttribute("errorMessage", "Invalid voucher code");
+                    return "redirect:/checkout";
+                }
+
+                // Check if the voucher has already been used by the customer
+                List<Order> orderList = orderService.getOrdersByCustomer(customer);
+                boolean voucherUsed = orderList.stream()
+                        .anyMatch(o -> {
+                            Voucher orderVoucher = o.getVoucher();
+                            return orderVoucher != null && orderVoucher.getVoucherCode().equalsIgnoreCase(voucherCode);
+                        });
+
+                if (voucherUsed) {
+                    redirectAttributes.addFlashAttribute("errorMessage", "Voucher has been used");
+                    return "redirect:/checkout";
+                }
+
+                // Apply voucher discount
+                total = total - (voucher.getPercentageDiscount() / 100.0 * total);
+                order.setVoucher(voucher);
+                order.setOrderAmount(total);
+            }
+
             order.setCustomer(customer);
             order.setEmployee(randomEmployee);
             order.setAddressOfReceiver(address);
@@ -113,16 +146,14 @@ public class CheckOutController {
             order.setOrderStatus("Pending");
             order.setPaymentMethod(payment);
             order.setPaymentStatus("Pending");
-            order.setOrderAmount(total);
             orderService.save(order);
 
-            if(payment.equalsIgnoreCase("Pay with VnPay")){
+            if (payment.equalsIgnoreCase("Pay with VnPay")) {
                 req.getSession().setAttribute("type", "order");
                 req.getSession().setAttribute("amount", total);
                 req.getSession().setAttribute("Id", order.getOrderId());
                 return "redirect:/initiate-vnpay-payment";
             }
-
 
             for (CartItems cartItem : listCartItems) {
                 OrderDetail orderDetail = new OrderDetail();
@@ -137,12 +168,14 @@ public class CheckOutController {
                 productType.setProduct_type_quantity(productType.getProduct_type_quantity() - cartItem.getQuantity());
                 productTypeService.saveProductType(productType);
             }
+
             model.addAttribute("order", order);
             return "redirect:/checkout-success";
         }
     }
 
-   //check out with vnpay
+
+    //check out with vnpay
     @GetMapping("/initiate-vnpay-payment")
     public void processVnPayment(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         long amount;
@@ -238,7 +271,43 @@ public class CheckOutController {
     }
 
 
+    @PostMapping("/checkDiscount")
+    public String checkDiscount(@RequestParam("voucherCode") String code, Model model, RedirectAttributes redirectAttributes) {
+        if (code.isBlank()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Voucher code must not be empty.");
+            return "redirect:/checkout";
+        }
 
+        Voucher existVoucher = voucherService.findVoucherWithCoce(code);
+        if (existVoucher == null || existVoucher.getStatus().equals("inactive")) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Voucher is no longer available.");
+            return "redirect:/checkout";
+        }
 
+        double discount = voucherService.VoucherDiscount(code.trim());
+        Account currentAccount = accountService.getCurrentAccount();
+        if (currentAccount == null) {
+            return "redirect:/login";
+        } else {
+            Customer customer = currentAccount.getCustomer();
+            Cart customerCart = cartService.getCartByCustomer(customer);
+            List<CartItems> listCartItems = cartItemsService.findByCartId(customerCart.getCartId());
+
+            double total = 0.0;
+            for (CartItems cartItem : listCartItems) {
+                total += cartItem.getQuantity() * cartItem.getProductType().getProduct_type_price();
+            }
+
+            double discountAmount = (discount / 100) * total;
+            total = total - discountAmount;
+            model.addAttribute("ListCart", listCartItems);
+            model.addAttribute("total", total);
+            model.addAttribute("customer", currentAccount);
+            model.addAttribute("discount", discount);
+            model.addAttribute("voucherCode", code);
+
+            return "checkout";
+        }
+    }
 
 }

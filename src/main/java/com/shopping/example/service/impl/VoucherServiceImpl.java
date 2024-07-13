@@ -41,9 +41,19 @@ public class VoucherServiceImpl implements VoucherService {
         return voucherRepository.findById(id);
     }
 
+
     @Override
     public double VoucherDiscount(String voucherCode) {
-        return voucherRepository.findPercentageDiscountByVoucherCode(voucherCode);
+        Double discount = voucherRepository.findPercentageDiscountByVoucherCode(voucherCode);
+        if (discount == null) {
+            return 0.0;
+        }
+        return discount;
+    }
+
+    @Override
+    public Voucher findVoucherWithCoce(String voucherCode) {
+        return voucherRepository.findByVoucherCodeContainingIgnoreCase(voucherCode);
     }
 
 

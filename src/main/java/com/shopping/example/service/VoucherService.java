@@ -21,6 +21,9 @@ public interface VoucherService {
 
     double VoucherDiscount(String voucherCode);
 
+    Voucher findVoucherWithCoce(String voucherCode);
+
+
 
 
 
