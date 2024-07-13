@@ -107,7 +107,7 @@
 
                                                 <label class="gl-label" for="reg-lname">Product Image</label>
 
-                                                <img th:if="${product.productImage}" th:src="@{/product_img/{image}(image=${product.productImage})}" alt="Product Image">
+                                                <img style="max-width: 20%" th:if="${product.productImage}" th:src="@{/product_img/{image}(image=${product.productImage})}" alt="Product Image">
                                                 <input class="input-text input-text--primary-style" style="margin: auto" type="file" id="reg-lname" name="image">
                                                 <div class="u-s-m-b-30">
                                                     <label class="gl-label" for="reg-brand">Product Category</label>

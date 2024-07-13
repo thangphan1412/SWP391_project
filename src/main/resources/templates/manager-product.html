@@ -67,11 +67,9 @@
                                 <div class="dash__box dash__box--bg-white dash__box--shadow u-s-m-b-30">
                                     <div class="dash__pad-1">
 
-                                        <span class="dash__text u-s-m-b-16">Hello, John Doe</span>
-                                        <ul class="dash__f-list">
-                                            <li>
 
-                                                <a href="order-list.html">Order list</a></li>
+                                        <ul class="dash__f-list">
+                                           <h3 class="dash-active">MANAGE</h3>
                                             <li>
 
                                                 <a class="dash-active" th:href="@{/update}">Manage Product</a></li>
@@ -80,15 +78,24 @@
 
                                                 <a  th:href="@{/createSupBraCate}">Manage Supplier & Category & Brand</a></li>
 
-
-                                            <li>
-                                                <a href="#">Manage Order</a></li>
                                             <li>
 
                                                 <a href="/createVoucher">Manage Voucher</a></li>
                                             <li>
 
                                                 <a href="/receipt">Manage Receipt</a></li>
+
+                                            <h3 class="dash-active">VIEW</h3>
+
+                                            <li>
+                                                <a href="/viewCustomer">View Customer</a></li>
+                                            <li>
+                                                <a href="/viewBrand">View Brand</a></li>
+                                            <li>
+                                                <a href="/viewSuppliers">View Suppliers</a></li>
+                                            <li>
+                                                <a href="/viewOrder">View Orders</a></li>
+
 
                                         </ul>
                                     </div>
