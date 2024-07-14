@@ -26,5 +26,4 @@ public interface CustomerService {
 
     public Optional<String> getCurrentUserEmail();
 
-    List<Customer> getCustomerByName(String name);
 }

@@ -25,14 +25,13 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     }
 
     @Override
-    public Optional<OrderDetail> getOrderDetailById(Long orderDetailId) {
-        return orderDetailRepository.findById(orderDetailId);
-    }
-
-
-    @Override
     public void saveOrderDetail(OrderDetail orderDetail) {
         orderDetailRepository.save(orderDetail);
+    }
+
+    @Override
+    public Optional<OrderDetail> getOrderDetailById(Long orderDetailId) {
+        return orderDetailRepository.findById(orderDetailId);
     }
 
 

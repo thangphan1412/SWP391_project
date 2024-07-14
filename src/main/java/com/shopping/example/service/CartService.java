@@ -12,4 +12,6 @@ public interface CartService {
 
     Cart getCartByCustomer(Customer customer);
 
+    boolean deleteCartByCart(Long cart);
+
 }

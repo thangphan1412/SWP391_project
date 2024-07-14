@@ -29,8 +29,6 @@ public class StaffController {
     private OrderService orderService;
     @Autowired
     private AccountService accountService;
-    @Autowired
-    private ProductService productService;
 
     // show sreec for employee
     @GetMapping("/employees")
@@ -60,18 +58,6 @@ public class StaffController {
         return "customers-detail";
     }
 
-    //search customer
-    @PostMapping("/search-customer")
-    public String searchCustomer(@RequestParam("name") String name, Model model){
-        List<Customer> customers = customerService.getCustomerByName(name);
-        if (customers.isEmpty()) {
-            model.addAttribute("searchMessage", "No customers found with the name \"" + name + "\".");
-        }
-        model.addAttribute("customers", customers);
-        return "staff-page-viewCustomers";
-    }
-
-
     // view brand detail from to employees
     @GetMapping("/brandDetail/{id}")
     public String getBrand(@PathVariable Long id, Model model){
@@ -90,9 +76,6 @@ public class StaffController {
         Optional<Supplier> supplier = supplierService.findSupplierById(id);
         if (supplier.isPresent()){
             model.addAttribute("supplierDetail", supplier.get());
-            List<Product> products = productService.findBySuppliers(supplier.get());
-            model.addAttribute("listProducts", products);
-
         } else {
             model.addAttribute("error supplier", "supplier not found");
         }
@@ -167,17 +150,13 @@ public class StaffController {
         }
     }
 
-
-    // search order
-//    @PostMapping("/search-order")
-//    public String searchOrder(@RequestParam("name") String name, Model model){
-//        List<Order> orders = orderService.getOrderByName(name);
-//        if (customers.isEmpty()) {
-//            model.addAttribute("searchMessage", "No customers found with the name \"" + name + "\".");
-//        }
-//        model.addAttribute("customers", customers);
-//        return "staff-page-viewCustomers";
-//    }
+    @PostMapping("/updateOrderPaymentStatus")
+    public String updateOrderStatus(@RequestParam("orderId") Long orderId, @RequestParam("action") String action) {
+        if ("confirm".equals(action)) {
+            orderService.updatePaymentStatus(orderId, "Success");
+        }
+        return "redirect:/viewOrder";
+    }
 
 
 }

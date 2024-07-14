@@ -1,5 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <header th:fragment="navbar" class="header--style-1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <!--====== Nav 1 ======-->
     <nav class="primary-nav primary-nav-wrapper--border">
@@ -80,13 +81,13 @@
                                 <span class="js-menu-toggle"></span>
 
                                 <ul style="width:120px">
-                                    <li >
+                                    <li>
 
                                         <a href="/UserDetail"><i class="fas fa-user-circle u-s-m-r-6"></i>
 
                                             <span>Account</span></a></li>
 
-                                    <li>
+                                    <li id="admin">
 
                                         <a href="/update"><i class="fas fa-address-card u-s-m-r-6"></i>
 
@@ -106,7 +107,9 @@
 
                                         <a th:href="@{/logout}">
                                             <i class="fas fa-lock-open u-s-m-r-6"></i>
-                                            <span>Sign out</span></a></li>
+                                            <span>Sign out</span>
+                                        </a>
+                                    </li>
                                 </ul>
 
                                 <!--====== End - Dropdown ======-->
@@ -211,6 +214,26 @@
             <!--====== End - Secondary Nav ======-->
         </div>
     </nav>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            if (!readCookie('1234abc')) {
+                console.log(readCookie('1234abc'));
+                $('#admin').hide();
+            }
+        })
+
+        function readCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            console.log(ca);
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+    </script>
     <!--====== End - Nav 2 ======-->
 </header>
 </html>

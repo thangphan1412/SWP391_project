@@ -73,13 +73,13 @@
                                     <!--====== End - Dashboard Features ======-->
                                 </div>
                                 <div class="col-lg-12 col-md-12">
-                                    <h1 class="dash__h1 u-s-m-b-30">Create Product </h1>
+                                    <h1 class="dash__h1 u-s-m-b-30">Add or create </h1>
                                                     <div class="l-f-o">
                                                         <div class="l-f-o__pad-box">
 
 
-                                                            <div th:if="${proMessage}" class="alert alert-success" role="alert">
-                                                                <p style="color: green" th:text="${proMessage}"></p>
+                                                            <div th:if="${successMessage}" class="alert alert-success" role="alert">
+                                                                <p style="color: green" th:text="${successMessage}"></p>
                                                             </div>
 
                                                             <h1 class="dash__h1 u-s-m-b-30">Product</h1>
@@ -147,9 +147,6 @@
                                     <div class="l-f-o">
                                         <div class="l-f-o__pad-box">
                                                             <h1 class="dash__h1 u-s-m-b-30">Product Tech</h1>
-                                                             <div th:if="${techMessage}" class="alert alert-success" role="alert">
-                                                             <p style="color: green" th:text="${techMessage}"></p>
-                                                             </div>
 
                                                             <form class="l-f-o__form" th:action="@{/createTech}" method="post" enctype="multipart/form-data">
 

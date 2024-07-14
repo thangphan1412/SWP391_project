@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
+import java.awt.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -38,26 +39,10 @@ public class VoucherController {
                              @RequestParam("endDate")LocalDate endDate,
                              RedirectAttributes redirectAttributes, Model model) {
         Voucher voucher = new Voucher();
-        if(code.isBlank()||code.isEmpty()){
-            redirectAttributes.addFlashAttribute("addMessage", "Please enter a valid code");
-            return "redirect:/createVoucher";
-        }
-
-        voucher.setVoucherCode(code.trim());
-        List<Voucher> listVouchers = voucherService.findAll();
-        for (Voucher v : listVouchers) {
-            if (v.getVoucherCode().equalsIgnoreCase(code)) {
-                redirectAttributes.addFlashAttribute("addMessage", "Voucher is already in use");
-                return "redirect:/createVoucher";
-            }
-        }
+        voucher.setVoucherCode(code);
         voucher.setPercentageDiscount(percentage);
         voucher.setQuantity(quantity);
         voucher.setCreateDate(LocalDate.now());
-        if (voucher.getCreateDate().isEqual(endDate)){
-            redirectAttributes.addFlashAttribute("addMessage", "Voucher must be availiable than 1 day");
-            return "redirect:/createVoucher";
-        }
         voucher.setEndDate(endDate);
         voucher.setStatus("active");
         voucherService.save(voucher);
@@ -71,7 +56,7 @@ public class VoucherController {
         Optional<Voucher> optionalVoucher = voucherService.findById(id);
         if (optionalVoucher.isPresent()) {
             Voucher voucher = optionalVoucher.get();
-            voucher.setStatus("inactive");
+            voucher.setStatus("inative");
             voucherService.save(voucher);
             redirectAttributes.addFlashAttribute("changeMessage", "Voucher successfully changed");
             return "redirect:/createVoucher";
@@ -79,6 +64,8 @@ public class VoucherController {
         redirectAttributes.addFlashAttribute("changeMessage", "Fail to changed");
         return "redirect:/createVoucher";
     }
+
+
 
 
 

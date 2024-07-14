@@ -17,18 +17,25 @@ import java.util.Optional;
 @Component
 public class OrderServiceImpl implements OrderService {
 
-
-    @Autowired
-    private AccountService accountService;
-
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private AccountService accountService;
 
     @Override
     public List<Order> getAllOrders() {
-        return orderRepository.findAll() ;
+        return orderRepository.findAll();
+    }
+
+    @Override
+    public List<Order> getAllOrdersNotShip() {
+        Account currentAccount = accountService.getCurrentAccount();
+        if (currentAccount == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+        return orderRepository.getAllOrdersNotShipped(currentAccount.getEmployee().getId());
     }
 
     @Override
@@ -63,15 +70,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllOrdersNotShip() {
-        Account currentAccount = accountService.getCurrentAccount();
-        if (currentAccount == null) {
-            throw new IllegalArgumentException("User not found");
-        }
-        return orderRepository.getAllOrdersNotShipped(currentAccount.getEmployee().getId());
-    }
-
-    @Override
     public void updateOrderStatus(Long orderId, String status) {
         Optional<Order> orderOptional = orderRepository.findById(orderId);
         if (orderOptional.isPresent()) {
@@ -96,6 +94,5 @@ public class OrderServiceImpl implements OrderService {
             throw new RuntimeException("Order not found with id: " + orderId);
         }
     }
-
 
 }

@@ -2,7 +2,6 @@ package com.shopping.example.service;
 
 import com.shopping.example.entity.Product;
 import com.shopping.example.entity.ProductType;
-import com.shopping.example.entity.Supplier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +21,4 @@ public interface ProductTypeService {
 
 
     List<ProductType> getBestSellerProductTypes();
-
-    List<ProductType> getProductTypeBySupplier(Long id);
-
-
 }

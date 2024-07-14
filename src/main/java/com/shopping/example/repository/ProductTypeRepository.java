@@ -5,7 +5,6 @@ import com.shopping.example.entity.ProductType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -21,12 +20,4 @@ public interface ProductTypeRepository extends JpaRepository<ProductType, Long> 
             "pt.product_type_status, pt.color_id, pt.product_id, pt.tech_id " +
             "ORDER BY total_quantity_sold DESC", nativeQuery = true)
     List<ProductType> productBestSeller();
-
-
-    @Query("SELECT pt FROM ProductType pt " +
-            "JOIN pt.product p " +
-            "WHERE p.supplier.id = :supplierId")
-    List<ProductType> findAllProductTypesBySupplierId(@Param("supplierId") Long supplierId);
-
-
 }

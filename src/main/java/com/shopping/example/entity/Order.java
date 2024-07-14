@@ -25,7 +25,7 @@ public class Order {
     private Customer customer ;
 
     @ManyToOne
-    @JoinColumn(name ="Employee_Id",nullable = false)
+    @JoinColumn(name ="Employee_Id")
     private Employee employee ;
 
     @Column(nullable = false)
@@ -49,16 +49,10 @@ public class Order {
     @Column(nullable = false)
     private String orderStatus;
 
-    @Column
-    private double orderAmount;
-
     @OneToMany
     @JoinColumn
     private List<OrderDetail> orderDetails;
 
-    @ManyToOne
-    @JoinColumn
-    private Voucher voucher;
 
 
 

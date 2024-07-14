@@ -112,9 +112,4 @@ public class CustomerServiceImpl implements CustomerService {
         return Optional.empty();
 
     }
-
-    @Override
-    public List<Customer> getCustomerByName(String name) {
-        return customerRepository.findCustomerByName(name.toLowerCase());
-    }
 }

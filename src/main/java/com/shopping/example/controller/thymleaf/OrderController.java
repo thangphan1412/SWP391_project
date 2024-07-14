@@ -131,7 +131,7 @@ public class OrderController {
 
         // Calculate shipping fee based on unique product types
         long uniqueProductTypes = orderDetailsList.stream()
-                .map(orderDetail -> orderDetail.getProductType().getProduct().getProductId())
+                .map(orderDetail -> orderDetail.getProductType().getProduct_type_id())
                 .distinct()
                 .count();
         double shippingFee = uniqueProductTypes * 5;

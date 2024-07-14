@@ -2,7 +2,6 @@ package com.shopping.example.service;
 
 import com.shopping.example.entity.Category;
 import com.shopping.example.entity.Product;
-import com.shopping.example.entity.Supplier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -41,7 +40,5 @@ public interface ProductService {
                                  Long colorId, String memory, String ram, String minSize, String maxSize, Pageable pageable);
 
 
-    List<Product> findBySuppliers(Supplier supplier);
 
-    List<Product> NewArrival();
 }

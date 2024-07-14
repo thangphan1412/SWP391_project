@@ -191,60 +191,85 @@
                 <!--====== Section Content ======-->
                 <div class="section__content">
                     <div class="container">
-                        <div class="slider-fouc">
-                            <!-- Arrived Products Section -->
-                            <div class="owl-carousel product-slider" data-item="4">
-                                <div class="u-s-m-b-30" th:each="product : ${BestSeller}">
-                                    <div class="product-o product-o--hover-on">
-                                        <div class="product-o__wrap">
-                                            <a class="aspect aspect--bg-grey aspect--square u-d-block" th:href="@{/productdetail/{id}(id=${product.product.productImage})}">
-                                                <img class="aspect__img" th:src="@{/product_img/{productImage}(productImage=${product.product.productImage})}" alt="">
-                                            </a>
-                                            <div class="product-o__action-wrap">
-                                                <ul class="product-o__action-list">
-                                                    <li>
-                                                        <a data-modal="modal" data-modal-id="#quick-look" data-tooltip="tooltip" data-placement="top" title="Quick View">
-                                                            <i class="fas fa-search-plus"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a data-modal="modal" data-modal-id="#add-to-cart" data-tooltip="tooltip" data-placement="top" title="Add to Cart">
-                                                            <i class="fas fa-plus-circle"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="signin.html" data-tooltip="tooltip" data-placement="top" title="Email me When the price drops">
-                                                            <i class="fas fa-envelope"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="filter__grid-wrapper u-s-m-t-30">
+                                    <div class="row">
+
+
+                                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 u-s-m-b-30 filter__item headphone" th:each="producType : ${BestSeller}">
+                                            <div class="product-o product-o--hover-on product-o--radius" >
+                                                <div class="product-o__wrap">
+
+                                                    <a class="aspect aspect--bg-grey aspect--square u-d-block" th:href="@{/productdetail/{id}(id=${producType.product.productId})}" >
+
+                                                        <img class="aspect__img" th:src="@{/images/product/{productImage}(productImage=${producType.product.productImage})}"  alt=""></a>
+                                                    <div class="product-o__action-wrap">
+                                                    </div>
+                                                </div>
+
+                                                <span class="product-o__category">
+
+                                                    <a  th:href="@{/ListProduct( name=${param.name}, categoryId=${producType.product.category.categoryId}, minPrice=${param.minPrice}, maxPrice=${param.maxPrice}, colorId=${param.colorId}, memory=${param.memory}, ram=${param.ram}, minSize=${param.minSize}, maxSize=${param.maxSize})}"  th:text="${producType.product.category.categoryName}"></a></span>
+
+                                                <span class="product-o__name">
+
+                                                    <a th:href="@{/ProductDetail/{id}(id=${producType.product.productId})}" th:text="${producType.product.productName}" ></a></span>
+
+
+                                                <span class="product-o__category">
+
+                                                    <a th:text=" ' Ram: '+ ${producType.productTech.ram} + ' |Memory: '+ ${producType.productTech.memory} + ' |Size: '+ ${producType.productTech.size} + ' |Color: '+${producType.color.colorName}"></a></span>
+
+
+                                                <form id="name-filter-form" class="shop-w__form-p" action="/ListProduct"
+                                                      method="get">
+                                                    <div class="shop-w__form-p">
+                                                        <div>
+                                                            <label for="name"></label>
+
+                                                            <input class="input-text input-text--border-radius input-text--style-1"
+                                                                   type="text" id="name" th:value="${param.name}"
+                                                                   placeholder="Enter name to find..." name="name"  hidden="">
+                                                            <input
+                                                                    type="hidden"
+                                                                    name="categoryId"
+                                                                    th:value="${param.categoryId}"
+                                                            >  <input
+                                                                type="hidden"
+                                                                name="colorId"
+                                                                th:value="${param.colorId}"
+                                                        ><input
+                                                                type="hidden"
+                                                                name="memory"
+                                                                th:value="${param.memory}"
+                                                        ><input
+                                                                type="hidden"
+                                                                name="ram"
+                                                                th:value="${param.ram}"
+                                                        ><input
+                                                                type="hidden"
+                                                                name="minSize"
+                                                                th:value="${param.minSize}"
+                                                        ><input
+                                                                type="hidden"
+                                                                name="maxSize"
+                                                                th:value="${param.maxSize}"
+                                                        >
+                                                        </div>
+                                                    </div>
+                                                </form>
+
+
+
+
+
                                             </div>
                                         </div>
-                                        <span class="product-o__category">
-                            <a th:href="@{/ListProduct( categoryId=${product.product.category.categoryName})}" th:text="${product.product.category.categoryName}"></a>
-                        </span>
-                                        <span class="product-o__name">
-                            <a th:href="@{/ProductDetail/{id}(id=${product.product.productId})}" th:text="${product.product.productName}"></a>
-                        </span>
 
-                                        <span class="product-o__category">
-                            <a th:text="'Ram: ' + ${product.productTech.ram} + ' |Memory: ' + ${product.productTech.memory} + ' |Size: ' + ${product.productTech.size} + ' |Color: ' + ${product.color.colorName}"></a>
-                        </span>
 
-                                        <form id="name-filter-form" class="shop-w__form-p" action="/ListProduct" method="get">
-                                            <div class="shop-w__form-p">
-                                                <div>
-                                                    <label for="name"></label>
-                                                    <input class="input-text input-text--border-radius input-text--style-1" type="text" id="name" th:value="${param.name}" placeholder="Enter name to find..." name="name" hidden="">
-                                                    <input type="hidden" name="categoryId" th:value="${param.categoryId}">
-                                                    <input type="hidden" name="colorId" th:value="${param.colorId}">
-                                                    <input type="hidden" name="memory" th:value="${param.memory}">
-                                                    <input type="hidden" name="ram" th:value="${param.ram}">
-                                                    <input type="hidden" name="minSize" th:value="${param.minSize}">
-                                                    <input type="hidden" name="maxSize" th:value="${param.maxSize}">
-                                                </div>
-                                            </div>
-                                        </form>
+
+
 
                                     </div>
                                 </div>
@@ -253,10 +278,8 @@
                     </div>
                 </div>
                 <!--====== End - Section Content ======-->
-
-                <!--====== End - Section Content ======-->
-
-                <!--====== End - Section 2 ======-->
+            </div>
+            <!--====== End - Section 2 ======-->
 
 
             <!--====== Section 3 ======-->
@@ -401,56 +424,239 @@
                 <div class="section__content">
                     <div class="container">
                         <div class="slider-fouc">
-                            <!-- Arrived Products Section -->
                             <div class="owl-carousel product-slider" data-item="4">
-                                <div class="u-s-m-b-30" th:each="product : ${ArrivalProd}">
+                                <div class="u-s-m-b-30">
                                     <div class="product-o product-o--hover-on">
                                         <div class="product-o__wrap">
-                                            <a class="aspect aspect--bg-grey aspect--square u-d-block" th:href="@{/productdetail/{id}(id=${product.productId})}">
-                                                <img class="aspect__img" th:src="@{/product_img/{productImage}(productImage=${product.productImage})}" alt="">
-                                            </a>
+
+                                            <a class="aspect aspect--bg-grey aspect--square u-d-block" href="product-detail.html">
+
+                                                <img class="aspect__img" src="images/product/electronic/product13.jpg" alt=""></a>
                                             <div class="product-o__action-wrap">
                                                 <ul class="product-o__action-list">
                                                     <li>
-                                                        <a data-modal="modal" data-modal-id="#quick-look" data-tooltip="tooltip" data-placement="top" title="Quick View">
-                                                            <i class="fas fa-search-plus"></i>
-                                                        </a>
-                                                    </li>
+
+                                                        <a data-modal="modal" data-modal-id="#quick-look" data-tooltip="tooltip" data-placement="top" title="Quick View"><i class="fas fa-search-plus"></i></a></li>
                                                     <li>
-                                                        <a data-modal="modal" data-modal-id="#add-to-cart" data-tooltip="tooltip" data-placement="top" title="Add to Cart">
-                                                            <i class="fas fa-plus-circle"></i>
-                                                        </a>
-                                                    </li>
+
+                                                        <a data-modal="modal" data-modal-id="#add-to-cart" data-tooltip="tooltip" data-placement="top" title="Add to Cart"><i class="fas fa-plus-circle"></i></a></li>
+
                                                     <li>
-                                                        <a href="signin.html" data-tooltip="tooltip" data-placement="top" title="Email me When the price drops">
-                                                            <i class="fas fa-envelope"></i>
-                                                        </a>
-                                                    </li>
+
+                                                        <a href="signin.html" data-tooltip="tooltip" data-placement="top" title="Email me When the price drops"><i class="fas fa-envelope"></i></a></li>
                                                 </ul>
                                             </div>
                                         </div>
+
                                         <span class="product-o__category">
-                            <a th:href="@{/ListProduct( categoryId=${product.category.categoryId})}" th:text="${product.category.categoryName}"></a>
-                        </span>
+
+                                            <a href="shop-side-version-2.html">Electronics</a></span>
+
                                         <span class="product-o__name">
-                            <a th:href="@{/ProductDetail/{id}(id=${product.productId})}" th:text="${product.productName}"></a>
-                        </span>
 
-                                        <form id="name-filter-form" class="shop-w__form-p" action="/ListProduct" method="get">
-                                            <div class="shop-w__form-p">
-                                                <div>
-                                                    <label for="name"></label>
-                                                    <input class="input-text input-text--border-radius input-text--style-1" type="text" id="name" th:value="${param.name}" placeholder="Enter name to find..." name="name" hidden="">
-                                                    <input type="hidden" name="categoryId" th:value="${param.categoryId}">
-                                                    <input type="hidden" name="colorId" th:value="${param.colorId}">
-                                                    <input type="hidden" name="memory" th:value="${param.memory}">
-                                                    <input type="hidden" name="ram" th:value="${param.ram}">
-                                                    <input type="hidden" name="minSize" th:value="${param.minSize}">
-                                                    <input type="hidden" name="maxSize" th:value="${param.maxSize}">
-                                                </div>
+                                            <a href="product-detail.html">Nikon DSLR 4K Camera</a></span>
+                                        <div class="product-o__rating gl-rating-style"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                            <span class="product-o__review">(0)</span></div>
+
+                                        <span class="product-o__price">$125.00
+
+                                            <span class="product-o__discount">$160.00</span></span>
+                                    </div>
+                                </div>
+                                <div class="u-s-m-b-30">
+                                    <div class="product-o product-o--hover-on">
+                                        <div class="product-o__wrap">
+
+                                            <a class="aspect aspect--bg-grey aspect--square u-d-block" href="product-detail.html">
+
+                                                <img class="aspect__img" src="images/product/electronic/product14.jpg" alt=""></a>
+                                            <div class="product-o__action-wrap">
+                                                <ul class="product-o__action-list">
+                                                    <li>
+
+                                                        <a data-modal="modal" data-modal-id="#quick-look" data-tooltip="tooltip" data-placement="top" title="Quick View"><i class="fas fa-search-plus"></i></a></li>
+                                                    <li>
+
+                                                        <a data-modal="modal" data-modal-id="#add-to-cart" data-tooltip="tooltip" data-placement="top" title="Add to Cart"><i class="fas fa-plus-circle"></i></a></li>
+
+                                                    <li>
+
+                                                        <a href="signin.html" data-tooltip="tooltip" data-placement="top" title="Email me When the price drops"><i class="fas fa-envelope"></i></a></li>
+                                                </ul>
                                             </div>
-                                        </form>
+                                        </div>
 
+                                        <span class="product-o__category">
+
+                                            <a href="shop-side-version-2.html">Electronics</a></span>
+
+                                        <span class="product-o__name">
+
+                                            <a href="product-detail.html">Nikon DSLR 2K Camera</a></span>
+                                        <div class="product-o__rating gl-rating-style"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                            <span class="product-o__review">(0)</span></div>
+
+                                        <span class="product-o__price">$125.00
+
+                                            <span class="product-o__discount">$160.00</span></span>
+                                    </div>
+                                </div>
+                                <div class="u-s-m-b-30">
+                                    <div class="product-o product-o--hover-on">
+                                        <div class="product-o__wrap">
+
+                                            <a class="aspect aspect--bg-grey aspect--square u-d-block" href="product-detail.html">
+
+                                                <img class="aspect__img" src="images/product/electronic/product15.jpg" alt=""></a>
+                                            <div class="product-o__action-wrap">
+                                                <ul class="product-o__action-list">
+                                                    <li>
+
+                                                        <a data-modal="modal" data-modal-id="#quick-look" data-tooltip="tooltip" data-placement="top" title="Quick View"><i class="fas fa-search-plus"></i></a></li>
+                                                    <li>
+
+                                                        <a data-modal="modal" data-modal-id="#add-to-cart" data-tooltip="tooltip" data-placement="top" title="Add to Cart"><i class="fas fa-plus-circle"></i></a></li>
+
+                                                    <li>
+
+                                                        <a href="signin.html" data-tooltip="tooltip" data-placement="top" title="Email me When the price drops"><i class="fas fa-envelope"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <span class="product-o__category">
+
+                                            <a href="shop-side-version-2.html">Electronics</a></span>
+
+                                        <span class="product-o__name">
+
+                                            <a href="product-detail.html">Sony DSLR 4K Camera</a></span>
+                                        <div class="product-o__rating gl-rating-style"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                            <span class="product-o__review">(0)</span></div>
+
+                                        <span class="product-o__price">$125.00
+
+                                            <span class="product-o__discount">$160.00</span></span>
+                                    </div>
+                                </div>
+                                <div class="u-s-m-b-30">
+                                    <div class="product-o product-o--hover-on">
+                                        <div class="product-o__wrap">
+
+                                            <a class="aspect aspect--bg-grey aspect--square u-d-block" href="product-detail.html">
+
+                                                <img class="aspect__img" src="images/product/electronic/product16.jpg" alt=""></a>
+                                            <div class="product-o__action-wrap">
+                                                <ul class="product-o__action-list">
+                                                    <li>
+
+                                                        <a data-modal="modal" data-modal-id="#quick-look" data-tooltip="tooltip" data-placement="top" title="Quick View"><i class="fas fa-search-plus"></i></a></li>
+                                                    <li>
+
+                                                        <a data-modal="modal" data-modal-id="#add-to-cart" data-tooltip="tooltip" data-placement="top" title="Add to Cart"><i class="fas fa-plus-circle"></i></a></li>
+
+                                                    <li>
+
+                                                        <a href="signin.html" data-tooltip="tooltip" data-placement="top" title="Email me When the price drops"><i class="fas fa-envelope"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <span class="product-o__category">
+
+                                            <a href="shop-side-version-2.html">Electronics</a></span>
+
+                                        <span class="product-o__name">
+
+                                            <a href="product-detail.html">Sony DSLR 2K Camera</a></span>
+                                        <div class="product-o__rating gl-rating-style"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                            <span class="product-o__review">(0)</span></div>
+
+                                        <span class="product-o__price">$125.00
+
+                                            <span class="product-o__discount">$160.00</span></span>
+                                    </div>
+                                </div>
+                                <div class="u-s-m-b-30">
+                                    <div class="product-o product-o--hover-on">
+                                        <div class="product-o__wrap">
+
+                                            <a class="aspect aspect--bg-grey aspect--square u-d-block" href="product-detail.html">
+
+                                                <img class="aspect__img" src="images/product/electronic/product17.jpg" alt=""></a>
+                                            <div class="product-o__action-wrap">
+                                                <ul class="product-o__action-list">
+                                                    <li>
+
+                                                        <a data-modal="modal" data-modal-id="#quick-look" data-tooltip="tooltip" data-placement="top" title="Quick View"><i class="fas fa-search-plus"></i></a></li>
+                                                    <li>
+
+                                                        <a data-modal="modal" data-modal-id="#add-to-cart" data-tooltip="tooltip" data-placement="top" title="Add to Cart"><i class="fas fa-plus-circle"></i></a></li>
+
+                                                    <li>
+
+                                                        <a href="signin.html" data-tooltip="tooltip" data-placement="top" title="Email me When the price drops"><i class="fas fa-envelope"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <span class="product-o__category">
+
+                                            <a href="shop-side-version-2.html">Electronics</a></span>
+
+                                        <span class="product-o__name">
+
+                                            <a href="product-detail.html">Canon DSLR 4K Camera</a></span>
+                                        <div class="product-o__rating gl-rating-style"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                            <span class="product-o__review">(0)</span></div>
+
+                                        <span class="product-o__price">$125.00
+
+                                            <span class="product-o__discount">$160.00</span></span>
+                                    </div>
+                                </div>
+                                <div class="u-s-m-b-30">
+                                    <div class="product-o product-o--hover-on">
+                                        <div class="product-o__wrap">
+
+                                            <a class="aspect aspect--bg-grey aspect--square u-d-block" href="product-detail.html">
+
+                                                <img class="aspect__img" src="images/product/electronic/product18.jpg" alt=""></a>
+                                            <div class="product-o__action-wrap">
+                                                <ul class="product-o__action-list">
+                                                    <li>
+
+                                                        <a data-modal="modal" data-modal-id="#quick-look" data-tooltip="tooltip" data-placement="top" title="Quick View"><i class="fas fa-search-plus"></i></a></li>
+                                                    <li>
+
+                                                        <a data-modal="modal" data-modal-id="#add-to-cart" data-tooltip="tooltip" data-placement="top" title="Add to Cart"><i class="fas fa-plus-circle"></i></a></li>
+
+                                                    <li>
+
+                                                        <a href="signin.html" data-tooltip="tooltip" data-placement="top" title="Email me When the price drops"><i class="fas fa-envelope"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                        <span class="product-o__category">
+
+                                            <a href="shop-side-version-2.html">Electronics</a></span>
+
+                                        <span class="product-o__name">
+
+                                            <a href="product-detail.html">Canon DSLR 2K Camera</a></span>
+                                        <div class="product-o__rating gl-rating-style"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+
+                                            <span class="product-o__review">(0)</span></div>
+
+                                        <span class="product-o__price">$125.00
+
+                                            <span class="product-o__discount">$160.00</span></span>
                                     </div>
                                 </div>
                             </div>
@@ -458,10 +664,8 @@
                     </div>
                 </div>
                 <!--====== End - Section Content ======-->
-
-                <!--====== End - Section Content ======-->
-
-                <!--====== End - Section 4 ======-->
+            </div>
+            <!--====== End - Section 4 ======-->
 
 
             <!--====== Section 5 ======-->

@@ -19,12 +19,6 @@ public interface VoucherService {
 
     Optional<Voucher> findById(Long id);
 
-    double VoucherDiscount(String voucherCode);
-
-    Voucher findVoucherWithCoce(String voucherCode);
-
-
-
 
 
 

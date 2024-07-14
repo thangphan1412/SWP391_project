@@ -98,27 +98,21 @@ public class CartController {
 
 
 
-    @GetMapping("/viewCart")
-    public String cart (Model model, Account currentAccount){
-        currentAccount = accountService.getCurrentAccount();
+        @GetMapping("/viewCart")
+        public String cart (Model model, Account currentAccount){
+            currentAccount = accountService.getCurrentAccount();
+            if (currentAccount == null) {
+                return "redirect:/login";
+            } else {
+                Customer customer = currentAccount.getCustomer();
+                Cart customerCart = cartService.getCartByCustomer(customer);
+                List<CartItems> listCartItems = cartItemsService.findByCartId(customerCart.getCartId());
+                model.addAttribute("ListCart", listCartItems);
+                model.addAttribute("MiniCartItems", listCartItems);
 
-        if (currentAccount == null) {
-            return "redirect:/login";
-        } else {
-
-            Customer customer = currentAccount.getCustomer();
-            Cart customerCart = cartService.getCartByCustomer(customer);
-            if (customerCart == null) {
-                customerCart = new Cart();
-                customerCart.setCustomer(customer);
+                return "cart";
             }
-            List<CartItems> listCartItems = cartItemsService.findByCartId(customerCart.getCartId());
-            model.addAttribute("ListCart", listCartItems);
-            model.addAttribute("MiniCartItems", listCartItems);
-
-            return "cart";
         }
-    }
 
 
 
@@ -152,8 +146,6 @@ public class CartController {
         redirectAttributes.addFlashAttribute("delMessage", "Delete fail");
         return "redirect:/viewCart";
     }
-
-
     @PostMapping("/updateCartItem")
     @ResponseBody
     public String updateCartItemQuantity(@RequestParam("cartItemId") Long cartItemId, @RequestParam("quantity") int quantity) {
@@ -169,3 +161,4 @@ public class CartController {
         }
     }
 }
+
