@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
 
     <!--====== Vendor Css ======-->
-    <link rel="stylesheet"   th:href="@{/css/vendor.css}" />>
+    <link rel="stylesheet"   th:href="@{/css/vendor.css}" />
     <link rel="stylesheet" th:href="@{/css/utility.css}" />
     <link rel="stylesheet" th:href="@{/css/app.css}" />
 </head>
@@ -45,67 +45,127 @@
                             <li class="has-separator">
 
                                 <a href="/">Home</a></li>
-                            <li class="is-marked">
+                            <li class="has-separator">
 
                                 <a href="/update">Admin Dashboard</a></li>
+                            <li class="is-marked">
+
+                                <a href="/viewOrder">List Orders</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="col-md-6  col-lg-3"></div>
 
 
-    <div class="col-lg-9 col-md-6">
-        <h1 class="dash__h1 u-s-m-b-30">Order Detail</h1>
+        <br>
+
+        <div class="u-s-p-b-60">
+
+            <!--====== Section Content ======-->
+            <div class="section__content">
+                <div class="dash">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-12">
+
+                                <!--====== Dashboard Features ======-->
+                                <div class="dash__box dash__box--bg-white dash__box--shadow u-s-m-b-30">
+                                    <div class="dash__pad-1">
 
 
-        <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
-            <div class="dash__table-wrap gl-scroll">
-                <table class="dash__table">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Address Of Receiver</th>
-                        <th>Approval Date</th>
-                        <th>Create Date</th>
-                        <th>Order Status</th>
-                        <th>Payment Method</th>
-                        <th>Payment Status</th>
-                        <th>Phone of Receiver</th>
-                        <th>Customer ID</th>
-                        <th>User Name</th>
-                        <th>Customer Full Name</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:if="${orderDetails != null}">
-                        <td th:text="${orderDetails.getOrderId()}"></td>
-                        <td th:text="${orderDetails.getAddressOfReceiver()}"></td>
-                        <td th:text="${orderDetails.getApprovalDate()}" ></td>
-                        <td th:text="${orderDetails.getCreateDate()}" ></td>
-                        <td th:text="${orderDetails.getOrderStatus()}"></td>
-                        <td th:text="${orderDetails.getPaymentMethod()}"></td>
-                        <td th:text="${orderDetails.getPaymentStatus()}"></td>
-                        <td th:text="${orderDetails.getPhoneOfReceiver()}"></td>
-                        <td th:text="${orderDetails.getCustomer().getId()}"></td>
-                        <td th:text="${orderDetails.getCustomer().getName()}"></td>
-                        <td th:text="${orderDetails.getCustomer().getFullname()}"></td>
-                    </tr>
+                                        <ul class="dash__f-list">
+                                            <h3 class="dash-active">MANAGE</h3>
+                                            <li>
 
-                    </tbody>
-                </table>
+                                                <a  th:href="@{/update}">Manage Product</a></li>
+
+                                            <li>
+
+                                                <a  th:href="@{/createSupBraCate}">Manage Supplier & Category & Brand</a></li>
+
+                                            <li>
+
+                                                <a href="/createVoucher">Manage Voucher</a></li>
+                                            <li>
+
+                                                <a href="/receipt">Manage Receipt</a></li>
+
+                                            <h3 class="dash-active">VIEW</h3>
+
+                                            <li>
+                                                <a href="/viewCustomer">View Customer</a></li>
+                                            <li>
+                                                <a href="/viewBrand">View Brand</a></li>
+                                            <li>
+                                                <a href="/viewSuppliers">View Suppliers</a></li>
+                                            <li>
+                                                <a class="dash-active" href="/viewOrder">View Orders</a></li>
+
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!--====== End - Dashboard Features ======-->
+                            </div>
+
+
+                            <div class="col-lg-9 col-md-12">
+
+
+                                <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
+                                    <div class="dash__table-wrap gl-scroll">
+                                        <table class="dash__table">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Address Of Receiver</th>
+                                                <th>Approval Date</th>
+                                                <th>Create Date</th>
+                                                <th>Order Status</th>
+                                                <th>Payment Method</th>
+                                                <th>Payment Status</th>
+                                                <th>Phone of Receiver</th>
+                                                <th>Customer ID</th>
+                                                <th>User Name</th>
+                                                <th>Customer Full Name</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:if="${orderDetails != null}">
+                                                <td th:text="${orderDetails.getOrderId()}"></td>
+                                                <td th:text="${orderDetails.getAddressOfReceiver()}"></td>
+                                                <td th:text="${orderDetails.getApprovalDate()}" ></td>
+                                                <td th:text="${orderDetails.getCreateDate()}" ></td>
+                                                <td th:text="${orderDetails.getOrderStatus()}"></td>
+                                                <td th:text="${orderDetails.getPaymentMethod()}"></td>
+                                                <td th:text="${orderDetails.getPaymentStatus()}"></td>
+                                                <td th:text="${orderDetails.getPhoneOfReceiver()}"></td>
+                                                <td th:text="${orderDetails.getCustomer().getId()}"></td>
+                                                <td th:text="${orderDetails.getCustomer().getName()}"></td>
+                                                <td th:text="${orderDetails.getCustomer().getFullname()}"></td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                </div>
             </div>
+            <!--====== End - Section Content ======-->
         </div>
-        <div style="font-weight: 600;" class="u-s-m-b-15 col-lg-12">
-
-            <a th:href="@{/create}" style="padding: 18px 18px; border: 2px solid #ff4500; border-radius: 6px; margin-top: 20px;" class="btn btn--e-transparent-brand-b-2" type="submit">Add more product</a></div>
     </div>
 
-
-
+    </div>
     <!--===============End===============-->
     <!--====== Main Footer ======-->
     <div th:insert="~{partials/footer :: footer}"></div>
@@ -127,7 +187,6 @@
 
     <!--====== End - Newsletter Subscribe Modal ======-->
     <!--====== End - Modal Section ======-->
-</div>
 <!--====== End - Main App ======-->
 
 
