@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
 
     <!--====== Vendor Css ======-->
-    <link rel="stylesheet"   th:href="@{/css/vendor.css}" />>
+    <link rel="stylesheet"   th:href="@{/css/vendor.css}" />
     <link rel="stylesheet" th:href="@{/css/utility.css}" />
     <link rel="stylesheet" th:href="@{/css/app.css}" />
 </head>
@@ -47,6 +47,7 @@
                                 <li class="has-separator">
                                     <a th:href="@{/checkout}">Checkout</a>
                                 </li>
+
                                 <li class="is-marked">
                                     <a>Checkout Success</a>
                                 </li>
@@ -58,7 +59,9 @@
                         <div class="checkout-success__content">
                             <h1 class="checkout-success__title">Thank You for Your Order!</h1>
                             <p class="checkout-success__text">Your order has been successfully placed. You will receive an email confirmation shortly.</p>
-                            <a style="padding: 1em" class="btn btn--e-brand" href="/">Continue Shopping</a>
+                            <br>
+                            <br>
+                            <a style="padding: 1em; margin-top: 1.5em" class="btn btn--e-brand" href="/">Continue Shopping</a>
                         </div>
                     </div>
                 </div>
