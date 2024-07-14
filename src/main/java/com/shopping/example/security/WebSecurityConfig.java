@@ -1,5 +1,7 @@
 package com.shopping.example.security;
 
+import com.shopping.example.security.jwt.JwtConfig;
+import com.shopping.example.security.jwt.JwtService;
 import com.shopping.example.utility.Contant;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +17,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.token.TokenService;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -27,7 +30,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.sql.DataSource;
 import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -38,6 +40,7 @@ public class WebSecurityConfig {
 
     private final PasswordEncoder passwordEncoder;
 
+
     private DataSource dataSource;
 
     @Bean
@@ -46,7 +49,7 @@ public class WebSecurityConfig {
         http.getSharedObject(AuthenticationManagerBuilder.class).authenticationProvider(daoAuthenticationProvider());
         http.authorizeHttpRequests(authConfig -> {
                     authConfig.requestMatchers(HttpMethod.GET, "/admin/**").hasAuthority(Contant.ROLE_ADMIN.toString());
-                    authConfig.requestMatchers(HttpMethod.GET, "/employee/**").hasAuthority(Contant.ROLE_EMPLOYEE);
+                    authConfig.requestMatchers(HttpMethod.GET, "/employee/**").hasAuthority(Contant.ROLE_EMPLOYEE.toString());
                     authConfig.requestMatchers(HttpMethod.GET, "/css/**", "/js/**", "/images/**").permitAll(); // Cấu hình cho phép truy cập các đường dẫn CSS, JS, và hình ảnh
                     authConfig.requestMatchers(HttpMethod.GET, "/ProductDetail/**", "/Category/**", "/ListProduct/**").permitAll(); // Cho phép truy cập vào các đường dẫn liên quan đến sản phẩm
                     authConfig.anyRequest().permitAll();
@@ -59,12 +62,10 @@ public class WebSecurityConfig {
                     login.failureUrl("/login?error=true");
                     login.defaultSuccessUrl("/");
                 }).logout(logout -> {
-                    logout.logoutUrl("/logout");
 //                    logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+                    logout.logoutUrl("/logout");
                     logout.logoutSuccessUrl("/");
                     logout.deleteCookies("JSESSIONID");
-                    logout.deleteCookies("JWT_TOKEN");
-                    logout.deleteCookies("1234abc");
                     logout.invalidateHttpSession(true);
                 })
                 .csrf(AbstractHttpConfigurer::disable);
@@ -84,7 +85,7 @@ public class WebSecurityConfig {
 
     {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:8088"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8088"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
 
@@ -106,4 +107,5 @@ public class WebSecurityConfig {
         tokenRepository.setDataSource(dataSource);
         return tokenRepository;
     }
+
 }

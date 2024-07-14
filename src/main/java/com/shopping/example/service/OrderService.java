@@ -13,8 +13,6 @@ public interface OrderService {
 
     List<Order> getAllOrders();
 
-    List<Order> getAllOrdersNotShip();
-
     List<Order> getOrdersByCustomer(Customer currentCustomer);
 
     Order getOrderById(Long id);
@@ -29,7 +27,9 @@ public interface OrderService {
 
     Order save(Order order);
 
+    List<Order> getAllOrdersNotShip();
+
+
     void updateOrderStatus(Long orderId, String status);
     void updatePaymentStatus(Long orderId, String paymentStatus);
-
 }

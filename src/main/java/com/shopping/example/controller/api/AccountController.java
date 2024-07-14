@@ -1,5 +1,6 @@
 package com.shopping.example.controller.api;
 
+import com.shopping.example.DTO.request.ChangePasswordRequest;
 import com.shopping.example.DTO.request.ForgotPasswordRequest;
 import com.shopping.example.DTO.request.LoginRequest;
 import com.shopping.example.DTO.request.ResetPasswordRequest;
@@ -10,31 +11,28 @@ import com.shopping.example.security.jwt.JwtService;
 import com.shopping.example.service.AccountService;
 import com.shopping.example.service.CustomerService;
 
-import com.shopping.example.utility.Contant;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
+import java.security.Principal;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -46,6 +44,8 @@ public class AccountController {
 
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private JwtService tokenService;
 
     @Autowired
     private AccountService accountService;
@@ -59,7 +59,7 @@ public class AccountController {
 
 
     @PostMapping("/login")
-    public ModelAndView login(@Valid @ModelAttribute LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, BindingResult result , HttpServletRequest request, HttpServletResponse response) {
         // Lấy thông tin người dùng từ form đăng nhập
 
         // check
@@ -85,7 +85,6 @@ public class AccountController {
 
         LoginResponse loginResponse;
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/");
         if (userDetails.getAccount() != null) {
             loginResponse = new LoginResponse(token ,
                     userDetails.getAccount().getEmail() ,roles);
@@ -99,28 +98,43 @@ public class AccountController {
             cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
             cookie.setPath("/"); // Đảm bảo rằng cookie có thể được truy cập trên mọi đường dẫn
             response.addCookie(cookie);
-            if (roles.contains(Contant.ROLE_ADMIN)) {
-                cookie = new Cookie("1234abc", "1234");
-                cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
-                cookie.setPath("/"); // Đảm bảo rằng cookie có thể được truy cập trên mọi đường dẫn
-                response.addCookie(cookie);
-            }
+            return ResponseEntity.ok(loginResponse);
         }
-        return modelAndView;
+        else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
     }
     @PostMapping("/forgot-password")
-    public ResponseEntity<?> createForgotPassword(@RequestParam String email) {
+    public void createForgotPassword(@RequestParam(name = "email") String email, HttpServletResponse response) throws IOException {
         var command = new ForgotPasswordRequest(email);
         accountService.forgotPassword(command);
-        return ResponseEntity.ok().build();
+        response.sendRedirect("/forgotPasswordSuccess");
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<String> changePassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body("Validation errors occurred");
-        }
+    public void resetPassword(@RequestParam(name = "token", required = false) String token,
+                                                 @RequestParam(name = "newPassword", required = false) String newPassword,
+                                        HttpServletResponse response) throws IOException {
+        ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest(token, newPassword);
         accountService.resetPassword(resetPasswordRequest);
-        return ResponseEntity.ok("Thay đổi mật khẩu thành công");
+        response.sendRedirect("/resetPasswordSuccess");
     }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<String> changePasswords(
+            @RequestParam(name = "currentPassword", required = false) String currentPassword,
+            @RequestParam(name = "newPassword", required = false) String newPassword,
+            @RequestParam(name = "confirmNewPassword", required = false) String confirmNewPassword,
+            Principal principal){
+        ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(currentPassword, newPassword, confirmNewPassword);
+        accountService.changePassword(changePasswordRequest, principal);
+        return ResponseEntity.ok("Thay doi mat khau thanh cong");
+    }
+
+//    @PostMapping("/logout")
+//    public ResponseEntity<?> logout(HttpServletRequest request){
+//        String token = tokenService.getTokenFromRequest(request);
+//        tokenService.invalidateToken(token);
+//        return ResponseEntity.ok("logout success");
+//    }
 }

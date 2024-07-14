@@ -5,8 +5,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class Login {
-    @GetMapping(value = {"/login", "/logout"})
+    @GetMapping("/login")
     public String showFormLogin(){
+        return "login";
+
+    }
+    @GetMapping("/reset-password")
+    public String test(){
         return "login";
 
     }

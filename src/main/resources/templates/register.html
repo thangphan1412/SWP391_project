@@ -2,31 +2,20 @@
 <html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <!--[if IE]>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link href="images/favicon.png" rel="shortcut icon">
+    <link th:href="@{/images/favicon.png}" rel="shortcut icon">
     <title>CellphoneZDB</title>
 
     <!--====== Google Font ======-->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
 
     <!--====== Vendor Css ======-->
-<<<<<<< HEAD
-    <link rel="stylesheet" href="css/vendor.css">
-
-    <!--====== Utility-Spacing ======-->
-    <link rel="stylesheet" href="css/utility.css">
-
-    <!--====== App ======-->
-    <link rel="stylesheet" href="css/app.css">
-=======
     <link rel="stylesheet"   th:href="@{/css/vendor.css}" />
     <link rel="stylesheet" th:href="@{/css/utility.css}" />
     <link rel="stylesheet" th:href="@{/css/app.css}" />
->>>>>>> f93ccafd7889e6615e07978f8951c907d9d3cc24
 </head>
 <body class="config">
 <div class="preloader is-active">
@@ -120,20 +109,7 @@
                                             <label class="gl-label">PASSWORD *</label>
 
                                             <input class="input-text input-text--primary-style" type="password"
-                                                   id="password" placeholder="Enter Password" name="password">
-                                        </div>
-                                        <div class="u-s-m-b-30">
-
-                                            <label class="gl-label">Role *</label>
-
-<!--                                            <input class="input-text input-text&#45;&#45;primary-style" type="password"-->
-<!--                                                   id="role" placeholder="Role" name="password">-->
-                                            <select name="role" id="role" class="input-text input-text&#45;&#45;primary-style">
-                                                <option th:value="ROLE_USER" th:text="Customer"></option>
-                                                <option th:value="ROLE_EMPLOYEE" th:text="Employee"></option>
-                                                <option th:value="ROLE_SHIPPER" th:text="Shipper"></option>
-                                            </select>
-                                        </div>
+                                                   id="password" placeholder="Enter Password" name="password"></div>
                                         <div class="u-s-m-b-15">
 
                                             <button class="btn btn--e-transparent-brand-b-2" type="submit">CREATE

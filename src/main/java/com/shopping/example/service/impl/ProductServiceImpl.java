@@ -2,6 +2,7 @@ package com.shopping.example.service.impl;
 
 import com.shopping.example.entity.Category;
 import com.shopping.example.entity.Product;
+import com.shopping.example.entity.Supplier;
 import com.shopping.example.repository.ProductRepository;
 import com.shopping.example.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +66,16 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.filterProducts(name, categoryId, minPrice, maxPrice, colorId, memory, ram, minSize, maxSize, pageable);
     }
 
+    @Override
+    public List<Product> findBySuppliers(Supplier supplier) {
+        return productRepository.findBySupplier(supplier);
+    }
+
+    @Override
+    public List<Product> NewArrival() {
+        return productRepository.findNewArrivalProducts();
+    }
+
 
     @Override
     public List<Product> getProductsByPriceRange(double minPrice, double maxPrice) {
@@ -84,6 +95,8 @@ public class ProductServiceImpl implements ProductService {
     public Page<Product> getProductsByCategory(Category category, Pageable pageable) {
         return productRepository.findByCategory(category, pageable);
     }
+
+
 
 
 }

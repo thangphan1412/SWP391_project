@@ -73,14 +73,15 @@
                             <form class="l-f-o__form" th:action="@{/addVoucher}" method="post">
                                 <div class="u-s-m-b-30">
                                     <label class="gl-label">Voucher Code</label>
-                                    <input class="input-text input-text--primary-style" type="text" placeholder="Enter the code or generate random code" name="code" id="codeInput">
+                                    <input class="input-text input-text--primary-style" type="text" placeholder="Enter the code or generate random code" name="code" id="codeInput" r>
+
 
                                     <button style="margin-top: 1.2em" type="button" id="generateCodeButton">Generate Code Random</button>
                                 </div>
 
                                 <div class="u-s-m-b-30">
                                     <label class="gl-label">Discount Percentage</label>
-                                    <input class="input-text input-text--primary-style" type="number" placeholder="Enter the percentage" name="percentage" required step="any" pattern="[0-9]+(\.[0-9]+)?" title="Enter a valid decimal number" min="0" max="100">
+                                    <input class="input-text input-text--primary-style" type="number" placeholder="Enter the percentage" name="percentage" required step="any" pattern="[0-9]+(\.[0-9]+)?" title="Enter a valid decimal number" min="0" max="70">
                                 </div>
 
                                 <div class="u-s-m-b-30">
@@ -143,7 +144,7 @@
                                                     <td>
                                                         <span th:text="${voucher.status}"></span>
 
-                                                        <form th:action="@{/changeVoucherStatus}" method="post">
+                                                        <form th:action="@{/changeVoucherStatus}" method="post" th:if="${voucher.status} == active">
                                                             <input type="text" th:value="${voucher.voucherId}" hidden="" name="voucherId">
                                                             <button type="submit">Change</button>
                                                         </form>

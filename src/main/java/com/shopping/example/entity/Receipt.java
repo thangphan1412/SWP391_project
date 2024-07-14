@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @Data
@@ -15,24 +18,20 @@ public class Receipt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long receiptId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "Supplier_Id")
     private Supplier supplier;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name ="Employee_Id")
     private Employee employee;
 
     @Column
-    private String receiptDate;
+    private LocalDate receiptDate;
 
+    @OneToMany(mappedBy = "receipt", cascade = CascadeType.ALL)
+    private List<ReceiptDetail> receiptDetails;
 
-    @OneToOne
-    @JoinColumn(name ="Receipt_Detail_Id")
-    private ReceiptDetail receiptDetail;
-
-
-
-
-
+    @Column
+    private String receiptStatus = "Pending";
 }

@@ -104,9 +104,9 @@
                                                         </td>
                                                         <td th:text="${order.getPaymentMethod()}"></td>
                                                         <td>
-    <span th:text="${order.getPaymentStatus()}"
-          th:style="${order.getPaymentStatus() == 'Pending'} ? 'color: red;' : 'color: green;'">
-    </span>
+                                                            <span th:text="${order.getPaymentStatus()}"
+                                                                  th:style="${order.getPaymentStatus() == 'Pending'} ? 'color: red;' : 'color: green;'">
+                                                            </span>
                                                         </td>
                                                         <td>
                                                             <form th:action="@{/updateOrderStatus}" method="post" onsubmit="return confirm('Are you sure you want to Receive this order  ?')">

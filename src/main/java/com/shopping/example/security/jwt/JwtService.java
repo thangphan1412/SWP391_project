@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -46,4 +47,12 @@ public class JwtService {
     public boolean isTokenExpired(String token) throws SignatureException {
         return getValue(token, Claims::getExpiration).before(new Date());
     }
+//
+//    public String getTokenFromRequest(HttpServletRequest request) {
+//        return null;
+//    }
+//
+//    public void invalidateToken(String token) {
+//
+//    }
 }

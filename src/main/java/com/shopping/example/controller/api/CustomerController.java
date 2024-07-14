@@ -3,12 +3,7 @@ package com.shopping.example.controller.api;
 import com.shopping.example.DTO.request.RegisterRequest;
 import com.shopping.example.entity.Account;
 import com.shopping.example.entity.Customer;
-import com.shopping.example.entity.Employee;
-import com.shopping.example.entity.Shipper;
 import com.shopping.example.service.CustomerService;
-import com.shopping.example.service.impl.EmployeeService;
-import com.shopping.example.service.impl.ShipperService;
-import com.shopping.example.utility.Contant;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,12 +25,6 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @Autowired
-    private EmployeeService employeeService;
-
-    @Autowired
-    private ShipperService shipperService;
-
 
     @PostMapping("/register/save")
     public String register(@Valid @ModelAttribute RegisterRequest registerRequest,
@@ -49,22 +38,8 @@ public class CustomerController {
             return "redirect:/register";
         }
         try {
-            switch (registerRequest.getRole()) {
-                case Contant.ROLE_USER:
-                    Customer customer = customerService.register(registerRequest);
-                    model.addAttribute("customer", customer);
-                    break;
-                case Contant.ROLE_EMPLOYEE:
-                    Employee employee = employeeService.register(registerRequest);
-                    model.addAttribute("employee", employee);
-                    break;
-                case Contant.ROLE_SHIPPER:
-                    Shipper shipper = shipperService.register(registerRequest);
-                    model.addAttribute("shipper", shipper);
-                    break;
-                default:
-                    break;
-            }
+            Customer customer = customerService.register(registerRequest);
+            model.addAttribute("customer", customer);
             return "redirect:/login"; // Name of the success view
         } catch (Exception e) {
             e.printStackTrace();

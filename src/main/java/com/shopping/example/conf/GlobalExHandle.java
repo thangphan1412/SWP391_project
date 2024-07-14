@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExHandle {
 
-    @ExceptionHandler(Exception.class)
-    public String test(Exception e) {
-        log.error(e.getMessage(), e);
-//        todo: custom error page here
-        return null;
-    }
+//    @ExceptionHandler(Exception.class)
+//    public String test(Exception e) {
+//        log.error(e.getMessage(), e);
+////        todo: custom error page here
+//        return null;
+//    }
 }

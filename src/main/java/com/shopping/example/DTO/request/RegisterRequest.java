@@ -20,5 +20,4 @@ public class RegisterRequest {
     private String email;
     @Length(min = 6, max = 30, message = "Password must be between 6 and 30 characters")
     private String password;
-    private String role;
 }
