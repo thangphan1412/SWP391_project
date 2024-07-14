@@ -66,6 +66,8 @@ public class WebSecurityConfig {
                     logout.logoutUrl("/logout");
                     logout.logoutSuccessUrl("/");
                     logout.deleteCookies("JSESSIONID");
+                    logout.deleteCookies("JWT_TOKEN");
+                    logout.deleteCookies("1234abc");
                     logout.invalidateHttpSession(true);
                 })
                 .csrf(AbstractHttpConfigurer::disable);

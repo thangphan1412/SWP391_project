@@ -94,13 +94,13 @@
                                     <h1 class="gl-h1">SIGNIN</h1>
 
                                     <span class="gl-text u-s-m-b-30">If you have an account with us, please log in.</span>
-                                    <form class="l-f-o__form"  th:action="@{/login}" method="post">
+                                    <form class="l-f-o__form" role="form" th:action="@{/api/account/login}" method="post" th:object="${login}">
 
                                         <div class="u-s-m-b-30">
 
                                             <label class="gl-label" for="username">User Name*</label>
 
-                                            <input class="input-text input-text--primary-style" type="text" id="username" name="username" placeholder="Enter UserName"></div>
+                                            <input class="input-text input-text--primary-style" type="text" id="username" name="email" placeholder="Enter UserName"></div>
                                         <div class="u-s-m-b-30">
 
                                             <label class="gl-label" for="login-password">PASSWORD *</label>

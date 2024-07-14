@@ -11,6 +11,7 @@ import com.shopping.example.security.jwt.JwtService;
 import com.shopping.example.service.AccountService;
 import com.shopping.example.service.CustomerService;
 
+import com.shopping.example.utility.Contant;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,6 +31,7 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -59,7 +61,7 @@ public class AccountController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest, BindingResult result , HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView login(@Valid @ModelAttribute LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
         // Lấy thông tin người dùng từ form đăng nhập
 
         // check
@@ -85,6 +87,7 @@ public class AccountController {
 
         LoginResponse loginResponse;
 
+        ModelAndView modelAndView = new ModelAndView("redirect:/");
         if (userDetails.getAccount() != null) {
             loginResponse = new LoginResponse(token ,
                     userDetails.getAccount().getEmail() ,roles);
@@ -98,11 +101,14 @@ public class AccountController {
             cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
             cookie.setPath("/"); // Đảm bảo rằng cookie có thể được truy cập trên mọi đường dẫn
             response.addCookie(cookie);
-            return ResponseEntity.ok(loginResponse);
+            if (roles.contains(Contant.ROLE_ADMIN)) {
+                cookie = new Cookie("1234abc", "1234");
+                cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
+                cookie.setPath("/"); // Đảm bảo rằng cookie có thể được truy cập trên mọi đường dẫn
+                response.addCookie(cookie);
+            }
         }
-        else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
-        }
+        return modelAndView;
     }
     @PostMapping("/forgot-password")
     public void createForgotPassword(@RequestParam(name = "email") String email, HttpServletResponse response) throws IOException {
