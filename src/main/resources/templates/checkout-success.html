@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
 
     <!--====== Vendor Css ======-->
+<<<<<<< HEAD
     <link rel="stylesheet" href="css/vendor.css">
 
     <!--====== Utility-Spacing ======-->
@@ -19,6 +20,11 @@
 
     <!--====== App ======-->
     <link rel="stylesheet" href="css/app.css">
+=======
+    <link rel="stylesheet"   th:href="@{/css/vendor.css}" />
+    <link rel="stylesheet" th:href="@{/css/utility.css}" />
+    <link rel="stylesheet" th:href="@{/css/app.css}" />
+>>>>>>> f93ccafd7889e6615e07978f8951c907d9d3cc24
 </head>
 <body class="config">
 <div class="preloader is-active">
@@ -50,6 +56,7 @@
                                 <li class="has-separator">
                                     <a th:href="@{/checkout}">Checkout</a>
                                 </li>
+
                                 <li class="is-marked">
                                     <a>Checkout Success</a>
                                 </li>
@@ -61,7 +68,9 @@
                         <div class="checkout-success__content">
                             <h1 class="checkout-success__title">Thank You for Your Order!</h1>
                             <p class="checkout-success__text">Your order has been successfully placed. You will receive an email confirmation shortly.</p>
-                            <a class="btn btn--e-brand" href="/">Continue Shopping</a>
+                            <br>
+                            <br>
+                            <a style="padding: 1em; margin-top: 1.5em" class="btn btn--e-brand" href="/">Continue Shopping</a>
                         </div>
                     </div>
                 </div>

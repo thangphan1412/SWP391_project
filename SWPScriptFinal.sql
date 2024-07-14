@@ -70,7 +70,7 @@ GO
 INSERT INTO [dbo].[categories] ([category_name])
 VALUES
     ('SmartPhone'),
-    ('Laptop'),
+    ('Laptop');
     
 GO
 

@@ -45,10 +45,13 @@
                             <ul class="breadcrumb__list">
                                 <li class="has-separator">
 
-                                    <a href="index.html">Home</a></li>
+                                    <a href="/">Home</a></li>
+                                <li class="has-separator">
+
+                                    <a href="/update">Admin Dashboard</a></li>
                                 <li class="is-marked">
 
-                                    <a href="dash-my-order.html">List Customer</a></li>
+                                    <a href="/viewOrder">List Orders</a></li>
                             </ul>
                         </div>
                     </div>
@@ -72,33 +75,48 @@
                                 <div class="dash__box dash__box--bg-white dash__box--shadow u-s-m-b-30">
                                     <div class="dash__pad-1">
 
-                                        <span class="dash__text u-s-m-b-16">Hello, John Doe</span>
+
                                         <ul class="dash__f-list">
+                                            <h3 class="dash-active">MANAGE</h3>
                                             <li>
 
-                                                <a href="/viewCustomer">View Customer</a></li>
+                                                <a th:href="@{/update}">Manage Product</a></li>
+
                                             <li>
 
+                                                <a  th:href="@{/createSupBraCate}">Manage Supplier & Category & Brand</a></li>
+
+                                            <li>
+
+                                                <a href="/createVoucher">Manage Voucher</a></li>
+                                            <li>
+
+                                                <a href="/receipt">Manage Receipt</a></li>
+
+                                            <h3 class="dash-active">VIEW</h3>
+
+                                            <li>
+                                                <a  href="/viewCustomer">View Customer</a></li>
+                                            <li>
                                                 <a href="/viewBrand">View Brand</a></li>
                                             <li>
-
-                                                <a href="/viewSuppliers">View supplier</a></li>
+                                                <a href="/viewSuppliers">View Suppliers</a></li>
                                             <li>
+                                                <a class="dash-active" href="/viewOrder">View Orders</a></li>
 
+<<<<<<< HEAD
                                                 <a href="/viewOrder">View Order</a></li>
                                             <li>
 
                                                 <a href="/shipping">Shipping</a></li>
+=======
+>>>>>>> f93ccafd7889e6615e07978f8951c907d9d3cc24
 
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="dash__box dash__box--bg-white dash__box--shadow dash__box--w">
-                                    <div class="dash__pad-1">
-                                        <ul class="dash__w-list">
-                                            <li>
-                                                <div class="dash__w-wrap">
 
+<<<<<<< HEAD
                                                     <span class="dash__w-icon dash__w-icon-style-1"><i
                                                             class="fas fa-cart-arrow-down"></i></span>
 
@@ -129,16 +147,17 @@
                                         </ul>
                                     </div>
                                 </div>
+=======
+>>>>>>> f93ccafd7889e6615e07978f8951c907d9d3cc24
                                 <!--====== End - Dashboard Features ======-->
                             </div>
                             <div class="col-lg-9 col-md-12">
                                 <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
                                     <div class="dash__pad-2">
-                                        <h1 class="dash__h1 u-s-m-b-14">View Customer</h1>
+                                        <h1 class="dash__h1 u-s-m-b-14">View Order</h1>
 
-                                        <form class="m-order u-s-m-b-30">
-                                            <div class="m-order__select-wrapper">
 
+<<<<<<< HEAD
                                                 <label class="u-s-m-r-8" for="my-order-sort">Show:</label><select
                                                     class="select-box select-box--primary-style" id="my-order-sort">
                                                 <option selected>5 customers</option>
@@ -149,6 +168,8 @@
                                                 <option>All customers</option>
                                             </select></div>
                                         </form>
+=======
+>>>>>>> f93ccafd7889e6615e07978f8951c907d9d3cc24
                                         <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
                                             <div class="dash__table-wrap gl-scroll">
                                                 <table class="dash__table">
@@ -165,6 +186,7 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
+<<<<<<< HEAD
                                                     <tr th:each="order :${orders}">
                                                         <td th:text="${order.getOrderId()}"></td>
                                                         <td th:text="${order.getAddressOfReceiver()}"></td>
@@ -204,6 +226,21 @@
                                                             </form>
                                                         </td>
                                                     </tr>
+=======
+                                                        <tr th:each="order :${orders}">
+                                                            <td th:text="${order.getOrderId()}"></td>
+                                                            <td th:text="${order.getAddressOfReceiver()}"></td>
+                                                            <td th:text="${order.getApprovalDate()}"></td>
+                                                            <td th:text="${order.getCreateDate()}"></td>
+                                                            <td th:text="${order.getOrderStatus()}"></td>
+                                                            <td th:text="${order.getPaymentMethod()}"></td>
+                                                            <td th:text="${order.getPaymentStatus()}"></td>
+                                                            <td>
+                                                                <a  th:href="@{/viewOrderDetail/{orderid}(orderid =${order.orderId})}"> view</a>
+<!--                                                                <button type="button" th:href=""> edit</button>-->
+                                                            </td>
+                                                        </tr>
+>>>>>>> f93ccafd7889e6615e07978f8951c907d9d3cc24
                                                 </table>
                                             </div>
                                         </div>

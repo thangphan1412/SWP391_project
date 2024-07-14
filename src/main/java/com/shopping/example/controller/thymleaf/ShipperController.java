@@ -23,6 +23,8 @@ public class ShipperController {
         System.out.println(orderService.getAllOrdersNotShip());
         return "shipping-order-list";
     }
+
+
     @PostMapping("/updateOrderStatus")
     public String updateOrderStatus(@RequestParam("orderId") Long orderId, @RequestParam("action") String action) {
         if ("receive".equals(action)) {

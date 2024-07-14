@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
 
     <!--====== Vendor Css ======-->
-    <link rel="stylesheet"   th:href="@{/css/vendor.css}" />>
+    <link rel="stylesheet"   th:href="@{/css/vendor.css}" />
     <link rel="stylesheet" th:href="@{/css/utility.css}" />
     <link rel="stylesheet" th:href="@{/css/app.css}" />
 </head>
@@ -106,7 +106,7 @@
 
                                                 <label class="gl-label" for="reg-lname">Product Image</label>
 
-                                                <img th:if="${product.productImage}" th:src="@{/product_img/{image}(image=${product.productImage})}" alt="Product Image">
+                                                <img style="max-width: 20%" th:if="${product.productImage}" th:src="@{/product_img/{image}(image=${product.productImage})}" alt="Product Image">
                                                 <input class="input-text input-text--primary-style" style="margin: auto" type="file" id="reg-lname" name="image">
                                                 <div class="u-s-m-b-30">
                                                     <label class="gl-label" for="reg-brand">Product Category</label>
