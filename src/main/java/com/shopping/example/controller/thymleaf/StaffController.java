@@ -129,7 +129,7 @@ public class StaffController {
     public String viewOrderDetail(Model model, @PathVariable("id")Long id){
         Optional<Order> order = Optional.ofNullable(orderService.getOrderById(id));
         if(order.isPresent()){
-            model.addAttribute("orderDetailss", order.get());
+            model.addAttribute("orderDetails", order.get());
         } else {
             System.out.println("Nothing to show");
         }
@@ -148,6 +148,8 @@ public class StaffController {
 
         return "editOrder";
     }
+
+
     // edit status order detail by status
     @PostMapping("/updateOrder/{id}")
     public String updateOrder(@PathVariable("id") Long id, @RequestParam(name = "status") String status, @RequestParam("email") String email, Model model){

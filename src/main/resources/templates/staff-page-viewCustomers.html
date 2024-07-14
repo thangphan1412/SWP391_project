@@ -115,37 +115,22 @@
                                     <div class="dash__pad-2">
                                         <h1 class="dash__h1 u-s-m-b-14">View Customer</h1>
 
-                                        <form class="m-order u-s-m-b-30">
-                                            <div class="m-order__select-wrapper">
-
-                                                <label class="u-s-m-r-8" for="my-order-sort">Show:</label><select class="select-box select-box--primary-style" id="my-order-sort">
-                                                <option selected>5 customers</option>
-                                                <option>15 customers</option>
-                                                <option>30 customers</option>
-                                                <option>60 customers</option>
-                                                <option>100 customers</option>
-                                                <option>All customers</option>
-                                            </select></div>
-                                        </form>
                                         <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
                                             <div class="dash__table-wrap gl-scroll">
                                                 <table class="dash__table">
                                                     <thead>
                                                     <tr>
                                                         <th>User Id</th>
-                                                        <th>FullName</th>
+
                                                         <th>Email</th>
-                                                        <th>Phone Number</th>
-                                                        <th></th>
+                                                        <th>Action</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     <tr th:each="customer :${customers}">
                                                         <td th:text="${customer.getId()}"></td>
-                                                        <td th:text="${customer.getName()}"></td>
                                                         <td th:text="${customer.account.getEmail()}"></td>
-                                                        <td th:text="${customer.getPhone()}"></td>
-                                                        <td><a href="#">View detail</a></td>
+                                                        <td><a th:href="@{/customerDetail/{id}(id = ${customer.getId()})}">View detail</a></td>
                                                     </tr>
 
                                                     </tbody>
