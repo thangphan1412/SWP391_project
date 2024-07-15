@@ -73,6 +73,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> getAllOrdersRequestCancel() {
+        return orderRepository.findByOrderRequestCancelTrue();
+    }
+
+    @Override
     public void updateOrderStatus(Long orderId, String status) {
         Optional<Order> orderOptional = orderRepository.findById(orderId);
         if (orderOptional.isPresent()) {
@@ -96,6 +101,8 @@ public class OrderServiceImpl implements OrderService {
             throw new RuntimeException("Order not found with id: " + orderId);
         }
     }
+
+
 
 
 }

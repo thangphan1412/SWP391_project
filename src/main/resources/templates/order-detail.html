@@ -48,9 +48,10 @@
                             <li class="has-separator">
 
                                 <a href="/update">Admin Dashboard</a></li>
+                            <li class="has-separator">
+                                <a href="/viewOrder">Manage Orders</a></li>
                             <li class="is-marked">
-
-                                <a href="/viewOrder">List Orders</a></li>
+                                <a th:href="@{/viewOrderDetail/{orderid}(orderid =${order.orderId})}"> Orders Detail</a></li>
                         </ul>
                     </div>
                 </div>
@@ -78,7 +79,7 @@
                                             <h3 class="dash-active">MANAGE</h3>
                                             <li>
 
-                                                <a  th:href="@{/update}">Manage Product</a></li>
+                                                <a class="dash-active" th:href="@{/update}">Manage Product</a></li>
 
                                             <li>
 
@@ -87,21 +88,16 @@
                                             <li>
 
                                                 <a href="/createVoucher">Manage Voucher</a></li>
+
+                                            <li>
+                                                <a href="/viewRequest"> Request of Cancel</a></li>
                                             <li>
 
                                                 <a href="/receipt">Manage Receipt</a></li>
-
-                                            <h3 class="dash-active">VIEW</h3>
-
                                             <li>
-                                                <a href="/viewCustomer">View Customer</a></li>
+                                                <a href="/viewCustomer">View Customer Account</a></li>
                                             <li>
-                                                <a href="/viewBrand">View Brand</a></li>
-                                            <li>
-                                                <a href="/viewSuppliers">View Suppliers</a></li>
-                                            <li>
-                                                <a class="dash-active" href="/viewOrder">View Orders</a></li>
-
+                                                <a href="/viewOrder">Manage Orders</a></li>
 
                                         </ul>
                                     </div>
@@ -109,51 +105,96 @@
 
                                 <!--====== End - Dashboard Features ======-->
                             </div>
-
-
                             <div class="col-lg-9 col-md-12">
-
-
-                                <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
-                                    <div class="dash__table-wrap gl-scroll">
-                                        <table class="dash__table">
-                                            <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Address Of Receiver</th>
-                                                <th>Approval Date</th>
-                                                <th>Create Date</th>
-                                                <th>Order Status</th>
-                                                <th>Payment Method</th>
-                                                <th>Payment Status</th>
-                                                <th>Phone of Receiver</th>
-                                                <th>Customer ID</th>
-                                                <th>User Name</th>
-                                                <th>Customer Full Name</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr th:if="${orderDetails != null}">
-                                                <td th:text="${orderDetails.getOrderId()}"></td>
-                                                <td th:text="${orderDetails.getAddressOfReceiver()}"></td>
-                                                <td th:text="${orderDetails.getApprovalDate()}" ></td>
-                                                <td th:text="${orderDetails.getCreateDate()}" ></td>
-                                                <td th:text="${orderDetails.getOrderStatus()}"></td>
-                                                <td th:text="${orderDetails.getPaymentMethod()}"></td>
-                                                <td th:text="${orderDetails.getPaymentStatus()}"></td>
-
-                                                <td th:text="${orderDetails.getPhoneOfReceiver()}"></td>
-                                                <td th:text="${orderDetails.getCustomer().getId()}"></td>
-                                                <td th:text="${orderDetails.getCustomer().getName()}"></td>
-                                                <td th:text="${orderDetails.getCustomer().getFullname()}"></td>
-                                            </tr>
-
-                                            </tbody>
-                                        </table>
+                                <h1 class="dash__h1 u-s-m-b-30">Order Details</h1>
+                                <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                                    <div class="dash__pad-2">
+                                        <div class="dash-l-r">
+                                            <div>
+                                                <div class="manage-o__text-2 u-c-secondary" th:text="'Order Id: ' + ${order.orderId}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="dash__pad-2">
+                                        <div class="dash-l-r">
+                                            <div>
+                                                <span>Create Date</span>
+                                                <div class="manage-o__text-2 u-c-secondary" th:text="${order.createDate}"></div>
+                                            </div>
+                                            <div>
+                                                <span>Approval Date</span>
+                                                <div class="manage-o__text-2 u-c-secondary" th:text="${order.approvalDate}"></div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
+
+
+                                <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                                    <div class="dash__pad-2">
+                                        <div class="manage-o">
+                                            <div th:each="orderDetail : ${ListOrderDetail}">
+                                                <div class="manage-o__header u-s-m-b-30">
+                                                </div>
+                                                <div class="dash-l-r">
+                                                </div>
+                                                <div class="manage-o__description">
+                                                    <div class="description__container">
+                                                        <div class="description__img-wrap">
+                                                            <img class="u-img-fluid" th:src="@{'/product_img/' + ${orderDetail.productType.product.productImage}}" alt="">
+                                                        </div>
+                                                        <div class="description-title" th:text="${orderDetail.productType.product.productName}"></div>
+                                                        <!--                                                            <strong th:text="'RAM: ' + ${orderDetail.productType.productTech.ram} + ' | Memory: ' + ${orderDetail.productType.productTech.memory} + ' | Size: ' + ${orderDetail.productType.productTech.size} + ' | Color: ' + ${orderDetail.productType.color.colorName}"></strong>-->
+                                                    </div>
+                                                    <strong th:text="'RAM: ' + ${orderDetail.productType.productTech.ram} + ' | Memory: ' + ${orderDetail.productType.productTech.memory} + ' | Size: ' + ${orderDetail.productType.productTech.size} + ' | Color: ' + ${orderDetail.productType.color.colorName}"></strong>
+                                                    <div class="description__info-wrap">
+                                                        <div>
+                                                            <span class="manage-o__text-2 u-c-silver">Quantity:
+                                                            <span class="manage-o__text-2 u-c-secondary" th:text="${orderDetail.quantity}"></span>
+                                                            </span>
+                                                        </div>
+                                                        <div>
+                                                            <span class="manage-o__text-2 u-c-silver">Total:
+                                                           <span class="manage-o__text-2 u-c-secondary" th:text="${orderDetail.price}"></span>
+                                                               </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="dash__box dash__box--bg-white dash__box--shadow u-s-m-b-30">
+                                            <div class="dash__pad-3">
+                                                <h2 class="dash__h2 u-s-m-b-8">Shipping Address</h2>
+                                                <h2 class="dash__h2 u-s-m-b-8" th:text="${order.customer.fullname != null ? order.customer.fullname : order.customer.name}"></h2>
+                                                <span class="dash__text-2" th:text="${order.addressOfReceiver}"></span>
+                                                <span class="dash__text-2" th:text="${order.phoneOfReceiver}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="dash__box dash__box--bg-white dash__box--shadow u-h-100">
+                                            <div class="dash__pad-3">
+                                                <h2 class="dash__h2 u-s-m-b-8">Total Summary</h2>
+                                                <div class="dash-l-r u-s-m-b-8">
+                                                    <div class="manage-o__text-2 u-c-secondary">Total</div>
+                                                    <div class="manage-o__text-2 u-c-secondary" th:text="${#numbers.formatDecimal(totalPrice, 1, 2)}"></div>
+                                                </div>
+                                                <span class="dash__text-2" th:text="${order.paymentStatus}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+
+
+
+
+
 
 
 

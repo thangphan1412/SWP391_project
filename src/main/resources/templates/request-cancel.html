@@ -80,7 +80,7 @@
                                             <h3 class="dash-active">MANAGE</h3>
                                             <li>
 
-                                                <a class="dash-active" th:href="@{/update}">Manage Product</a></li>
+                                                <a th:href="@{/update}">Manage Product</a></li>
 
                                             <li>
 
@@ -89,16 +89,20 @@
                                             <li>
 
                                                 <a href="/createVoucher">Manage Voucher</a></li>
-
-                                            <li>
-                                                <a href="/viewRequest"> Request of Cancel</a></li>
                                             <li>
 
                                                 <a href="/receipt">Manage Receipt</a></li>
+
+                                            <h3 class="dash-active">VIEW</h3>
+
                                             <li>
-                                                <a href="/viewCustomer">View Customer Account</a></li>
+                                                <a  href="/viewCustomer">View Customer</a></li>
                                             <li>
-                                                <a href="/viewOrder">Manage Orders</a></li>
+                                                <a href="/viewBrand">View Brand</a></li>
+                                            <li>
+                                                <a href="/viewSuppliers">View Suppliers</a></li>
+                                            <li>
+                                                <a class="dash-active" href="/viewOrder">View Orders</a></li>
 
 
                                         </ul>
@@ -110,50 +114,48 @@
                             <div class="col-lg-9 col-md-12">
                                 <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
                                     <div class="dash__pad-2">
-                                        <h1 class="dash__h1 u-s-m-b-14">Manage Order</h1>
+                                        <h1 class="dash__h1 u-s-m-b-14">Request Cancel</h1>
 
 
                                         <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
                                             <div class="dash__table-wrap gl-scroll">
                                                 <table class="dash__table">
                                                     <thead>
-                                                        <tr>
-                                                            <th>ID</th>
-                                                            <th>Address Of Receiver</th>
-                                                            <th>Approval Date</th>
-                                                            <th>Create Date</th>
-                                                            <th>Order Status</th>
-                                                            <th></th>
-                                                            <th>Payment Method</th>
-                                                            <th>Payment Status</th>
-                                                            <th>Action</th>
-                                                        </tr>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Account Email</th>
+                                                        <th>Address Of Receiver</th>
+                                                        <th>Approval Date</th>
+                                                        <th>Create Date</th>
+                                                        <th>Order Status</th>
+                                                        <th>Phone of Receiver</th>
+                                                        <th>Payment Method</th>
+                                                        <th>Payment Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr th:each="order :${orders}">
-                                                            <td th:text="${order.getOrderId()}"></td>
-                                                            <td th:text="${order.getAddressOfReceiver()}"></td>
-                                                            <td th:text="${order.getApprovalDate()}"></td>
-                                                            <td th:text="${order.getCreateDate()}"></td>
-                                                            <td th:text="${order.getOrderStatus()}"></td>
-                                                            <td>
-                                                             <form th:action="@{/updateOrder}" method="post">
-                                                                 <input hidden="" type="text" th:value="${order.getOrderId()}" name="id" >
-                                                                 <select name="status" th:value="${order.getOrderStatus()}">
-                                                                     <option th:value="Pending" th:text="'Pending'" ></option>
-                                                                     <option th:value="Cancelled" th:text="'Cancel'" ></option>
-                                                                     <option th:value="Delivered" th:text="'Delivered'" ></option>
-                                                                 </select>
-                                                                 <input th:type="submit" value="Update">
+                                                    <tr th:each="order :${orders}">
+                                                        <td th:text="${order.getOrderId()}"></td>
+                                                        <td th:text="${order.customer.account.email}"></td>
+                                                        <td th:text="${order.getAddressOfReceiver()}"></td>
+                                                        <td th:text="${order.getApprovalDate()}"></td>
+                                                        <td th:text="${order.getCreateDate()}"></td>
+                                                        <td th:text="${order.getOrderStatus()}"></td>
+                                                        <td th:text="${order.phoneOfReceiver}"></td>
+                                                        <td th:text="${order.getPaymentMethod()}"></td>
+                                                        <td th:text="${order.getPaymentStatus()}"></td>
+
+                                                        <td>
+                                                            <form method="post" th:action="@{/acceptRequest}">
+                                                                <input type="text" hidden="" name="orderId" th:value="${order.orderId}">
+                                                                <button type="submit">Accept Request</button>
                                                             </form>
-                                                            </td>
-                                                            <td th:text="${order.getPaymentMethod()}"></td>
-                                                            <td th:text="${order.getPaymentStatus()}"></td>
-                                                            <td>
-                                                                <a  th:href="@{/viewOrderDetail/{orderid}(orderid =${order.orderId})}"> view</a>
-<!--                                                                <button type="button" th:href=""> edit</button>-->
-                                                            </td>
-                                                        </tr>
+
+                                                            <a  th:href="@{/viewOrderDetail/{orderid}(orderid =${order.orderId})}"> view</a>
+                                                            <!--                                                                <button type="button" th:href=""> edit</button>-->
+                                                        </td>
+                                                    </tr>
                                                 </table>
                                             </div>
                                         </div>

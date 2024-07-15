@@ -448,21 +448,24 @@ public class ProductController {
             Optional<ProductTech> optionalTech = productTechService.getProductTechById(techId);
             ProductTech newProductTech = optionalTech.orElseThrow(() -> new RuntimeException("ProductTech not found"));
 
-            List<ProductType> productTypeList = productTypeService.findByProduct(existProduct);
-//            for (ProductType productType: productTypeList){
-//
-//            }
-
 
             newProductType.setProductTech(newProductTech);
             Optional<Color> optionalColor = colorService.getColorById(colorId);
             Color newColor = optionalColor.orElse(null);
-
-
             newProductType.setColor(newColor);
+            List<ProductType> existProductTypeList = productTypeService.findByProduct(existProduct);
+            for (ProductType existProductType: existProductTypeList){
+                if (existProductType.getProductTech().getRam() == newProductType.getProductTech().getRam()&&
+                        existProductType.getProductTech().getMemory() == newProductType.getProductTech().getMemory() &&
+                        existProductType.getProductTech().getSize() == newProductType.getProductTech().getSize() &&
+                        existProductType.getColor().getColorName().equalsIgnoreCase(newProductType.getColor().getColorName())){
+                    redirectAttributes.addFlashAttribute("successMessage", "Product type is already exist");
+                    return "redirect:/updateProduct/" + proId;
+                }
+
+            }
             newProductType.setProduct_type_price(price);
             newProductType.setProduct_type_quantity(quantity);
-
             productTypeService.saveProductType(newProductType);
 
             redirectAttributes.addFlashAttribute("successMessage", "Add ProductType successful");

@@ -53,6 +53,9 @@ public class Order {
     @Column
     private double orderAmount;
 
+    @Column
+    private boolean orderRequestCancel = Boolean.parseBoolean("False");
+
     @OneToMany
     @JoinColumn
     private List<OrderDetail> orderDetails;

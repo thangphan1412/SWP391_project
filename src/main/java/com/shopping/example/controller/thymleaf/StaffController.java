@@ -33,6 +33,8 @@ public class StaffController {
     private AccountService accountService;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private OrderDetailService orderDetailService;
 
     // show sreec for employee
     @GetMapping("/employees")
@@ -129,12 +131,14 @@ public class StaffController {
     // view order detail of one product
     @GetMapping("/viewOrderDetail/{id}")
     public String viewOrderDetail(Model model, @PathVariable("id")Long id){
-        Optional<Order> order = Optional.ofNullable(orderService.getOrderById(id));
-        if(order.isPresent()){
-            model.addAttribute("orderDetails", order.get());
-        } else {
-            System.out.println("Nothing to show");
-        }
+        Order order = orderService.getOrderById(id);
+        List<OrderDetail> orderDetailsList = orderDetailService.getOrderDetailsByOrder(order);
+        double totalPrice = orderDetailsList.stream()
+                .mapToDouble(orderDetail -> orderDetail.getPrice() * orderDetail.getQuantity())
+                .sum();
+        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("order", order);
+        model.addAttribute("ListOrderDetail", orderDetailsList);
         return "order-detail";
     }
 
