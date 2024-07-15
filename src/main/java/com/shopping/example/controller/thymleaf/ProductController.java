@@ -197,7 +197,13 @@ public class ProductController {
             redirectAttributes.addFlashAttribute("cateMessage", "Name is required");
             return "redirect:/createSupBraCate";
         }
-
+        List<Category> categoryList = categoryService.findAll();
+        for (Category c :categoryList){
+            if (c.getCategoryName().equalsIgnoreCase(name)){
+                redirectAttributes.addFlashAttribute("cateMessage", "category already exists");
+                return "redirect:/createSupBraCate";
+            }
+        }
         newCategory.setCategoryName(name.trim());
 
         redirectAttributes.addFlashAttribute("cateMessage", "Category added successfully");
@@ -230,6 +236,15 @@ public class ProductController {
                 redirectAttributes.addFlashAttribute("proMessage", "Name is required");
                 return "redirect:/create";
             }
+            List<Product> productList = productService.getAllProducts();
+            for(Product p: productList){
+                if (p.getProductName().equalsIgnoreCase(name)){
+                    redirectAttributes.addFlashAttribute("proMessage", "product is already exist");
+                    return "redirect:/create";
+                }
+            }
+
+
             newProduct.setProductName(name.trim());
             newProduct.setSupplier(supplier);
             newProduct.setProductDescription(description);
@@ -264,6 +279,13 @@ public class ProductController {
             redirectAttributes.addFlashAttribute("brandMessage", "Name is required");
             return "redirect:/createSupBraCate";
         }
+        List<Brand> existBrand = brandService.findAll();
+        for(Brand b : existBrand){
+            if(b.getBrandName().equalsIgnoreCase(name)){
+                redirectAttributes.addFlashAttribute("brandMessage", "Brand is already exist");
+                return "redirect:/createSupBraCate";
+            }
+        }
         newBrand.setBrandName(name.trim());
         brandService.save(newBrand);
         redirectAttributes.addFlashAttribute("brandMessage", "Brand added successfully");
@@ -274,6 +296,13 @@ public class ProductController {
     @PostMapping("/createTech")
     public String createTech(@RequestParam("Ram") int ram,@RequestParam("Memory") int memory,@RequestParam("Size") double size,RedirectAttributes redirectAttributes){
         ProductTech tech = new ProductTech();
+        List<ProductTech> productTechList = productTechService.getAllProductTechs();
+        for(ProductTech productTech: productTechList){
+            if (productTech.getSize() == size && productTech.getMemory() == memory && productTech.getRam() == ram){
+                redirectAttributes.addFlashAttribute("techMessage", "Product tech already exist");
+                return "redirect:/create";
+            }
+        }
         tech.setSize(size);
         tech.setRam(ram);
         tech.setMemory(memory);
@@ -297,13 +326,20 @@ public class ProductController {
             return "redirect:/createSupBraCate";
         }
 
-        newSup.setSupplierAddress(address.trim());
         if (name.isBlank()){
             redirectAttributes.addFlashAttribute("supMessage", "Name is required");
             return "redirect:/createSupBraCate";
         }
-        newSup.setSupplierName(name.trim());
 
+        List<Supplier> supplierList = supplierService.findAllSuppliers();
+        for(Supplier sup: supplierList){
+            if(sup.getSupplierAddress().equalsIgnoreCase(address) && sup.getSupplierName().equalsIgnoreCase(name)){
+            redirectAttributes.addFlashAttribute("supMessage", "Supplier is already exist");
+            return "redirect:/createSupBraCate";
+            }
+        }
+        newSup.setSupplierAddress(address.trim());
+        newSup.setSupplierName(name.trim());
         supplierService.saveSupplier(newSup);
         redirectAttributes.addFlashAttribute("supMessage", "Supplier added successfully");
         return "redirect:/createSupBraCate";

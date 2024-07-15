@@ -10,6 +10,7 @@ import com.shopping.example.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -90,7 +91,6 @@ public class OrderServiceImpl implements OrderService {
         if (orderOptional.isPresent()) {
             Order order = orderOptional.get();
             order.setPaymentStatus(paymentStatus);
-            order.setApprovalDate(new Date());
             orderRepository.save(order);
         } else {
             throw new RuntimeException("Order not found with id: " + orderId);

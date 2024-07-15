@@ -81,29 +81,29 @@
                                 <span class="js-menu-toggle"></span>
 
                                 <ul style="width:120px">
-                                    <li >
+                                    <li id="account">
 
                                         <a href="/UserDetail"><i class="fas fa-user-circle u-s-m-r-6"></i>
 
                                             <span>Account</span></a></li>
 
-                                    <li id="admin">
+                                    <li id="dashboard">
 
                                         <a href="/update"><i class="fas fa-address-card u-s-m-r-6"></i>
 
                                             <span>Dashboard</span></a></li>
 
-                                    <li>
+                                    <li id="register">
 
                                         <a href="/register"><i class="fas fa-user-plus u-s-m-r-6"></i>
 
                                             <span>Signup</span></a></li>
-                                    <li>
+                                    <li id="login">
 
                                         <a href="/login"><i class="fas fa-lock u-s-m-r-6"></i>
 
                                             <span>Signin</span></a></li>
-                                    <li>
+                                    <li id="logout">
 
                                         <a th:href="@{/logout}">
                                             <i class="fas fa-lock-open u-s-m-r-6"></i>
@@ -212,14 +212,27 @@
             <!--====== End - Secondary Nav ======-->
         </div>
     </nav>
-    <script th:inline="javascript">
+    <script
+            th:inline="javascript">
         $(document).ready(function () {
-            if (!readCookie('1234abc')) {
+            if (readCookie('1234abc')) { // admin
                 console.log(readCookie('1234abc'));
-                $('#admin').hide();
+                $('#account').hide();
+                $("#login").hide()//hide account
+                $("#register").hide()
+            }
+            else if (readCookie('4567abc')) { // customer
+                console.log(readCookie('4567abc'));
+                $('#dashboard').hide();
+                $("#login").hide()//hide account
+                $("#register").hide()
+            }
+            else{
+                $('#dashboard').hide();
+                $('#account').hide();
+                $('#logout').hide();
             }
         })
-
         function readCookie(name) {
             var nameEQ = name + "=";
             var ca = document.cookie.split(';');

@@ -85,9 +85,6 @@
 
                                                     <a th:href="@{/viewOrderList}">My Orders & Track Order</a></li>
 
-                                                <li>
-
-                                                    <a href="dash-cancellation.html">My Returns & Cancellations</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -164,7 +161,9 @@
                                                 </div>
                                                 <div class="col-lg-4 u-s-m-b-30">
                                                     <h2 class="dash__h2 u-s-m-b-8">Address</h2>
-                                                    <span class="dash__text" th:text="${account.customer.addressDetail != null} ? ${account.customer.addressDetail} : 'Please update the address number'"></span>
+                                                    <span class="dash__text" th:text="${account.customer.addressDetail != null && account.customer.city != null && account.customer.ward != null && account.customer.district != null
+                ? account.customer.addressDetail + ', ' + account.customer.district + ', ' + account.customer.ward + ', ' + account.customer.city
+                : 'Please update the address details'}"></span>
 
                                                 </div>
 

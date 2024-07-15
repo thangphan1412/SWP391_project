@@ -107,6 +107,13 @@ public class AccountController {
                 cookie.setPath("/"); // Đảm bảo rằng cookie có thể được truy cập trên mọi đường dẫn
                 response.addCookie(cookie);
             }
+            if (roles.contains(Contant.ROLE_USER)) {
+                cookie = new Cookie("4567abc", "4567");
+                cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
+                cookie.setPath("/"); // Đảm bảo rằng cookie có thể được truy cập trên mọi đường dẫn
+                response.addCookie(cookie);
+            }
+
         }
         return modelAndView;
     }
