@@ -95,12 +95,9 @@
                                                         <td th:text="${order.getApprovalDate()}"></td>
                                                         <td th:text="${order.getCreateDate()}"></td>
                                                         <td>
-                                                        <td>
                                                             <span th:if="${order.getOrderStatus() == 'Pending'}" style="color:red;" th:text="${order.getOrderStatus()}"></span>
                                                             <span th:if="${order.getOrderStatus() == 'Complete'}" style="color:green;" th:text="${order.getOrderStatus()}"></span>
                                                             <span th:if="${order.getOrderStatus() != 'Pending' && order.getOrderStatus() != 'Complete'}" style="color:orange;" th:text="${order.getOrderStatus()}"></span>
-                                                        </td>
-
                                                         </td>
                                                         <td th:text="${order.getPaymentMethod()}"></td>
                                                         <td>

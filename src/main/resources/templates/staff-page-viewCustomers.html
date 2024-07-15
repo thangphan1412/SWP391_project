@@ -115,6 +115,13 @@
                                     <div class="dash__pad-2">
                                         <h1 class="dash__h1 u-s-m-b-14">View Customer</h1>
 
+                                        <form th:action="@{/search-customer}" method="post">
+                                            <input type="text" name="name" placeholder="Search for customers by name">
+                                            <button type="submit">Search</button>
+                                        </form>
+                                        <div th:if="${searchMessage}">
+                                            <p th:text="${searchMessage}"></p>
+                                        </div>
                                         <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
                                             <div class="dash__table-wrap gl-scroll">
                                                 <table class="dash__table">

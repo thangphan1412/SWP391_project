@@ -447,12 +447,19 @@ public class ProductController {
 
             Optional<ProductTech> optionalTech = productTechService.getProductTechById(techId);
             ProductTech newProductTech = optionalTech.orElseThrow(() -> new RuntimeException("ProductTech not found"));
-            newProductType.setProductTech(newProductTech);
 
+            List<ProductType> productTypeList = productTypeService.findByProduct(existProduct);
+//            for (ProductType productType: productTypeList){
+//
+//            }
+
+
+            newProductType.setProductTech(newProductTech);
             Optional<Color> optionalColor = colorService.getColorById(colorId);
             Color newColor = optionalColor.orElse(null);
-            newProductType.setColor(newColor);
 
+
+            newProductType.setColor(newColor);
             newProductType.setProduct_type_price(price);
             newProductType.setProduct_type_quantity(quantity);
 
@@ -484,7 +491,7 @@ public class ProductController {
     private String saveProductImage(MultipartFile file, String fileName) {
 
         //Change the path after clone
-        String uploadDir = "D:\\Study\\SWP391\\SWP391\\SWP391_project\\src\\main\\resources\\static\\product_img";
+        String uploadDir = "D:\\Study\\SWP391\\SWP391_ProjectFinal\\SWP391_project\\src\\main\\resources\\static\\product_img";
         File uploadDirFile = new File(uploadDir);
 
         // Kiểm tra và tạo thư mục nếu chưa tồn tại
