@@ -16,7 +16,7 @@ public class    ShipperController {
     @Autowired
     OrderService orderService;
 
-    @PreAuthorize("hasRole('ROLE_EMPLOYEE')")
+//    @PreAuthorize("hasRole('ROLE_EMPLOYEE')")
     @GetMapping("/shipping")
     public String viewOrderList(Model model){
         model.addAttribute("orders", orderService.getAllOrdersNotShip());

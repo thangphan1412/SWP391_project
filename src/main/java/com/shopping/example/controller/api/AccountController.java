@@ -62,9 +62,7 @@ public class AccountController {
 
     @PostMapping("/login")
     public ModelAndView login(@Valid @ModelAttribute LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
-        // Lấy thông tin người dùng từ form đăng nhập
 
-        // check
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),
@@ -72,15 +70,15 @@ public class AccountController {
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        // lay ra thong tin nguoi dung dnag dang nhap
+
         MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
-        // tao token , claim : luu thong tin token dua tren 2 colum
+
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", userDetails.getAccount().getEmail());
         claims.put("userId", userDetails.getAccount().getId());
-        //for 15 minutes, sau khi het time thi phai dang nhap lai
+
         String token = jwtService.generateToken(claims, 15 * 60 * 1000);
-        // tra ra thong tin
+
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
@@ -88,6 +86,12 @@ public class AccountController {
         LoginResponse loginResponse;
 
         ModelAndView modelAndView = new ModelAndView("redirect:/");
+        if(roles.contains(Contant.ROLE_EMPLOYEE)) {
+            modelAndView = new ModelAndView("redirect:/employees");
+        } else if (roles.contains(Contant.ROLE_SHIPPER)) {
+            modelAndView = new ModelAndView("redirect:/shipping");
+        }
+
         if (userDetails.getAccount() != null) {
             loginResponse = new LoginResponse(token ,
                     userDetails.getAccount().getEmail() ,roles);
@@ -99,12 +103,12 @@ public class AccountController {
             cookie.setSecure(true);
             cookie.setHttpOnly(true);
             cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
-            cookie.setPath("/"); // Đảm bảo rằng cookie có thể được truy cập trên mọi đường dẫn
+            cookie.setPath("/");
             response.addCookie(cookie);
             if (roles.contains(Contant.ROLE_ADMIN)) {
                 cookie = new Cookie("1234abc", "1234");
                 cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
-                cookie.setPath("/"); // Đảm bảo rằng cookie có thể được truy cập trên mọi đường dẫn
+                cookie.setPath("/");
                 response.addCookie(cookie);
             }
         }
@@ -137,10 +141,5 @@ public class AccountController {
         return ResponseEntity.ok("Thay doi mat khau thanh cong");
     }
 
-//    @PostMapping("/logout")
-//    public ResponseEntity<?> logout(HttpServletRequest request){
-//        String token = tokenService.getTokenFromRequest(request);
-//        tokenService.invalidateToken(token);
-//        return ResponseEntity.ok("logout success");
-//    }
+
 }
