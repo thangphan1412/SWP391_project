@@ -85,8 +85,14 @@
                             <div class="l-f-o">
                                 <div class="l-f-o__pad-box">
                                     <h1 class="gl-h1">PERSONAL INFORMATION</h1>
-                                    <form class="l-f-o__form" method="post" role="form" th:action="@{/register/save}"
-                                          th:object="${user}">
+                                    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+                                    <div th:if="${errorMessages}" class="alert alert-danger">
+                                        <ul>
+                                            <li th:each="errorMessage : ${errorMessages}" th:text="${errorMessage}"></li>
+                                        </ul>
+                                    </div>
+                                    <form class="l-f-o__form" method="post" role="form" th:action="@{/register/save} "
+                                          th:object="${registerRequest}">
                                         <div class="gl-s-api">
                                             <div class="u-s-m-b-15">
                                         </div>
@@ -94,7 +100,7 @@
                                         <label class="gl-label">USER NAME *</label>
 
                                         <input class="input-text input-text--primary-style" type="text"
-                                               id="name" placeholder="Last Name" name="name"
+                                               id="name" placeholder="Last Name" name="name" maxlength="30"
                                         >
 
                                         <div class="u-s-m-b-30">
@@ -109,7 +115,7 @@
                                             <label class="gl-label">PASSWORD *</label>
 
                                             <input class="input-text input-text--primary-style" type="password"
-                                                   id="password" placeholder="Enter Password" name="password">
+                                                   id="password" placeholder="Enter Password" name="password" minlength="6" maxlength="30">
                                         </div>
                                         <div class="u-s-m-b-30">
 
