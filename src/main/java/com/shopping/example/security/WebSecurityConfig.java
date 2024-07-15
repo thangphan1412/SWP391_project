@@ -50,6 +50,7 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests(authConfig -> {
                     authConfig.requestMatchers(HttpMethod.GET, "/admin/**").hasAuthority(Contant.ROLE_ADMIN.toString());
                     authConfig.requestMatchers(HttpMethod.GET, "/employee/**").hasAuthority(Contant.ROLE_EMPLOYEE.toString());
+                    authConfig.requestMatchers(HttpMethod.GET, "/shipper/**").hasAuthority(Contant.ROLE_SHIPPER.toString());
                     authConfig.requestMatchers(HttpMethod.GET, "/css/**", "/js/**", "/images/**").permitAll(); // Cấu hình cho phép truy cập các đường dẫn CSS, JS, và hình ảnh
                     authConfig.requestMatchers(HttpMethod.GET, "/ProductDetail/**", "/Category/**", "/ListProduct/**").permitAll(); // Cho phép truy cập vào các đường dẫn liên quan đến sản phẩm
                     authConfig.anyRequest().permitAll();

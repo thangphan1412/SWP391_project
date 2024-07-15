@@ -103,7 +103,7 @@
                                         <a href="/login"><i class="fas fa-lock u-s-m-r-6"></i>
 
                                             <span>Signin</span></a></li>
-                                    <li>
+                                    <li id="admin1">
 
                                         <a th:href="@{/logout}">
                                             <i class="fas fa-lock-open u-s-m-r-6"></i>
@@ -216,7 +216,7 @@
         $(document).ready(function () {
             if (!readCookie('1234abc')) {
                 console.log(readCookie('1234abc'));
-                $('#admin').hide();
+                $('#admin, #admin1').hide();
             }
         })
 

@@ -90,43 +90,79 @@
                                     <div class="u-s-m-b-15">
 
                                         <a class="l-f-o__create-link btn--e-transparent-brand-b-2" href="/register">CREATE AN ACCOUNT</a></div>
+<!--                                    <h1 class="gl-h1">SIGNIN</h1>-->
+
+<!--                                    <span class="gl-text u-s-m-b-30">If you have an account with us, please log in.</span>-->
+<!--                                    <span> </span>-->
+<!--                                    <form class="l-f-o__form" role="form" th:action="@{/api/account/login}" method="post" th:object="${login}">-->
+
+<!--                                        <div class="u-s-m-b-30">-->
+
+<!--                                            <label class="gl-label" for="username">Email</label>-->
+
+<!--                                            <input class="input-text input-text&#45;&#45;primary-style" type="text" id="username" name="email" placeholder="Enter UserName"></div>-->
+<!--                                        <div class="u-s-m-b-30">-->
+
+<!--                                            <label class="gl-label" for="login-password">PASSWORD *</label>-->
+
+<!--                                            <input class="input-text input-text&#45;&#45;primary-style" type="password" id="login-password"  name="password" placeholder="Enter Password"></div>-->
+<!--                                        <div class="gl-inline">-->
+<!--                                            <div class="u-s-m-b-30">-->
+
+<!--                                                <button class="btn btn&#45;&#45;e-transparent-brand-b-2" type="submit">LOGIN</button></div>-->
+<!--                                            <div class="u-s-m-b-30">-->
+
+<!--                                                <a class="gl-link" th:href="@{/lostPassword}">Lost Your Password?</a></div>-->
+<!--                                        </div>-->
+<!--                                        <div class="u-s-m-b-30">-->
+
+<!--                                            &lt;!&ndash;====== Check Box ======&ndash;&gt;-->
+<!--                                            <div class="check-box">-->
+
+<!--                                                <input type="checkbox" id="remember-me">-->
+<!--                                                <div class="check-box__state check-box__state&#45;&#45;primary">-->
+
+<!--                                                    <label class="check-box__label" for="remember-me">Remember Me</label></div>-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash;====== End - Check Box ======&ndash;&gt;-->
+<!--                                        </div>-->
+<!--                                    </form>-->
+
                                     <h1 class="gl-h1">SIGNIN</h1>
 
                                     <span class="gl-text u-s-m-b-30">If you have an account with us, please log in.</span>
                                     <span> </span>
                                     <form class="l-f-o__form" role="form" th:action="@{/api/account/login}" method="post" th:object="${login}">
-
-                                        <div class="u-s-m-b-30">
-
-                                            <label class="gl-label" for="username">User Name*</label>
-
-                                            <input class="input-text input-text--primary-style" type="text" id="username" name="email" placeholder="Enter UserName"></div>
-                                        <div class="u-s-m-b-30">
-
-                                            <label class="gl-label" for="login-password">PASSWORD *</label>
-
-                                            <input class="input-text input-text--primary-style" type="password" id="login-password"  name="password" placeholder="Enter Password"></div>
-                                        <div class="gl-inline">
-                                            <div class="u-s-m-b-30">
-
-                                                <button class="btn btn--e-transparent-brand-b-2" type="submit">LOGIN</button></div>
-                                            <div class="u-s-m-b-30">
-
-                                                <a class="gl-link" th:href="@{/lostPassword}">Lost Your Password?</a></div>
+                                        <!-- Hiển thị thông báo lỗi -->
+                                        <div th:if="${error != null}" class="u-s-m-b-30" style="color: red">
+                                            <span class="error-message" th:text="${error}"></span>
                                         </div>
                                         <div class="u-s-m-b-30">
-
-                                            <!--====== Check Box ======-->
+                                            <label class="gl-label" for="username">Email</label>
+                                            <input class="input-text input-text--primary-style" type="text" id="username" name="email" placeholder="Enter UserName">
+                                        </div>
+                                        <div class="u-s-m-b-30">
+                                            <label class="gl-label" for="login-password">PASSWORD *</label>
+                                            <input class="input-text input-text--primary-style" type="password" id="login-password"  name="password" placeholder="Enter Password">
+                                        </div>
+                                        <div class="u-s-m-b-30">
+                                            <button class="btn btn--e-transparent-brand-b-2" type="submit">LOGIN</button>
+                                        </div>
+                                        <div class="u-s-m-b-30">
+                                            <a class="gl-link" th:href="@{/lostPassword}">Lost Your Password?</a>
+                                        </div>
+                                        <div class="u-s-m-b-30">
                                             <div class="check-box">
-
                                                 <input type="checkbox" id="remember-me">
                                                 <div class="check-box__state check-box__state--primary">
-
-                                                    <label class="check-box__label" for="remember-me">Remember Me</label></div>
+                                                    <label class="check-box__label" for="remember-me">Remember Me</label>
+                                                </div>
                                             </div>
-                                            <!--====== End - Check Box ======-->
                                         </div>
+
+
                                     </form>
+
                                 </div>
                             </div>
                         </div>

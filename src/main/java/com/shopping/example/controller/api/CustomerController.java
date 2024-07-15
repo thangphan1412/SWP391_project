@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,9 +38,10 @@ public class CustomerController {
     private ShipperService shipperService;
 
 
+
     @PostMapping("/register/save")
     public String register(@Valid @ModelAttribute RegisterRequest registerRequest,
-                           BindingResult result, Model model) {
+                           BindingResult result, Model model, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             List<String> errorMessages = result.getFieldErrors()
                     .stream()
@@ -65,7 +67,8 @@ public class CustomerController {
                 default:
                     break;
             }
-            return "redirect:/login"; // Name of the success view
+            redirectAttributes.addFlashAttribute("successMessage", "Registration successful!");
+            return "redirect:/register"; // Name of the success view
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("errorMessage", e.getMessage());

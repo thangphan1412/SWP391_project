@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -62,58 +63,65 @@ public class AccountController {
 
     @PostMapping("/login")
     public ModelAndView login(@Valid @ModelAttribute LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
-
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getEmail(),
-                        loginRequest.getPassword()
-                )
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
-
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("email", userDetails.getAccount().getEmail());
-        claims.put("userId", userDetails.getAccount().getId());
-
-        String token = jwtService.generateToken(claims, 15 * 60 * 1000);
-
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
-
-        LoginResponse loginResponse;
-
         ModelAndView modelAndView = new ModelAndView("redirect:/");
-        if(roles.contains(Contant.ROLE_EMPLOYEE)) {
-            modelAndView = new ModelAndView("redirect:/employees");
-        } else if (roles.contains(Contant.ROLE_SHIPPER)) {
-            modelAndView = new ModelAndView("redirect:/shipping");
-        }
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getEmail(),
+                            loginRequest.getPassword()
+                    )
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        if (userDetails.getAccount() != null) {
-            loginResponse = new LoginResponse(token ,
-                    userDetails.getAccount().getEmail() ,roles);
+            MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
 
-            request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("email", userDetails.getAccount().getEmail());
+            claims.put("userId", userDetails.getAccount().getId());
 
-            // Lưu token vào cookie
-            Cookie cookie = new Cookie("JWT_TOKEN", token);
-            cookie.setSecure(true);
-            cookie.setHttpOnly(true);
-            cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
-            cookie.setPath("/");
-            response.addCookie(cookie);
-            if (roles.contains(Contant.ROLE_ADMIN)) {
-                cookie = new Cookie("1234abc", "1234");
+            String token = jwtService.generateToken(claims, 15 * 60 * 1000);
+
+            List<String> roles = userDetails.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toList());
+
+            LoginResponse loginResponse;
+
+            if(roles.contains(Contant.ROLE_EMPLOYEE)) {
+                modelAndView = new ModelAndView("redirect:/employees");
+            } else if (roles.contains(Contant.ROLE_SHIPPER)) {
+                modelAndView = new ModelAndView("redirect:/shipper");
+            }
+
+            if (userDetails.getAccount() != null) {
+                loginResponse = new LoginResponse(token ,
+                        userDetails.getAccount().getEmail() ,roles);
+
+                request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
+
+                // Lưu token vào cookie
+                Cookie cookie = new Cookie("JWT_TOKEN", token);
+                cookie.setSecure(true);
+                cookie.setHttpOnly(true);
                 cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
                 cookie.setPath("/");
                 response.addCookie(cookie);
+                if (roles.contains(Contant.ROLE_ADMIN)) {
+                    cookie = new Cookie("1234abc", "1234");
+                    cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
+                    cookie.setPath("/");
+                    response.addCookie(cookie);
+                }
             }
+        } catch (BadCredentialsException e) {
+            modelAndView = new ModelAndView("login");
+            modelAndView.addObject("error", "Invalid email or password.");
         }
+
         return modelAndView;
     }
+
+
     @PostMapping("/forgot-password")
     public void createForgotPassword(@RequestParam(name = "email") String email, HttpServletResponse response) throws IOException {
         var command = new ForgotPasswordRequest(email);
