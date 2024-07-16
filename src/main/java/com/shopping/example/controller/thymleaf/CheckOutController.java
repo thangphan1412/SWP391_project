@@ -130,13 +130,11 @@ public class CheckOutController {
             } else {
                 // Fetch voucher details
                 Voucher voucher = voucherService.findVoucherWithCoce(voucherCode);
-
                 // Check if voucher is valid
-                if (voucher == null) {
+                if (voucher == null || voucher.getStatus().equalsIgnoreCase("inactive") || voucher.getEndDate().isBefore(LocalDate.now()) ) {
                     redirectAttributes.addFlashAttribute("errorMessage", "Invalid voucher code");
                     return "redirect:/checkout";
                 }
-
                 // Check if the voucher has already been used by the customer
                 List<Order> orderList = orderService.getOrdersByCustomer(customer);
                 boolean voucherUsed = orderList.stream()
@@ -153,6 +151,8 @@ public class CheckOutController {
                 // Apply voucher discount
                 total = total - (voucher.getPercentageDiscount() / 100.0 * total);
                 order.setVoucher(voucher);
+                voucher.setQuantity(voucher.getQuantity()-1);
+                voucherService.save(voucher);
                 order.setOrderAmount(total);
             }
 

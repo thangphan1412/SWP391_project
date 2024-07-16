@@ -47,9 +47,12 @@
                                     <li class="has-separator">
 
                                         <a href="/">Home</a></li>
-                                    <li class="is-marked">
+                                    <li class="has-separator">
 
                                         <a href="/UserDetail">My Account</a></li>
+                                    <li class="is-marked">
+
+                                        <a href="/viewOrderList">My Orders & Track Order</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -187,7 +190,8 @@
                                                             <div th:if="${order.orderStatus == 'Pending' and order.orderRequestCancel != true }">
                                                                 <form th:action="@{/requestCancel}" method="Post" onsubmit="return confirmCancel()">
                                                                     <input type="text" hidden="" name="orderId" th:value="${order.orderId}">
-                                                                    <button type="submit">Request Cancel</button>
+                                                                    <br>
+                                                                    <button style="background: red;color: #fff;padding: 0.5em ;border: none;border-radius: 25px;" type="submit">Request Cancel</button>
                                                                 </form>
 
                                                             </div>

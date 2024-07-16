@@ -119,6 +119,7 @@
                                                         <th>Phone of Receiver</th>
                                                         <th>Payment Method</th>
                                                         <th>Payment Status</th>
+                                                        <th>Request</th>
                                                         <th>Action</th>
                                                     </tr>
                                                     </thead>
@@ -137,12 +138,13 @@
                                                         <td>
                                                             <form method="post" th:action="@{/acceptRequest}">
                                                                 <input type="text" hidden="" name="orderId" th:value="${order.orderId}">
-                                                                <button type="submit">Accept Request</button>
+                                                                <button style="background: #2dce53;width: 110% ;color: #fff;padding: 0.5em ;border: none;border-radius: 25px;" type="submit">Accept Request</button>
                                                             </form>
 
-                                                            <a  th:href="@{/viewOrderDetail/{orderid}(orderid =${order.orderId})}"> view</a>
+
                                                             <!--                                                                <button type="button" th:href=""> edit</button>-->
                                                         </td>
+                                                        <td> <a  th:href="@{/viewOrderDetail/{orderid}(orderid =${order.orderId})}"> view</a></td>
                                                     </tr>
                                                 </table>
                                             </div>
