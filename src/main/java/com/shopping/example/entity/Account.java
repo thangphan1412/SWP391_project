@@ -49,4 +49,7 @@ public class Account {
     @OneToOne(mappedBy = "account")
     @JsonIgnore
     private Employee employee;
+    @OneToOne(mappedBy = "account")
+    @JsonIgnore
+    private Shipper shipper;
 }

@@ -23,6 +23,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByCustomerEmail(String email);
 
 
-    @Query("SELECT o FROM Order o WHERE o.orderStatus = 'Pending' OR o.employee.id = :id")
+    @Query("SELECT o FROM Order o WHERE o.orderStatus  = 'Pending' OR o.employee.id = :id")
     List<Order> getAllOrdersNotShipped(@Param("id") Long id);
 }

@@ -25,8 +25,12 @@ public class Order {
     private Customer customer ;
 
     @ManyToOne
-    @JoinColumn(name ="Employee_Id",nullable = false)
+    @JoinColumn(name ="Employee_Id")
     private Employee employee ;
+
+//    @ManyToOne
+//    @JoinColumn(name ="Shipper_Id",nullable = false)
+//    private Shipper shipper;
 
     @Column(nullable = false)
     private String addressOfReceiver;

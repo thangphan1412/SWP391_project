@@ -88,6 +88,7 @@
                                                         <th>Payment Method</th>
                                                         <th>Payment Status</th>
                                                         <th>Action</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -110,7 +111,7 @@
                                                                   th:style="${order.getPaymentStatus() == 'Pending'} ? 'color: red;' : 'color: green;'">
                                                             </span>
                                                         </td>
-                                                        <td>
+                                                        <td> a
                                                             <form th:action="@{/updateOrderStatus}" method="post" onsubmit="return confirm('Are you sure you want to Receive this order  ?')">
                                                                 <input type="hidden" name="orderId" th:value="${order.getOrderId()}" />
                                                                 <button type="submit" name="action" value="receive" th:if="${order.getEmployee() == null}">Receive</button>

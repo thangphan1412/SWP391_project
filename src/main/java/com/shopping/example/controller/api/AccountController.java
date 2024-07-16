@@ -90,7 +90,7 @@ public class AccountController {
             if(roles.contains(Contant.ROLE_EMPLOYEE)) {
                 modelAndView = new ModelAndView("redirect:/employees");
             } else if (roles.contains(Contant.ROLE_SHIPPER)) {
-                modelAndView = new ModelAndView("redirect:/shipper");
+                modelAndView = new ModelAndView("redirect:/shipping");
             }
 
             if (userDetails.getAccount() != null) {
