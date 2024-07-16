@@ -95,7 +95,6 @@ public class ProductController {
         model.addAttribute("hasProducts", !products.isEmpty());
         model.addAttribute("memoryList", productTechService.getAllProductMemory());
         model.addAttribute("productTechList", productTechService.getAllProductTechs());
-
         return "shop-side-version-2";
     }
 

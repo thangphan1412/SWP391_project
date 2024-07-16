@@ -4,9 +4,11 @@ import com.shopping.example.DTO.request.ChangePasswordRequest;
 import com.shopping.example.DTO.request.ForgotPasswordRequest;
 import com.shopping.example.DTO.request.ResetPasswordRequest;
 import com.shopping.example.entity.Account;
+import com.shopping.example.entity.Employee;
 import com.shopping.example.entity.Role;
 import com.shopping.example.javamail.MailService;
 import com.shopping.example.repository.AccountRepository;
+import com.shopping.example.repository.EmployeeRepository;
 import com.shopping.example.repository.RoleRepository;
 import com.shopping.example.security.MyUserDetailService;
 import com.shopping.example.security.MyUserDetails;
@@ -26,14 +28,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import java.security.Principal;
 import java.security.SignatureException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 @Component
 public class AccountServiceImpl implements AccountService {
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
 
     @Autowired
@@ -156,14 +158,48 @@ public class AccountServiceImpl implements AccountService {
         if (accountOpt.isPresent() && roleOpt.isPresent()) {
             Account account = accountOpt.get();
             Role newRole = roleOpt.get();
+
+            List<Role> existRole = account.getRoles();
+            // List all role already exist
+            if(newRole.getName().equalsIgnoreCase("ROLE_EMPLOYEE") || newRole.getName().equalsIgnoreCase("ROLE_SHIPPER") || newRole.getName().equalsIgnoreCase("ROLE_ADMIN"))
+                for (Role r: existRole){
+                if(r.getName().equalsIgnoreCase("ROLE_USER")){
+                    if (account.getEmployee() == null){
+                        Employee newEmployee = new Employee();
+                        newEmployee.setAccount(account);
+                        newEmployee.setId(Long.valueOf(generateUniqueId()));
+                        employeeRepository.save(newEmployee);
+                    }
+                }
+
+            }
+
             account.getRoles().clear();
             account.getRoles().add(newRole);
             accountRepository.save(account);
         } else {
             throw new RuntimeException("Account or Role not found");
         }
+    }
+
+    @Override
+    public List<Account> findAllByRole(String Rolename) {
+        return accountRepository.findAllByRole(Rolename);
+    }
+
+    @Override
+    public List<Account> searchAccount(String name) {
+        return accountRepository.findAllByRoleAndEmail("ROLE_USER",name);
+    }
 
 
+    public static String generateUniqueId() {
+        long currentTimeMillis = System.currentTimeMillis();
+        Random random = new Random();
+        int randomInt = random.nextInt(1000000); // Tạo số ngẫu nhiên 6 chữ số
+
+        // Kết hợp thời gian hiện tại và số ngẫu nhiên
+        return String.valueOf(currentTimeMillis) + String.valueOf(randomInt);
     }
 
 

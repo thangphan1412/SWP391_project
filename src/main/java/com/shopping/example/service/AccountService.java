@@ -26,4 +26,9 @@ public interface AccountService {
 
 
     void replaceRoleAccount(Long accountId, Long newRoleId);
+
+    List<Account> findAllByRole(String Rolename);
+
+    List<Account> searchAccount(String name);
+
 }

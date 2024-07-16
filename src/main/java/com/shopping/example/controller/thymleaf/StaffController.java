@@ -48,7 +48,7 @@ public class StaffController {
     // view customer from to employee
     @GetMapping("/viewCustomer")
     public String viewListCustomer(Model model){
-        model.addAttribute("customers", customerService.getAll());
+        model.addAttribute("accountList", accountService.findAllByRole("ROLE_USER"));
         return "staff-page-viewCustomers";
     }
 
@@ -61,19 +61,19 @@ public class StaffController {
             model.addAttribute("customerDetail", customer.get());
 
         } else {
-            model.addAttribute("error customer", "customer not found");
+            model.addAttribute("errorcustomer", "customer not found");
         }
         return "customers-detail";
     }
 
     //search customer
     @PostMapping("/search-customer")
-    public String searchCustomer(@RequestParam("name") String name, Model model){
-        List<Customer> customers = customerService.getCustomerByName(name);
-        if (customers.isEmpty()) {
-            model.addAttribute("searchMessage", "No customers found with the name \"" + name + "\".");
+    public String searchCustomer(@RequestParam("name") String email, Model model){
+        List<Account> accountList = accountService.searchAccount(email);
+        if (accountList.isEmpty()) {
+            model.addAttribute("searchMessage", "No customers found with the email \"" + email + "\".");
         }
-        model.addAttribute("customers", customers);
+        model.addAttribute("accountList", accountList);
         return "staff-page-viewCustomers";
     }
 

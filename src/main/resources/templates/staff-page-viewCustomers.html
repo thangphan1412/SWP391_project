@@ -131,13 +131,13 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <tr th:each="customer :${customers}">
-                                                        <td th:text="${customer.getId()}"></td>
-                                                        <td th:text="${customer.account.getEmail()}"></td>
+                                                    <tr th:each="account :${accountList}">
+                                                        <td th:text="${account.customer.id}"></td>
+                                                        <td th:text="${account.email}"></td>
                                                         <td>
-                                                            <a th:href="@{/customerDetail/{id}(id = ${customer.getId()})}">View detail</a>
+                                                            <a th:href="@{/customerDetail/{id}(id = ${account.getCustomer().getId()})}">View detail</a>
                                                             <br>
-                                                            <a th:href="@{/customerOrder/{id}(id = ${customer.getId()})}">View Order of Account</a>
+                                                            <a th:href="@{/customerOrder/{id}(id = ${account.getCustomer().getId()})}">View Order of Account</a>
                                                         </td>
 
                                                     </tr>
