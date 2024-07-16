@@ -4,8 +4,10 @@ import com.shopping.example.DTO.request.ChangePasswordRequest;
 import com.shopping.example.DTO.request.ForgotPasswordRequest;
 import com.shopping.example.DTO.request.ResetPasswordRequest;
 import com.shopping.example.entity.Account;
+import com.shopping.example.entity.Role;
 import com.shopping.example.javamail.MailService;
 import com.shopping.example.repository.AccountRepository;
+import com.shopping.example.repository.RoleRepository;
 import com.shopping.example.security.MyUserDetailService;
 import com.shopping.example.security.MyUserDetails;
 import com.shopping.example.security.jwt.JwtService;
@@ -21,16 +23,21 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsPasswordService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.security.Principal;
 import java.security.SignatureException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Component
 public class AccountServiceImpl implements AccountService {
+
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -118,7 +125,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account findByEmail(String email) {
-      return   accountRepository.findByEmail(email).get();
+        return   accountRepository.findByEmail(email).get();
+    }
+
+    @Override
+    public List<Account> getAllAccountsWithRoles() {
+        return accountRepository.findAllWithRoles();
     }
 
     @Override
@@ -133,11 +145,26 @@ public class AccountServiceImpl implements AccountService {
         if (!changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmNewPassword())) {
             throw new IllegalStateException("Password are not the same");
         }
-
-        // update the password
-//        user.getPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
-
-        // save the new password
-//        accountRepository.save(user);
     }
+
+    @Override
+    @Transactional
+    public void replaceRoleAccount(Long accountId, Long newRoleId) {
+        Optional<Account> accountOpt = accountRepository.findById(accountId);
+        Optional<Role> roleOpt = roleRepository.findById(newRoleId);
+
+        if (accountOpt.isPresent() && roleOpt.isPresent()) {
+            Account account = accountOpt.get();
+            Role newRole = roleOpt.get();
+            account.getRoles().clear();
+            account.getRoles().add(newRole);
+            accountRepository.save(account);
+        } else {
+            throw new RuntimeException("Account or Role not found");
+        }
+
+
+    }
+
+
 }

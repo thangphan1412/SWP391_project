@@ -36,6 +36,9 @@ public class StaffController {
     @Autowired
     private OrderDetailService orderDetailService;
 
+    @Autowired
+    private RoleService roleService;
+
     // show sreec for employee
     @GetMapping("/employees")
     public String showScreen(){
@@ -60,7 +63,6 @@ public class StaffController {
         } else {
             model.addAttribute("error customer", "customer not found");
         }
-
         return "customers-detail";
     }
 
@@ -189,16 +191,32 @@ public class StaffController {
     }
 
 
-    // search order
-//    @PostMapping("/search-order")
-//    public String searchOrder(@RequestParam("name") String name, Model model){
-//        List<Order> orders = orderService.getOrderByName(name);
-//        if (customers.isEmpty()) {
-//            model.addAttribute("searchMessage", "No customers found with the name \"" + name + "\".");
-//        }
-//        model.addAttribute("customers", customers);
-//        return "staff-page-viewCustomers";
-//    }
+    @GetMapping("/viewAllAccount")
+    public String viewAllAccount(Model model){
+        Account currentAccount = accountService.getCurrentAccount();
+        List<Account> accountList = accountService.getAllAccountsWithRoles();
+        accountList.removeIf(account -> account.getId().equals(currentAccount.getId()));
+        model.addAttribute("accounts", accountList);
+        model.addAttribute("roleList", roleService.findAll() );
+        return "view-all-account";
+    }
+
+
+    @PostMapping("/replaceRole")
+    public String replaceRole(@RequestParam(name = "id") Long id, @RequestParam(name = "roleId") Long roleId, RedirectAttributes redirectAttributes){
+        accountService.replaceRoleAccount(id,roleId);
+        redirectAttributes.addFlashAttribute("roleMessage", "Role updated successfully");
+        return "redirect:/viewAllAccount";
+
+    }
+
+
+
+
+
+
+
+
 
 
 }

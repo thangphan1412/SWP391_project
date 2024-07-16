@@ -212,8 +212,7 @@
             <!--====== End - Secondary Nav ======-->
         </div>
     </nav>
-    <script
-            th:inline="javascript">
+    <script th:inline="javascript">
         $(document).ready(function () {
             if (readCookie('1234abc')) { // admin
                 console.log(readCookie('1234abc'));
@@ -227,6 +226,13 @@
                 $("#login").hide()//hide account
                 $("#register").hide()
             }
+            else if (readCookie('89abc')) { // employee
+                console.log(readCookie('89abc'));
+                $('#account').hide();
+                $("#login").hide()//hide account
+                $("#register").hide()
+            }
+
             else{
                 $('#dashboard').hide();
                 $('#account').hide();
