@@ -22,7 +22,7 @@
                 <form id="name-filter-form" class="shop-w__form-p" action="/ListProduct"
                       method="get">
                     <div  class="shop-w__form-p">
-                        <div>
+                        <div style="position: relative" id="search-container">
                             <label for="name"></label>
 
                             <input style="width: 170%" class="input-text input-text--border-radius input-text--style-1"
@@ -55,6 +55,8 @@
                         >
                         </div>
                     </div>
+                    <ul id="recent-searches" style="display: none; list-style: none; position: absolute; background: white; border: 1px solid #ccc; width: 27%; border-radius: 15px;  z-index: 1000; padding: 0; margin: 0;"></ul>
+
                 </form>
 
                 <!--====== End - Search Form ======-->
