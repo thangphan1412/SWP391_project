@@ -187,6 +187,9 @@ public class ProductController {
 
     @GetMapping("/createSupBraCate")
     public String createSupBra(Model model) {
+        model.addAttribute("supplierList", supplierService.findAllSuppliers());
+        model.addAttribute("categoryList", categoryService.findAll());
+        model.addAttribute("brandList", brandService.findAll());
         return "admin-add-supplier-brand";
     }
 
@@ -293,6 +296,8 @@ public class ProductController {
 
     }
 
+
+    //Create Tech
     @PostMapping("/createTech")
     public String createTech(@RequestParam("Ram") int ram,@RequestParam("Memory") int memory,@RequestParam("Size") double size,RedirectAttributes redirectAttributes){
         ProductTech tech = new ProductTech();
@@ -566,6 +571,98 @@ public class ProductController {
         }
         return null;
     }
+
+
+    @PostMapping("/updateBrand")
+    public String updateBrand(@RequestParam("brandId") Long id, @RequestParam("brandName") String brandName, RedirectAttributes redirectAttributes) {
+        Optional<Brand> optionalBrand = brandService.findById(id);
+        if (optionalBrand.isPresent()) {
+            Brand existBrand = optionalBrand.get();
+
+            if (brandName.isBlank()) {
+                redirectAttributes.addFlashAttribute("brandMessage", "Brand Name is empty");
+                return "redirect:/createSupBraCate";
+            }
+
+            List<Brand> brandList = brandService.findAll();
+            for (Brand b : brandList) {
+                if (b.getBrandName().equalsIgnoreCase(brandName)) {
+                    redirectAttributes.addFlashAttribute("brandMessage", "Brand Name already exists");
+                    return "redirect:/createSupBraCate";
+                }
+            }
+
+            existBrand.setBrandName(brandName.trim());
+            brandService.save(existBrand);
+            redirectAttributes.addFlashAttribute("brandMessage", "Update Brand successful");
+        } else {
+            redirectAttributes.addFlashAttribute("brandMessage", "Brand not found");
+        }
+
+        return "redirect:/createSupBraCate";
+    }
+
+    @PostMapping("/updateCategory")
+    public String updateCategory(@RequestParam("categoryId") Long id, @RequestParam("categoryName") String categoryName, RedirectAttributes redirectAttributes) {
+        Optional<Category> optionalCategory = categoryService.findById(id);
+        if(optionalCategory.isPresent()){
+
+            if (categoryName.isBlank()) {
+                redirectAttributes.addFlashAttribute("cateMessage", "Category name is empty");
+                return "redirect:/createSupBraCate";
+            }
+
+
+            Category existCategory = optionalCategory.get();
+            List<Category> categoryList = categoryService.findAll();
+            for (Category cate: categoryList){
+                if(cate.getCategoryName().equalsIgnoreCase(categoryName)){
+                    redirectAttributes.addFlashAttribute("cateMessage", "Cate Name already exists");
+                    return "redirect:/createSupBraCate";
+                }
+            }
+            existCategory.setCategoryName(categoryName.trim());
+            categoryService.save(existCategory);
+            redirectAttributes.addFlashAttribute("cateMessage", " Update category successful");
+
+        }
+        return "redirect:/createSupBraCate";
+    }
+
+
+    @PostMapping("/updateSupplier")
+    public String updateCategory(@RequestParam("supplierId") Long id,
+                                 @RequestParam("supplierName") String supplierName,
+                                 @RequestParam("supplierAddress") String supplierAddress,
+                                 RedirectAttributes redirectAttributes) {
+        Optional<Supplier> optionalSupplier = supplierService.findSupplierById(id);
+        if (optionalSupplier.isPresent()){
+            Supplier existSupplier = optionalSupplier.get();
+            if (supplierName.isBlank() || supplierAddress.isBlank() ){
+                redirectAttributes.addFlashAttribute("supMessage", "Supplier Name or Supplier Address is required");
+                return "redirect:/createSupBraCate";
+            }
+            List<Supplier> supplierList = supplierService.findAllSuppliers();
+            for(Supplier sup: supplierList){
+                if(sup.getSupplierAddress().equalsIgnoreCase(supplierAddress) && sup.getSupplierName().equalsIgnoreCase(supplierName)){
+                    redirectAttributes.addFlashAttribute("supMessage", "Supplier Name or Supplier Address is already exist");
+                    return "redirect:/createSupBraCate";
+                }
+            }
+            existSupplier.setSupplierName(supplierName.trim());
+            existSupplier.setSupplierAddress(supplierAddress.trim());
+            supplierService.saveSupplier(existSupplier);
+            redirectAttributes.addFlashAttribute("supMessage", "Update Successfull");
+
+        }
+
+        return "redirect:/createSupBraCate";
+    }
+
+
+
+
+
 
 
 }

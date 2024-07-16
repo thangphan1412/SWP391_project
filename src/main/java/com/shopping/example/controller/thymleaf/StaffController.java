@@ -175,6 +175,20 @@ public class StaffController {
     }
 
 
+    @GetMapping("/customerOrder/{id}")
+    public String viewCustomerOrder(@PathVariable Long id, Model model){
+        Optional<Customer> customer = customerService.findCustomerById(id);
+        if(customer.isPresent()){
+            Customer existCustomer = customer.get();
+            List<Order> orders = orderService.getOrdersByCustomer(existCustomer);
+            model.addAttribute("orders", orders);
+            model.addAttribute("customer", existCustomer);
+            return "customer-order";
+        }
+        return "customer-order";
+    }
+
+
     // search order
 //    @PostMapping("/search-order")
 //    public String searchOrder(@RequestParam("name") String name, Model model){

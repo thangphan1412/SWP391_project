@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -13,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
 
     <!--====== Vendor Css ======-->
-    <link rel="stylesheet"   th:href="@{/css/vendor.css}" />
+    <link rel="stylesheet"   th:href="@{/css/vendor.css}" />>
     <link rel="stylesheet" th:href="@{/css/utility.css}" />
     <link rel="stylesheet" th:href="@{/css/app.css}" />
 </head>
@@ -50,10 +51,11 @@
                                     <a href="/update">Admin Dashboard</a></li>
                                 <li class="has-separator">
 
-                                    <a href="/viewCustomer">View Customer Account</a></li>
+                                    <a href="/viewCustomer">View Customer</a></li>
                                 <li class="is-marked">
 
-                                    <a th:href="@{/customerDetail/{id}(id = ${customerDetail.getId()})}">Customer Detail</a></li>
+                                    <a th:href="@{/customerOrder/{id}(id = ${customer.getId()})}">Order of Customer</a></li>
+
 
                             </ul>
                         </div>
@@ -113,7 +115,8 @@
                             <div class="col-lg-9 col-md-12">
                                 <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
                                     <div class="dash__pad-2">
-                                        <h1 class="dash__h1 u-s-m-b-14">View Customer</h1>
+                                        <h1 class="dash__h1 u-s-m-b-14">View Order of Customer</h1>
+                                        <h4 th:text="'Customer Account Email : ' + ${customer.account.email}"></h4>
 
 
                                         <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
@@ -121,33 +124,30 @@
                                                 <table class="dash__table">
                                                     <thead>
                                                     <tr>
-                                                        <th>User Id</th>
-                                                        <th>FullName</th>
-                                                        <th>Name User</th>
-                                                        <th>Email</th>
-                                                        <th>Phone Number</th>
-                                                        <th>Address Detail</th>
-                                                        <th>City</th>
-                                                        <th>District</th>
-                                                        <th> Ward</th>
-                                                        <th></th>
+                                                        <th>ID</th>
+                                                        <th>Address Of Receiver</th>
+                                                        <th>Approval Date</th>
+                                                        <th>Create Date</th>
+                                                        <th>Order Status</th>
+                                                        <th>Payment Method</th>
+                                                        <th>Payment Status</th>
+                                                        <th>Action</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <tr>
-                                                        <td th:text="${customerDetail.id}"></td>
-                                                        <td th:text="${customerDetail.fullname}"></td>
-                                                        <td th:text="${customerDetail.name}"></td>
-                                                        <td th:text="${customerDetail.account.email}"></td>
-                                                        <td th:text="${customerDetail.phone}"></td>
-                                                        <td th:text="${customerDetail.addressDetail}"></td>
-                                                        <td th:text="${customerDetail.city}"></td>
-                                                        <td th:text="${customerDetail.district}"></td>
-                                                        <td th:text="${customerDetail.ward}"></td>
-                                                        <td><a href="/viewCustomer">Back to customer list</a></td>
+                                                    <tr th:each="order :${orders}">
+                                                        <td th:text="${order.getOrderId()}"></td>
+                                                        <td th:text="${order.getAddressOfReceiver()}"></td>
+                                                        <td th:text="${order.getApprovalDate()}"></td>
+                                                        <td th:text="${order.getCreateDate()}"></td>
+                                                        <td th:text="${order.getOrderStatus()}"></td>
+                                                        <td th:text="${order.getPaymentMethod()}"></td>
+                                                        <td th:text="${order.getPaymentStatus()}"></td>
+                                                        <td>
+                                                            <a  th:href="@{/viewOrderDetail/{orderid}(orderid =${order.orderId})}"> view</a>
+                                                            <!--                                                                <button type="button" th:href=""> edit</button>-->
+                                                        </td>
                                                     </tr>
-
-                                                    </tbody>
                                                 </table>
                                             </div>
                                         </div>
@@ -183,7 +183,6 @@
 </script>
 <script src="https://www.google-analytics.com/analytics.js" async defer></script>
 
-
 <!--====== Vendor Js ======-->
 <script th:src="@{/js/vendor.js}"></script>
 
@@ -192,7 +191,6 @@
 
 <!--====== App ======-->
 <script th:src="@{/js/app.js}"></script>
-
 
 <!--====== Noscript ======-->
 <noscript>
@@ -211,4 +209,4 @@
     </div>
 </noscript>
 </body>
-</html>
+</html>-->

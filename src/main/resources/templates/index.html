@@ -591,6 +591,99 @@
 <!--====== App ======-->
 <script th:src="@{/js/app.js}"></script>
 
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const searchInput = document.getElementById("name");
+                    const searchForm = document.getElementById("name-filter-form");
+                    const deleteAllBtn = document.getElementById("delete-all-btn");
+
+                    // Load search history from local storage
+                    let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+
+                    // Function to update the dropdown display
+                    function updateDropdown() {
+                        dropdown.innerHTML = "";
+                        const recentSearches = searchHistory.slice(-5).reverse(); // Get the 5 most recent search terms
+                        recentSearches.forEach(term => {
+                            const item = document.createElement("div");
+                            item.textContent = term;
+                            item.style.padding = "5px";
+                            item.style.cursor = "pointer";
+
+                            const termText = document.createElement("span");
+                            termText.textContent = term;
+                            termText.style.flexGrow = "1";
+                            termText.addEventListener("click", function() {
+                                searchInput.value = term;
+                                dropdown.style.display = "none";
+                            });
+
+
+
+                            item.addEventListener("click", function() {
+                                searchInput.value = term;
+                                dropdown.style.display = "none";
+                            });
+                            dropdown.appendChild(item);
+                        });
+                        if (searchHistory.length > 0) {
+                            deleteAllBtn.style.display = "inline";
+                        } else {
+                            deleteAllBtn.style.display = "none";
+                        }
+                    }
+
+
+
+                    // Display search history in a dropdown
+                    const dropdown = document.createElement("div");
+                    dropdown.style.position = "absolute";
+                    dropdown.style.borderRadius = "15px"
+                    dropdown.style.backgroundColor = "#fff";
+                    dropdown.style.border = "1px solid #ccc";
+                    dropdown.style.width = searchInput.offsetWidth + "px";
+                    dropdown.style.zIndex = "1000";
+                    dropdown.style.display = "none";
+
+                    updateDropdown();
+                    searchInput.parentNode.appendChild(dropdown);
+
+                    // Show dropdown on focus
+                    searchInput.addEventListener("focus", function() {
+                        dropdown.style.display = "block";
+                    });
+
+                    // Hide dropdown on blur
+                    searchInput.addEventListener("blur", function() {
+                        setTimeout(() => {
+                            dropdown.style.display = "none";
+                        }, 200);
+                    });
+
+
+
+                    // Save search term on form submit
+                    searchForm.addEventListener("submit", function(event) {
+                        const searchTerm = searchInput.value.trim();
+                        if (searchTerm && !searchHistory.includes(searchTerm)) {
+                            searchHistory.push(searchTerm);
+                            if (searchHistory.length > 5) {
+                                searchHistory = searchHistory.slice(-5); // Keep only the 5 most recent terms
+                            }
+                            localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+                        }
+                        updateDropdown();
+                    });
+
+                    // Delete all search history
+                    deleteAllBtn.addEventListener("click", function() {
+                        searchHistory = [];
+                        localStorage.removeItem("searchHistory");
+                        updateDropdown();
+                    });
+                });
+            </script>
+
     <!--====== Noscript ======-->
     <noscript>
         <div class="app-setting">

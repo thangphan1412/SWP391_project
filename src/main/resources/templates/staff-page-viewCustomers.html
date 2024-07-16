@@ -79,7 +79,7 @@
                                             <h3 class="dash-active">MANAGE</h3>
                                             <li>
 
-                                                <a  th:href="@{/update}">Manage Product</a></li>
+                                                <a class="dash-active" th:href="@{/update}">Manage Product</a></li>
 
                                             <li>
 
@@ -88,20 +88,17 @@
                                             <li>
 
                                                 <a href="/createVoucher">Manage Voucher</a></li>
+
+                                            <li>
+                                                <a href="/viewRequest"> Request of Cancel</a></li>
                                             <li>
 
                                                 <a href="/receipt">Manage Receipt</a></li>
+                                            <li>
+                                                <a href="/viewCustomer">View Customer Account</a></li>
+                                            <li>
+                                                <a href="/viewOrder">Manage Orders</a></li>
 
-                                            <h3 class="dash-active">VIEW</h3>
-
-                                            <li>
-                                                <a class="dash-active" href="/viewCustomer">View Customer</a></li>
-                                            <li>
-                                                <a href="/viewBrand">View Brand</a></li>
-                                            <li>
-                                                <a  href="/viewSuppliers">View Suppliers</a></li>
-                                            <li>
-                                                <a href="/viewOrder">View Orders</a></li>
 
 
                                         </ul>
@@ -137,7 +134,12 @@
                                                     <tr th:each="customer :${customers}">
                                                         <td th:text="${customer.getId()}"></td>
                                                         <td th:text="${customer.account.getEmail()}"></td>
-                                                        <td><a th:href="@{/customerDetail/{id}(id = ${customer.getId()})}">View detail</a></td>
+                                                        <td>
+                                                            <a th:href="@{/customerDetail/{id}(id = ${customer.getId()})}">View detail</a>
+                                                            <br>
+                                                            <a th:href="@{/customerOrder/{id}(id = ${customer.getId()})}">View Order of Account</a>
+                                                        </td>
+
                                                     </tr>
 
                                                     </tbody>
