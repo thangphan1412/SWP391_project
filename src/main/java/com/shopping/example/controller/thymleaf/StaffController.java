@@ -5,6 +5,7 @@ import com.shopping.example.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -35,6 +33,9 @@ public class StaffController {
     private ProductService productService;
     @Autowired
     private OrderDetailService orderDetailService;
+
+    @Autowired
+    private EmployeeService employeeService;
 
     @Autowired
     private RoleService roleService;
@@ -209,6 +210,53 @@ public class StaffController {
         return "redirect:/viewAllAccount";
 
     }
+
+
+    @GetMapping("/employeeDetail/{id}")
+    public String viewEmployeeDetail(@PathVariable Long id, Model model){
+        Optional<Employee> optionalEmployee = employeeService.findById(id);
+        if (optionalEmployee.isPresent()){
+            Employee employee = optionalEmployee.get();
+            model.addAttribute("employee", employee);
+        }
+        return "employee-detail";
+    }
+
+
+
+    @PostMapping("/updateEmployee")
+    public String updateEmployee(@RequestParam("id") Long id,
+                                 @RequestParam("name") String name,
+                                 @RequestParam("birthday") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
+                                 @RequestParam("phone") String phone,
+                                 @RequestParam("addressDetail") String addressDetail,
+                                 @RequestParam("city") String city,
+                                 @RequestParam("district") String district,
+                                 @RequestParam("ward") String ward,
+                                 RedirectAttributes redirectAttributes) {
+        Optional<Employee> optionalEmployee = employeeService.findById(id);
+        if (name.isBlank() || addressDetail.isBlank() || city.isBlank() || district.isBlank() || ward.isBlank()) {
+            redirectAttributes.addFlashAttribute("updateMessage", "Can't not update");
+            return "redirect:/employeeDetail/" + id;
+        }
+        if (optionalEmployee.isPresent()) {
+            Employee employee = optionalEmployee.get();
+            employee.setName(name.trim());
+            employee.setBirthday(date);
+            employee.setPhone(phone);
+            employee.setAddressDetail(addressDetail.trim());
+            employee.setCity(city.trim());
+            employee.setDistrict(district.trim());
+            employee.setWard(ward.trim());
+            employeeService.save(employee);
+            redirectAttributes.addFlashAttribute("updateMessage", "Update Successful");
+        }
+        return "redirect:/employeeDetail/" + id;
+    }
+
+
+
+
 
 
 

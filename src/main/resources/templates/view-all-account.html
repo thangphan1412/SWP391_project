@@ -77,28 +77,26 @@
 
                                         <ul class="dash__f-list">
                                             <h3 class="dash-active">MANAGE</h3>
-                                            <li>
+                                            <ul class="dash__f-list">
+                                                <h3 class="dash-active">MANAGE</h3>
+                                                <li>
+                                                    <a class="dash-active" th:href="@{/update}" id="manageProduct">Manage Product</a></li>
+                                                <li>
+                                                    <a  th:href="@{/createSupBraCate}" id="manageCateBraSup">Manage Supplier & Category & Brand</a></li>
+                                                <li>
+                                                    <a href="/createVoucher" id="manageVoucher">Manage Voucher</a></li>
+                                                <li>
+                                                    <a href="/viewRequest" id="manageRequest"> Request of Cancel</a></li>
+                                                <li>
+                                                    <a href="/receipt" id="manageReceipt" >Manage Receipt</a></li>
+                                                <li>
+                                                    <a href="/viewCustomer" id="manageCustomerAccount">View Customer Account</a></li>
+                                                <li>
+                                                    <a href="/viewOrder" id="manageOrder">Manage Orders</a></li>
+                                                <li>
+                                                    <a href="/viewAllAccount" id="manageRole">Manage Role of Account</a></li>
 
-                                                <a class="dash-active" th:href="@{/update}">Manage Product</a></li>
-
-                                            <li>
-
-                                                <a  th:href="@{/createSupBraCate}">Manage Supplier & Category & Brand</a></li>
-
-                                            <li>
-
-                                                <a href="/createVoucher">Manage Voucher</a></li>
-
-                                            <li>
-                                                <a href="/viewRequest"> Request of Cancel</a></li>
-                                            <li>
-
-                                                <a href="/receipt">Manage Receipt</a></li>
-                                            <li>
-                                                <a href="/viewCustomer">View Customer Account</a></li>
-                                            <li>
-                                                <a href="/viewOrder">Manage Orders</a></li>
-
+                                            </ul>
 
 
                                         </ul>
@@ -124,6 +122,7 @@
                                                         <th>Email</th>
                                                         <th>Account Role</th>
                                                         <th>Action</th>
+                                                        <th>Information</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -143,8 +142,17 @@
                                                                 </select>
                                                                 <button type="submit">Update</button>
                                                             </form>
+                                                        </td>
+                                                        <td>
+                                                            <ul>
+                                                                <li th:each="role : ${account.roles}">
+                                                                    <a th:if="${role.name == 'ROLE_EMPLOYEE'}" th:href="@{/employeeDetail/{id}(id = ${account.getEmployee().getId()})}">View/Edit</a>
+                                                                    <a th:if="${role.name == 'ROLE_USER'}" th:href="@{/customerDetail/{id}(id = ${account.getCustomer().getId()})}">View</a>
+                                                                </li>
+                                                            </ul>
 
                                                         </td>
+
                                                     </tr>
 
                                                     </tbody>
@@ -180,6 +188,27 @@
     ga.l = +new Date;
     ga('create', 'UA-XXXXX-Y', 'auto');
     ga('send', 'pageview')
+</script>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        if (readCookie('89abc')) { // employee
+            console.log(readCookie('89abc'));
+            $('#manageRole').hide();
+        }
+
+    })
+    function readCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        console.log(ca);
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
 </script>
 <script src="https://www.google-analytics.com/analytics.js" async defer></script>
 

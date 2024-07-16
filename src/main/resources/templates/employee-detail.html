@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -14,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
 
     <!--====== Vendor Css ======-->
-    <link rel="stylesheet"   th:href="@{/css/vendor.css}" />>
+    <link rel="stylesheet"   th:href="@{/css/vendor.css}" />
     <link rel="stylesheet" th:href="@{/css/utility.css}" />
     <link rel="stylesheet" th:href="@{/css/app.css}" />
 </head>
@@ -49,9 +48,12 @@
                                 <li class="has-separator">
 
                                     <a href="/update">Admin Dashboard</a></li>
-                                <li class="is-marked">
+                                <li class="has-separator">
 
-                                    <a href="/viewOrder">List Orders</a></li>
+                                    <a href="/viewCustomer">View Customer Account</a></li>
+
+
+
                             </ul>
                         </div>
                     </div>
@@ -74,6 +76,7 @@
                                 <!--====== Dashboard Features ======-->
                                 <div class="dash__box dash__box--bg-white dash__box--shadow u-s-m-b-30">
                                     <div class="dash__pad-1">
+
                                         <ul class="dash__f-list">
                                             <h3 class="dash-active">MANAGE</h3>
                                             <li>
@@ -97,7 +100,7 @@
 
 
 
-
+                                        </ul>
                                     </div>
                                 </div>
 
@@ -106,49 +109,63 @@
                             <div class="col-lg-9 col-md-12">
                                 <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
                                     <div class="dash__pad-2">
-                                        <h1 class="dash__h1 u-s-m-b-14">Manage Order</h1>
-
+                                        <h1 class="dash__h1 u-s-m-b-14">View Employee</h1>
+                                        <div th:if="${updateMessage}" class="alert alert-success" role="alert">
+                                            <p style="color: green" th:text="${updateMessage}"></p>
+                                        </div>
 
                                         <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
                                             <div class="dash__table-wrap gl-scroll">
+
                                                 <table class="dash__table">
                                                     <thead>
-                                                        <tr>
-                                                            <th>ID</th>
-                                                            <th>Address Of Receiver</th>
-                                                            <th>Approval Date</th>
-                                                            <th>Create Date</th>
-                                                            <th>Order Status</th>
-                                                            <th></th>
-                                                            <th>Payment Method</th>
-                                                            <th>Payment Status</th>
-                                                            <th>Action</th>
-                                                        </tr>
+                                                    <tr>
+                                                        <th>User Id</th>
+                                                        <th>Name</th>
+                                                        <th>Date of birth</th>
+                                                        <th>Phone Number</th>
+                                                        <th>Email</th>
+                                                        <th>Address Detail</th>
+                                                        <th>City</th>
+                                                        <th>District</th>
+                                                        <th> Ward</th>
+                                                        <th></th>
+                                                    </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr th:each="order :${orders}">
-                                                            <td th:text="${order.getOrderId()}"></td>
-                                                            <td th:text="${order.getAddressOfReceiver()}"></td>
-                                                            <td th:text="${order.getApprovalDate()}"></td>
-                                                            <td th:text="${order.getCreateDate()}"></td>
-                                                            <td th:text="${order.getOrderStatus()}"></td>
+                                                    <tr>
+                                                        <form method="post" th:action="@{/updateEmployee}">
+                                                            <td th:text="${employee.id}"></td>
                                                             <td>
-                                                             <form th:action="@{/updateOrder}" method="post">
-                                                                 <input hidden="" type="text" th:value="${order.getOrderId()}" name="id" >
-                                                                 <select name="status" th:value="${order.getOrderStatus()}">
-                                                                     <option th:value="Pending" th:text="'Pending'" ></option>
-                                                                     <option th:value="Delivered" th:text="'Delivered'" ></option>
-                                                                 </select>
-                                                                 <input th:type="submit" value="Update">
-                                                            </form>
+                                                                <input type="text" name="id" th:value="${employee.id}" hidden>
+                                                                <input type="text" name="name" required th:value="${employee.name}">
                                                             </td>
-                                                            <td th:text="${order.getPaymentMethod()}"></td>
-                                                            <td th:text="${order.getPaymentStatus()}"></td>
                                                             <td>
-                                                                <a  th:href="@{/viewOrderDetail/{orderid}(orderid =${order.orderId})}"> view</a>
-<!--                                                                <button type="button" th:href=""> edit</button>-->
+                                                                <input type="date" name="birthday" required th:value="${#dates.format(employee.birthday, 'yyyy-MM-dd')}">
                                                             </td>
-                                                        </tr>
+                                                            <td>
+                                                                <input type="tel" name="phone" required th:value="${employee.phone}" min="10" max="11">
+                                                            </td>
+                                                            <td th:text="${employee.account.email}"></td>
+                                                            <td>
+                                                                <input type="text" name="addressDetail" required th:value="${employee.addressDetail}">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" name="city" required th:value="${employee.city}">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" name="district" required th:value="${employee.district}">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" name="ward" required th:value="${employee.ward}">
+                                                            </td>
+                                                            <td><button type="submit">Update</button></td>
+                                                        </form>
+
+                                                        <td><a href="/viewAllAccount">Back to Account list</a></td>
+                                                    </tr>
+
+                                                    </tbody>
                                                 </table>
                                             </div>
                                         </div>
@@ -205,14 +222,33 @@
 </script>
 <script src="https://www.google-analytics.com/analytics.js" async defer></script>
 
+
 <!--====== Vendor Js ======-->
-<script src="js/vendor.js"></script>
+<script th:src="@{/js/vendor.js}"></script>
 
 <!--====== jQuery Shopnav plugin ======-->
-<script src="js/jquery.shopnav.js"></script>
+<script th:src="@{/js/jquery.shopnav.js}"></script>
 
 <!--====== App ======-->
-<script src="js/app.js"></script>
+<script th:src="@{/js/app.js}"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Lấy tất cả các phần tử input và textarea trong trang
+        const inputs = document.querySelectorAll('input, textarea');
+
+        inputs.forEach(function (input) {
+            input.addEventListener('keydown', function (event) {
+                // Kiểm tra nếu phím Enter (mã phím là 13) được nhấn
+                if (event.key === 'Enter') {
+                    // Ngăn chặn hành động mặc định của phím Enter
+                    event.preventDefault();
+                }
+            });
+        });
+    });
+</script>
+
 
 <!--====== Noscript ======-->
 <noscript>
@@ -231,4 +267,4 @@
     </div>
 </noscript>
 </body>
-</html>-->
+</html>
