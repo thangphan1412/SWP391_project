@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 @Entity
@@ -39,10 +40,10 @@ public class Order {
     private String phoneOfReceiver;
 
     @Column(nullable = false)
-    private Date createDate;
+    private LocalDate createDate;
 
     @Column
-    private Date approvalDate;
+    private LocalDate approvalDate;
 
     @Column
     private String paymentStatus;
@@ -55,6 +56,9 @@ public class Order {
 
     @Column
     private double orderAmount;
+
+    @Column
+    private boolean orderRequestCancel = Boolean.parseBoolean("False");
 
     @OneToMany
     @JoinColumn

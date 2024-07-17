@@ -85,16 +85,22 @@ public class AuthController {
             @RequestParam(name = "district") String district,
             @RequestParam(name = "ward") String ward,
             @RequestParam(name = "city") String city,
+            @RequestParam(name =  "addressDetail") String addressDetail,
             RedirectAttributes redirectAttributes) {
 
         Customer customer = customerService.findCustomerByEmail(email);
         if (customer != null) {
-            customer.setFullname(name);
+            customer.setFullname(name.toUpperCase());
             customer.setPhone(phone);
-            customer.setWard(ward);
-            customer.setCity(city);
-            customer.setDistrict(district);
-            customer.setAddressDetail(district + " " + ward + " " + city);
+            customer.setWard(ward.trim());
+            customer.setCity(city.trim());
+            customer.setDistrict(district.trim());
+            if (addressDetail == null){
+                addressDetail = "";
+                customer.setAddressDetail(addressDetail);
+            }else{
+                customer.setAddressDetail(addressDetail.trim());
+            }
             customerService.saveCus(customer);
             redirectAttributes.addFlashAttribute("successMessage", "User details updated successfully");
         }

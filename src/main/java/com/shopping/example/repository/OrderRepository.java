@@ -25,4 +25,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("SELECT o FROM Order o WHERE o.orderStatus  = 'Pending' OR o.employee.id = :id")
     List<Order> getAllOrdersNotShipped(@Param("id") Long id);
+
+    List<Order> findByOrderRequestCancelTrue();
+
 }

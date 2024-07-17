@@ -29,6 +29,8 @@ public interface OrderService {
 
     List<Order> getAllOrdersNotShip();
 
+    List<Order> getAllOrdersRequestCancel();
+
 
     void updateOrderStatus(Long orderId, String status);
     void updatePaymentStatus(Long orderId, String paymentStatus);

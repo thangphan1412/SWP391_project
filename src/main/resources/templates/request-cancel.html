@@ -1,5 +1,6 @@
+
 <!DOCTYPE html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
@@ -13,110 +14,148 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
 
     <!--====== Vendor Css ======-->
-    <link rel="stylesheet"   th:href="@{/css/vendor.css}" />
+    <link rel="stylesheet"   th:href="@{/css/vendor.css}" />>
     <link rel="stylesheet" th:href="@{/css/utility.css}" />
     <link rel="stylesheet" th:href="@{/css/app.css}" />
 </head>
 <body class="config">
 <div class="preloader is-active">
     <div class="preloader__wrap">
-        <img class="preloader__img" src="images/preloader.png" alt="">
-    </div>
+
+        <img class="preloader__img" src="images/preloader.png" alt=""></div>
 </div>
 
+<!--====== Main App ======-->
 <div id="app">
+
+
     <div th:insert="~{partials/navbar :: navbar}"></div>
 
+    <!--====== App Content ======-->
     <div class="app-content">
+
+        <!--====== Section 1 ======-->
         <div class="u-s-p-y-60">
+
+            <!--====== Section Content ======-->
             <div class="section__content">
                 <div class="container">
                     <div class="breadcrumb">
                         <div class="breadcrumb__wrap">
                             <ul class="breadcrumb__list">
-                                <li class="has-separator"><a href="index.html">Home</a></li>
-                                <li class="is-marked"><a href="dash-my-order.html">List Customer</a></li>
+                                <li class="has-separator">
+
+                                    <a href="/">Home</a></li>
+                                <li class="has-separator">
+
+                                    <a href="/update">Admin Dashboard</a></li>
+                                <li class="is-marked">
+
+                                    <a href="/viewOrder">List Orders</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!--====== End - Section 1 ======-->
 
+
+        <!--====== Section 2 ======-->
         <div class="u-s-p-b-60">
+
+            <!--====== Section Content ======-->
             <div class="section__content">
                 <div class="dash">
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-3 col-md-12">
+
+                                <!--====== Dashboard Features ======-->
                                 <div class="dash__box dash__box--bg-white dash__box--shadow u-s-m-b-30">
                                     <div class="dash__pad-1">
-                                        <ul class="dash__f-list">
 
-                                            <li><a href="/">Shipping</a></li>
+
+                                        <ul class="dash__f-list">
+                                            <h3 class="dash-active">MANAGE</h3>
+                                            <li>
+
+                                                <a th:href="@{/update}">Manage Product</a></li>
+
+                                            <li>
+
+                                                <a  th:href="@{/createSupBraCate}">Manage Supplier & Category & Brand</a></li>
+
+                                            <li>
+
+                                                <a href="/createVoucher">Manage Voucher</a></li>
+                                            <li>
+
+                                                <a href="/receipt">Manage Receipt</a></li>
+
+                                            <h3 class="dash-active">VIEW</h3>
+
+                                            <li>
+                                                <a  href="/viewCustomer">View Customer</a></li>
+                                            <li>
+                                                <a href="/viewBrand">View Brand</a></li>
+                                            <li>
+                                                <a href="/viewSuppliers">View Suppliers</a></li>
+                                            <li>
+                                                <a class="dash-active" href="/viewOrder">View Orders</a></li>
+
+
                                         </ul>
                                     </div>
                                 </div>
+
+                                <!--====== End - Dashboard Features ======-->
                             </div>
                             <div class="col-lg-9 col-md-12">
                                 <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
                                     <div class="dash__pad-2">
-                                        <h1 class="dash__h1 u-s-m-b-14">View Customer</h1>
-                                        <form class="m-order u-s-m-b-30">
-                                            <div class="m-order__select-wrapper">
-                                                <label class="u-s-m-r-8" for="my-order-sort">Show:</label>
-                                                <select class="select-box select-box--primary-style" id="my-order-sort">
-                                                    <option selected>5 customers</option>
-                                                    <option>15 customers</option>
-                                                    <option>30 customers</option>
-                                                    <option>60 customers</option>
-                                                    <option>100 customers</option>
-                                                    <option>All customers</option>
-                                                </select>
-                                            </div>
-                                        </form>
+                                        <h1 class="dash__h1 u-s-m-b-14">Request Cancel</h1>
+
+
                                         <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
                                             <div class="dash__table-wrap gl-scroll">
                                                 <table class="dash__table">
                                                     <thead>
                                                     <tr>
                                                         <th>ID</th>
+                                                        <th>Account Email</th>
                                                         <th>Address Of Receiver</th>
                                                         <th>Approval Date</th>
                                                         <th>Create Date</th>
                                                         <th>Order Status</th>
+                                                        <th>Phone of Receiver</th>
                                                         <th>Payment Method</th>
                                                         <th>Payment Status</th>
-                                                        <th>Action</th>
                                                         <th>Action</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <tr th:each="order : ${orders}">
+                                                    <tr th:each="order :${orders}">
                                                         <td th:text="${order.getOrderId()}"></td>
+                                                        <td th:text="${order.customer.account.email}"></td>
                                                         <td th:text="${order.getAddressOfReceiver()}"></td>
                                                         <td th:text="${order.getApprovalDate()}"></td>
                                                         <td th:text="${order.getCreateDate()}"></td>
-                                                        <td>
-                                                            <span th:if="${order.getOrderStatus() == 'Pending'}" style="color:red;" th:text="${order.getOrderStatus()}"></span>
-                                                            <span th:if="${order.getOrderStatus() == 'Complete'}" style="color:green;" th:text="${order.getOrderStatus()}"></span>
-                                                            <span th:if="${order.getOrderStatus() != 'Pending' && order.getOrderStatus() != 'Complete'}" style="color:orange;" th:text="${order.getOrderStatus()}"></span>
-                                                        </td>
+                                                        <td th:text="${order.getOrderStatus()}"></td>
+                                                        <td th:text="${order.phoneOfReceiver}"></td>
                                                         <td th:text="${order.getPaymentMethod()}"></td>
+                                                        <td th:text="${order.getPaymentStatus()}"></td>
+
                                                         <td>
-                                                            <span th:text="${order.getPaymentStatus()}"
-                                                                  th:style="${order.getPaymentStatus() == 'Pending'} ? 'color: red;' : 'color: green;'">
-                                                            </span>
-                                                        </td>
-                                                        <td> a
-                                                            <form th:action="@{/updateOrderStatus}" method="post" onsubmit="return confirm('Are you sure you want to Receive this order  ?')">
-                                                                <input type="hidden" name="orderId" th:value="${order.getOrderId()}" />
-                                                                <button type="submit" name="action" value="receive" th:if="${order.getEmployee() == null}">Receive</button>
-                                                                <button type="submit" name="action" value="complete" th:if="${order.getEmployee() != null && order.getPaymentStatus().equals('Success')}">Complete</button>
+                                                            <form method="post" th:action="@{/acceptRequest}">
+                                                                <input type="text" hidden="" name="orderId" th:value="${order.orderId}">
+                                                                <button type="submit">Accept Request</button>
                                                             </form>
+
+                                                            <a  th:href="@{/viewOrderDetail/{orderid}(orderid =${order.orderId})}"> view</a>
+                                                            <!--                                                                <button type="button" th:href=""> edit</button>-->
                                                         </td>
                                                     </tr>
-                                                    </tbody>
                                                 </table>
                                             </div>
                                         </div>
@@ -127,12 +166,20 @@
                     </div>
                 </div>
             </div>
+            <!--====== End - Section Content ======-->
         </div>
+        <!--====== End - Section 2 ======-->
     </div>
+    <!--====== End - App Content ======-->
 
+
+    <!--====== Main Footer ======-->
     <div th:insert="~{partials/footer :: footer}"></div>
 </div>
+<!--====== End - Main App ======-->
 
+
+<!--====== Google Analytics: change UA-XXXXX-Y to be your site's ID ======-->
 <script>
     window.ga = function() {
         ga.q.push(arguments)
@@ -145,13 +192,13 @@
 <script src="https://www.google-analytics.com/analytics.js" async defer></script>
 
 <!--====== Vendor Js ======-->
-<script th:src="@{/js/vendor.js}"></script>
+<script src="js/vendor.js"></script>
 
 <!--====== jQuery Shopnav plugin ======-->
-<script th:src="@{/js/jquery.shopnav.js}"></script>
+<script src="js/jquery.shopnav.js"></script>
 
 <!--====== App ======-->
-<script th:src="@{/js/app.js}"></script>
+<script src="js/app.js"></script>
 
 <!--====== Noscript ======-->
 <noscript>
@@ -170,4 +217,4 @@
     </div>
 </noscript>
 </body>
-</html>
+</html>-->

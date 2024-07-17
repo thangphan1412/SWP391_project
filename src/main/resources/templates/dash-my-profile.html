@@ -72,7 +72,7 @@
                                     <div class="dash__box dash__box--bg-white dash__box--shadow u-s-m-b-30">
                                         <div class="dash__pad-1">
 
-                                            <span th:text="'Hello' + ' ' + ${account.customer.name}" class="dash__text u-s-m-b-16"></span>
+                                            <span th:text="'Hello' + ' ' + ${account?.customer?.name}" class="dash__text u-s-m-b-16"></span>
                                             <ul class="dash__f-list">
                                                 <li>
 
@@ -85,9 +85,6 @@
 
                                                     <a th:href="@{/viewOrderList}">My Orders & Track Order</a></li>
 
-                                                <li>
-
-                                                    <a href="dash-cancellation.html">My Returns & Cancellations</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -137,7 +134,7 @@
                                                 <div class="col-lg-4 u-s-m-b-30">
                                                     <h2 class="dash__h2 u-s-m-b-8">User Name</h2>
 
-                                                    <span class="dash__text" th:text="${account.customer.name}"></span>
+                                                    <span class="dash__text" th:text="${account?.customer?.name}"></span>
 
                                                 </div>
 
@@ -146,7 +143,7 @@
                                                 <div class="col-lg-4 u-s-m-b-30">
                                                     <h2 class="dash__h2 u-s-m-b-8">Full Name</h2>
 
-                                                    <span class="dash__text" th:text="${account.customer.fullname != null} ? ${account.customer.fullname} : 'Please update full name'"></span>
+                                                    <span class="dash__text" th:text="${account?.customer?.fullname != null} ? ${account?.customer?.fullname} : 'Please update full name'"></span>
 
                                                 </div>
                                                 <div class="col-lg-4 u-s-m-b-30">
@@ -158,13 +155,15 @@
                                                 <div class="col-lg-4 u-s-m-b-30">
                                                     <h2 class="dash__h2 u-s-m-b-8">Phone</h2>
 
-                                                    <span class="dash__text" th:text="${account.customer.phone != null} ? ${account.customer.phone} : 'Please update the phone number'"></span>
+                                                    <span class="dash__text" th:text="${account?.customer?.phone != null} ? ${account?.customer?.phone} : 'Please update the phone number'"></span>
 
 
                                                 </div>
                                                 <div class="col-lg-4 u-s-m-b-30">
                                                     <h2 class="dash__h2 u-s-m-b-8">Address</h2>
-                                                    <span class="dash__text" th:text="${account.customer.addressDetail != null} ? ${account.customer.addressDetail} : 'Please update the address number'"></span>
+                                                    <span class="dash__text" th:text="${account?.customer?.addressDetail != null && account?.customer?.city != null && account?.customer?.ward != null && account?.customer?.district != null
+                ? account?.customer?.addressDetail + ', ' + account?.customer?.district + ', ' + account?.customer?.ward + ', ' + account?.customer?.city
+                : 'Please update the address details'}"></span>
 
                                                 </div>
 

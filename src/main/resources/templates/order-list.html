@@ -127,8 +127,8 @@
                                                             <th>Approval Date</th>
                                                             <th>Create Date</th>
                                                             <th>Order Status</th>
-                                                            <th>Payment Status</th>
                                                             <th>Payment Method</th>
+                                                            <th>Payment Status</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
@@ -144,7 +144,6 @@
                                                                  <input hidden="" type="text" th:value="${order.getOrderId()}" name="id" >
                                                                  <select name="status" th:value="${order.getOrderStatus()}">
                                                                      <option th:value="Pending" th:text="'Pending'" ></option>
-                                                                     <option th:value="Cancelled" th:text="'Cancel'" ></option>
                                                                      <option th:value="Delivered" th:text="'Delivered'" ></option>
                                                                  </select>
                                                                  <input th:type="submit" value="Update">

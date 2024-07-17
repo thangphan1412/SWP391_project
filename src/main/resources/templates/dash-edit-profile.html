@@ -87,9 +87,6 @@
 
                                                         <a th:href="@{/viewOrderList}">My Orders & Track Order</a></li>
 
-                                                    <li>
-
-                                                        <a href="dash-cancellation.html">My Returns & Cancellations</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -160,6 +157,7 @@
                                                                     <input class="input-text input-text--primary-style" type="text"  name="city" placeholder="Enter your city" th:value="${account.customer.city}" required >
                                                                     <input class="input-text input-text--primary-style" type="text"  name="ward" placeholder="Enter your ward"  th:value="${account.customer.ward}" required>
                                                                     <input class="input-text input-text--primary-style" type="text"  name="district"  placeholder="Enter your district" th:value="${account.customer.district}" required>
+                                                                    <input class="input-text input-text--primary-style" type="text" name="addressDetail" placeholder="Enter your detail address if have"   th:value="${account.customer.addressDetail}">
                                                                 </div>
                                                             </div>
                                                         </div>

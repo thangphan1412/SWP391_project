@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +33,8 @@ public class StaffController {
     private AccountService accountService;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private OrderDetailService orderDetailService;
 
     // show sreec for employee
     @GetMapping("/employees")
@@ -128,12 +131,14 @@ public class StaffController {
     // view order detail of one product
     @GetMapping("/viewOrderDetail/{id}")
     public String viewOrderDetail(Model model, @PathVariable("id")Long id){
-        Optional<Order> order = Optional.ofNullable(orderService.getOrderById(id));
-        if(order.isPresent()){
-            model.addAttribute("orderDetails", order.get());
-        } else {
-            System.out.println("Nothing to show");
-        }
+        Order order = orderService.getOrderById(id);
+        List<OrderDetail> orderDetailsList = orderDetailService.getOrderDetailsByOrder(order);
+        double totalPrice = orderDetailsList.stream()
+                .mapToDouble(orderDetail -> orderDetail.getPrice() * orderDetail.getQuantity())
+                .sum();
+        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("order", order);
+        model.addAttribute("ListOrderDetail", orderDetailsList);
         return "order-detail";
     }
 
@@ -156,6 +161,10 @@ public class StaffController {
     public String updateOrder(@RequestParam(name = "id") Long id, @RequestParam(name = "status") String status, RedirectAttributes redirectAttributes){
         Order existOrder = orderService.getOrderById(id);
         if(existOrder != null){
+            if (status.equalsIgnoreCase("Delivered")){
+                existOrder.setOrderStatus(status);
+                existOrder.setApprovalDate(LocalDate.now());
+            }
             existOrder.setOrderStatus(status);
             orderService.save(existOrder);
             redirectAttributes.addFlashAttribute("message", "Order updated successfully");

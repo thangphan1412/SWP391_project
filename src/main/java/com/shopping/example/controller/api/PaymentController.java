@@ -71,6 +71,8 @@ public class PaymentController {
         String orderType = type;
         String bankCode = req.getParameter("bankCode");
 
+
+
         String vnp_TxnRef = id;
         String vnp_IpAddr = Config.getIpAddress(req);
 

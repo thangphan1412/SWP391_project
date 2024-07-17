@@ -139,14 +139,18 @@ public class AccountController {
     }
 
     @PostMapping("/change-password")
-    public ResponseEntity<String> changePasswords(
+    public String changePasswords(
             @RequestParam(name = "currentPassword", required = false) String currentPassword,
             @RequestParam(name = "newPassword", required = false) String newPassword,
             @RequestParam(name = "confirmNewPassword", required = false) String confirmNewPassword,
             Principal principal){
         ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(currentPassword, newPassword, confirmNewPassword);
-        accountService.changePassword(changePasswordRequest, principal);
-        return ResponseEntity.ok("Thay doi mat khau thanh cong");
+        try {
+            accountService.changePassword(changePasswordRequest, principal);
+        } catch (Exception e) {
+            return "redirect:/login";
+        }
+        return "redirect:/UserDetail";
     }
 
 

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller()
 
@@ -24,10 +25,11 @@ public class ShipperController {
 //    }
 
     @GetMapping("/shipping")
-    public String viewOrderList(Model model){
-        model.addAttribute("orders", orderService.getAllOrdersNotShip());
+    public ModelAndView viewOrderList(){
+        ModelAndView modelAndView = new ModelAndView("shipping-order-list");
+        modelAndView.addObject("orders", orderService.getAllOrdersNotShip());
         System.out.println(orderService.getAllOrdersNotShip());
-        return "shipping-order-list";
+        return modelAndView;
     }
 
 

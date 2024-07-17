@@ -137,9 +137,9 @@
                                         <!--====== PHONE ======-->
                                         <div class="u-s-m-b-15">
                                             <label class="gl-label" for="billing-phone">PHONE *</label>
-                                            <input required class="input-text input-text--primary-style" type="text"
+                                            <input required class="input-text input-text--primary-style" type="tel"
                                                    id="billing-phone" th:value="${customer.getCustomer().getPhone()}"
-                                                   name="phone" data-bill="" placeholder="Update in profile or enter phone number of receiver in here">
+                                                   name="phone" min="10" max="11" data-bill="" placeholder="Update in profile or enter phone number of receiver in here">
                                         </div>
                                         <!--====== End - PHONE ======-->
 
@@ -148,7 +148,7 @@
                                             <label class="gl-label" for="billing-street">ADDRESS *</label>
                                             <input required class="input-text input-text--primary-style" type="text"
                                                    id="billing-street" name="address" placeholder="Enter the address"
-                                                   data-bill="" th:value="${customer.customer.addressDetail}" >
+                                                   data-bill="" th:value="${customer.customer.addressDetail} +' ' + ${customer.customer.district} + ' '+${customer.customer.ward} + ' '+ ${customer.customer.city}" >
                                         </div>
 
                                         <input type="text" th:value="${voucherCode}" hidden="" name="voucherCode">

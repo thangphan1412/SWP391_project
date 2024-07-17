@@ -139,11 +139,42 @@
                                             <div class="dash-l-r">
                                                 <div>
                                                     <div class="manage-o__text-2 u-c-secondary" th:text="${order.orderId}"></div>
-                                                    <div class="manage-o__text u-c-silver" th:text="${order.approvalDate}"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="dash__pad-2">
+                                            <div class="dash-l-r">
+                                                <div>
+                                                    <span>Create Date</span>
+                                                    <div class="manage-o__text-2 u-c-secondary" th:text="${order.createDate}"></div>
+                                                </div>
+                                                <div>
+                                                    <span>Approval Date</span>
+                                                    <div class="manage-o__text-2 u-c-secondary" th:text="${order.approvalDate}"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
+                                        <div class="dash__pad-2">
+                                            <div class="dash-l-r">
+                                                <div>
+                                                    <form method="post" th:action="@{/reOrder}">
+                                                        <input type="text" hidden="" th:value="${orderId}" name="orderId">
+                                                        <button type="submit"> ReOrder</button>
+                                                    </form>
+
+                                                    <div th:if="${orderMessage}" class="alert alert-success" role="alert">
+                                                        <p style="color: green" th:text="${orderMessage}"></p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
                                     <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
                                         <div class="dash__pad-2">
                                             <div class="manage-o">

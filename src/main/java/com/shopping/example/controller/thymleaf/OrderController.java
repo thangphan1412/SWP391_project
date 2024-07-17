@@ -1,10 +1,7 @@
 package com.shopping.example.controller.thymleaf;
 
 
-import com.shopping.example.entity.Account;
-import com.shopping.example.entity.Customer;
-import com.shopping.example.entity.Order;
-import com.shopping.example.entity.OrderDetail;
+import com.shopping.example.entity.*;
 import com.shopping.example.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.function.support.RouterFunctionMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
@@ -146,42 +144,6 @@ public class OrderController {
 
 
 
-//    @PostMapping("/viewStatus")
-//    public String viewStatus(Model model, @RequestParam("status") String orderStatus) {
-//        Account currentAccount = accountService.getCurrentAccount();
-//        Customer customer = currentAccount.getCustomer();
-//        model.addAttribute("account", currentAccount);
-//
-//
-//        List<Order> orderStatusList;
-//        if (orderStatus.equals("All")) {
-//            orderStatusList = orderService.getOrdersByCustomer(customer);
-//        } else {
-//            orderStatusList = orderService.findByCustomerIdAndOrderStatus(customer.getId(), orderStatus);;
-//        }
-//        model.addAttribute("customerOrdersList", orderStatusList);
-//
-//        System.out.println("BBBB" + orderStatus);
-//
-//
-//        List<Order> orderList = orderService.getAllOrders();
-//        Map<String, Long> orderCountsByStatus = orderList.stream()
-//                .collect(Collectors.groupingBy(Order::getOrderStatus, Collectors.counting()));
-//
-//        long placedOrders = orderCountsByStatus.getOrDefault("Pending", 0L);
-//        long cancelledOrders = orderCountsByStatus.getOrDefault("Cancelled", 0L);
-//        long deliveredOrders = orderCountsByStatus.getOrDefault("Delivered", 0L);
-//        long processingOrders = orderCountsByStatus.getOrDefault("Processing", 0L);
-//
-//        model.addAttribute("placedOrders", placedOrders);
-//        model.addAttribute("cancelledOrders", cancelledOrders);
-//        model.addAttribute("deliveredOrders", deliveredOrders);
-//        model.addAttribute("processingOrders", processingOrders);
-//
-//
-//        return "dash-my-order";
-//    }
-
     @GetMapping("/viewStatus")
     public String viewStatus(Model model, @RequestParam("status") String orderStatus) {
         Account currentAccount = accountService.getCurrentAccount();
@@ -215,6 +177,56 @@ public class OrderController {
 
         return "dash-my-order";
     }
+
+
+
+    @PostMapping("/reOrder")
+    public String reOrder(@RequestParam("orderId") Long orderId,RedirectAttributes redirectAttributes) {
+        // Lấy thông tin tài khoản hiện tại
+        Account currentAccount = accountService.getCurrentAccount();
+
+        // Lấy thông tin khách hàng từ tài khoản hiện tại
+        Customer customer = currentAccount.getCustomer();
+
+        // Lấy giỏ hàng của khách hàng
+        Cart customerCart = cartService.getCartByCustomer(customer);
+
+        // Kiểm tra xem giỏ hàng có rỗng hay không
+        List<CartItems> cartItemsList = cartItemsService.findByCartId(customerCart.getCartId());
+        if (!cartItemsList.isEmpty()) {
+            redirectAttributes.addFlashAttribute("orderMessage","Please clear the cart before re order");
+            return "redirect:/viewOrder/" + orderId;
+        }
+
+        // Lấy thông tin đơn hàng dựa trên orderId
+        Order order = orderService.getOrderById(orderId);
+
+        // Lấy danh sách chi tiết đơn hàng dựa trên đơn hàng
+        List<OrderDetail> orderDetailsList = orderDetailService.getOrderDetailsByOrder(order);
+
+        // Lặp qua từng chi tiết đơn hàng và thêm vào giỏ hàng
+        for (OrderDetail orderDetail : orderDetailsList) {
+            CartItems newCartItem = new CartItems();
+            newCartItem.setCart(customerCart);
+            newCartItem.setProductType(orderDetail.getProductType());
+            newCartItem.setQuantity(orderDetail.getQuantity());
+            cartItemsService.save(newCartItem);
+        }
+
+        // Chuyển hướng người dùng tới trang xem giỏ hàng
+        return "redirect:/viewCart";
+    }
+
+    @PostMapping("/requestCancel")
+    public String requestCancel(@RequestParam("orderId") Long orderId,RedirectAttributes redirectAttributes) {
+        Order existOrder = orderService.getOrderById(orderId);
+        existOrder.setOrderRequestCancel(Boolean.TRUE);
+        existOrder.setOrderStatus("On Request");
+        orderService.save(existOrder);
+        return "redirect:/viewOrderList";
+    }
+
+
 
 
 

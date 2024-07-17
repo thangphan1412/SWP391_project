@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 @Controller
@@ -52,7 +53,7 @@ public class CheckOutController {
 
 
     @GetMapping("/checkout")
-    public String checkOut(Model model) {
+    public String checkOut(Model model, RedirectAttributes redirectAttributes) {
         Account currentAccount = accountService.getCurrentAccount();
         Double discount = 0.0;
 
@@ -61,8 +62,25 @@ public class CheckOutController {
         } else {
             Customer customer = currentAccount.getCustomer();
             Cart customerCart = cartService.getCartByCustomer(customer);
+
+
+            System.out.println(customer.getAddressDetail());
+            System.out.println(customer.getCity());
+            System.out.println(customer.getFullname());
+            System.out.println(customer.getPhone());
+
+
+            if (customerCart == null){
+                redirectAttributes.addFlashAttribute("delMessage", "Please add product to cart");
+                return "redirect:/viewCart";
+            }
             List<CartItems> listCartItems = cartItemsService.findByCartId(customerCart.getCartId());
-            double total = 0.0;
+            if (listCartItems.isEmpty()) {
+                redirectAttributes.addFlashAttribute("delMessage", "Please add product to cart");
+                return "redirect:/viewCart";
+            }
+
+                double total = 0.0;
             for (CartItems cartItem : listCartItems) {
                 total += cartItem.getQuantity() * cartItem.getProductType().getProduct_type_price();
             }
@@ -141,7 +159,7 @@ public class CheckOutController {
             order.setCustomer(customer);
             order.setEmployee(randomEmployee);
             order.setAddressOfReceiver(address);
-            order.setCreateDate(new Date());
+            order.setCreateDate(LocalDate.now());
             order.setPhoneOfReceiver(phone);
             order.setOrderStatus("Pending");
             order.setPaymentMethod(payment);
@@ -263,6 +281,7 @@ public class CheckOutController {
         String paymentUrl = Config.vnp_PayUrl + "?" + queryUrl;
         resp.sendRedirect(paymentUrl);
     }
+
 
 
     @GetMapping("/checkout-success")
