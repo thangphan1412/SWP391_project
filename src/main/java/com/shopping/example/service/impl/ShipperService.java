@@ -2,6 +2,7 @@ package com.shopping.example.service.impl;
 
 import com.shopping.example.DTO.request.RegisterRequest;
 import com.shopping.example.entity.Account;
+import com.shopping.example.entity.Customer;
 import com.shopping.example.entity.Shipper;
 import com.shopping.example.repository.AccountRepository;
 import com.shopping.example.repository.RoleRepository;
@@ -13,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -59,4 +62,19 @@ public class ShipperService implements IShipperService {
         // Lưu thông tin khách hàng vào cơ sở dữ liệu
         return shipperRepository.save(shipper);
     }
+
+
+    public List<Shipper> getAll() {
+        List<Shipper> shippers = new ArrayList<>();
+        try {
+            shippers = shipperRepository.findAll();
+        } catch (Exception e){
+            System.out.println(e);
+        }
+        return shippers;
+    }
+
+//    public List<Shipper> getShipperByName(String name) {
+//        return shipperRepository.findShipperByName(name.toLowerCase());
+//    }
 }

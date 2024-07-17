@@ -2,6 +2,7 @@ package com.shopping.example.controller.thymleaf;
 
 import com.shopping.example.entity.*;
 import com.shopping.example.service.*;
+import com.shopping.example.service.impl.ShipperService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -35,6 +36,8 @@ public class StaffController {
     private ProductService productService;
     @Autowired
     private OrderDetailService orderDetailService;
+    @Autowired
+    private ShipperService shipperService;
 
     // show sreec for employee
     @GetMapping("/employees")
@@ -186,5 +189,20 @@ public class StaffController {
 //        return "staff-page-viewCustomers";
 //    }
 
+
+    @GetMapping("/viewShipper")
+    public String viewListShipperList(Model model){
+        model.addAttribute("shipper", shipperService.getAll());
+        return "view-shipper-list";
+    }
+//    @PostMapping("/search-shipper")
+//    public String searchShipper(@RequestParam("name") String name, Model model){
+//        List<Shipper> customers = shipperService.getShipperByName(name);
+//        if (customers.isEmpty()) {
+//            model.addAttribute("searchMessage", "No shipper found with the name \"" + name + "\".");
+//        }
+//        model.addAttribute("shipper", customers);
+//        return "staff-page-viewCustomers";
+//    }
 
 }
