@@ -51,7 +51,7 @@
                                     <a href="/update">Admin Dashboard</a></li>
                                 <li class="is-marked">
 
-                                    <a href="/viewOrder">List Orders</a></li>
+                                    <a href="/viewRequest">Request Cancel</a></li>
                             </ul>
                         </div>
                     </div>
@@ -74,36 +74,24 @@
                                 <!--====== Dashboard Features ======-->
                                 <div class="dash__box dash__box--bg-white dash__box--shadow u-s-m-b-30">
                                     <div class="dash__pad-1">
-
-
                                         <ul class="dash__f-list">
                                             <h3 class="dash-active">MANAGE</h3>
                                             <li>
-
-                                                <a th:href="@{/update}">Manage Product</a></li>
-
+                                                <a th:href="@{/update}" id="manageProduct">Manage Product</a></li>
                                             <li>
-
-                                                <a  th:href="@{/createSupBraCate}">Manage Supplier & Category & Brand</a></li>
-
+                                                <a  th:href="@{/createSupBraCate}" id="manageCateBraSup">Manage Supplier & Category & Brand</a></li>
                                             <li>
-
-                                                <a href="/createVoucher">Manage Voucher</a></li>
+                                                <a href="/createVoucher" id="manageVoucher">Manage Voucher</a></li>
                                             <li>
-
-                                                <a href="/receipt">Manage Receipt</a></li>
-
-                                            <h3 class="dash-active">VIEW</h3>
-
+                                                <a class="dash-active" href="/viewRequest" id="manageRequest"> Request of Cancel</a></li>
                                             <li>
-                                                <a  href="/viewCustomer">View Customer</a></li>
+                                                <a href="/receipt" id="manageReceipt" >Manage Receipt</a></li>
                                             <li>
-                                                <a href="/viewBrand">View Brand</a></li>
+                                                <a href="/viewCustomer" id="manageCustomerAccount">View Customer Account</a></li>
                                             <li>
-                                                <a href="/viewSuppliers">View Suppliers</a></li>
+                                                <a href="/viewOrder" id="manageOrder">Manage Orders</a></li>
                                             <li>
-                                                <a class="dash-active" href="/viewOrder">View Orders</a></li>
-
+                                                <a href="/viewAllAccount" id="manageRole">Manage Role of Account</a></li>
 
                                         </ul>
                                     </div>
@@ -131,6 +119,7 @@
                                                         <th>Phone of Receiver</th>
                                                         <th>Payment Method</th>
                                                         <th>Payment Status</th>
+                                                        <th>Request</th>
                                                         <th>Action</th>
                                                     </tr>
                                                     </thead>
@@ -149,12 +138,13 @@
                                                         <td>
                                                             <form method="post" th:action="@{/acceptRequest}">
                                                                 <input type="text" hidden="" name="orderId" th:value="${order.orderId}">
-                                                                <button type="submit">Accept Request</button>
+                                                                <button style="background: #2dce53;width: 110% ;color: #fff;padding: 0.5em ;border: none;border-radius: 25px;" type="submit">Accept Request</button>
                                                             </form>
 
-                                                            <a  th:href="@{/viewOrderDetail/{orderid}(orderid =${order.orderId})}"> view</a>
+
                                                             <!--                                                                <button type="button" th:href=""> edit</button>-->
                                                         </td>
+                                                        <td> <a  th:href="@{/viewOrderDetail/{orderid}(orderid =${order.orderId})}"> view</a></td>
                                                     </tr>
                                                 </table>
                                             </div>
@@ -188,6 +178,27 @@
     ga.l = +new Date;
     ga('create', 'UA-XXXXX-Y', 'auto');
     ga('send', 'pageview')
+</script>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        if (readCookie('89abc')) { // employee
+            console.log(readCookie('89abc'));
+            $('#manageRole').hide();
+        }
+
+    })
+    function readCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        console.log(ca);
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
 </script>
 <script src="https://www.google-analytics.com/analytics.js" async defer></script>
 

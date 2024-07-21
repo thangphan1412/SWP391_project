@@ -80,7 +80,7 @@
                                             <h3 class="dash-active">MANAGE</h3>
                                             <li>
 
-                                                <a th:href="@{/update}">Manage Product</a></li>
+                                                <a class="dash-active" th:href="@{/update}">Manage Product</a></li>
 
                                             <li>
 
@@ -89,20 +89,19 @@
                                             <li>
 
                                                 <a href="/createVoucher">Manage Voucher</a></li>
+
+                                            <li>
+                                                <a href="/viewRequest"> Request of Cancel</a></li>
                                             <li>
 
                                                 <a href="/receipt">Manage Receipt</a></li>
+                                            <li>
+                                                <a href="/viewCustomer">View Customer Account</a></li>
+                                            <li>
+                                                <a href="/viewOrder">Manage Orders</a></li>
+                                            <li>
 
-                                            <h3 class="dash-active">VIEW</h3>
-
-                                            <li>
-                                                <a  href="/viewCustomer">View Customer</a></li>
-                                            <li>
-                                                <a href="/viewBrand">View Brand</a></li>
-                                            <li>
-                                                <a href="/viewSuppliers">View Suppliers</a></li>
-                                            <li>
-                                                <a class="dash-active" href="/viewOrder">View Orders</a></li>
+                                                <a href="/viewShipper">View Order</a></li>
 
 
                                         </ul>
@@ -114,7 +113,7 @@
                             <div class="col-lg-9 col-md-12">
                                 <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
                                     <div class="dash__pad-2">
-                                        <h1 class="dash__h1 u-s-m-b-14">View Order</h1>
+                                        <h1 class="dash__h1 u-s-m-b-14">Manage Order</h1>
 
 
                                         <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
@@ -127,6 +126,7 @@
                                                             <th>Approval Date</th>
                                                             <th>Create Date</th>
                                                             <th>Order Status</th>
+                                                            <th></th>
                                                             <th>Payment Method</th>
                                                             <th>Payment Status</th>
                                                             <th>Action</th>
@@ -144,6 +144,7 @@
                                                                  <input hidden="" type="text" th:value="${order.getOrderId()}" name="id" >
                                                                  <select name="status" th:value="${order.getOrderStatus()}">
                                                                      <option th:value="Pending" th:text="'Pending'" ></option>
+                                                                     <option th:value="Cancelled" th:text="'Cancel'" ></option>
                                                                      <option th:value="Delivered" th:text="'Delivered'" ></option>
                                                                  </select>
                                                                  <input th:type="submit" value="Update">

@@ -42,7 +42,6 @@ public class AccountServiceImpl implements AccountService {
     private MailService mailService;
     @Autowired
     private MyUserDetailService myUserDetailService;
-
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -124,29 +123,21 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void changePassword(ChangePasswordRequest changePasswordRequest, Principal principal) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        var user = (User) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
 
-        // Kiểm tra xem người dùng đã đăng nhập chưa
-        if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof MyUserDetails) {
-            // Ép kiểu principal về MyUserDetails để lấy thông tin tài khoản
-            MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
+        // check if the current password is correct
+        if (!passwordEncoder.matches(changePasswordRequest.getCurrentPassword(), user.getPassword())) {
+            throw new IllegalStateException("Wrong password");
+        }
+        // check if the two new passwords are the same
+        if (!changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmNewPassword())) {
+            throw new IllegalStateException("Password are not the same");
+        }
 
-            // Lấy thông tin tài khoản từ MyUserDetails
-            Account account = userDetails.getAccount();
-            // check if the current password is correct
-            if (!passwordEncoder.matches(changePasswordRequest.getCurrentPassword(), account.getPassword())) {
-                throw new IllegalStateException("Wrong password");
-            }
-            // check if the two new passwords are the same
-            if (!changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmNewPassword())) {
-                throw new IllegalStateException("Password are not the same");
-            }
+        // update the password
+//        user.getPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
 
-            // update the password
-        account.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
-
-            // save the new password
-        accountRepository.save(account);
-        } else throw new RuntimeException("");
+        // save the new password
+//        accountRepository.save(user);
     }
 }

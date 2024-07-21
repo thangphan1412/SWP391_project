@@ -19,18 +19,16 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -63,7 +61,7 @@ public class AccountController {
 
     @PostMapping("/login")
     public ModelAndView login(@Valid @ModelAttribute LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView modelAndView = new ModelAndView("redirect:/");
+        ModelAndView modelAndView = new ModelAndView("login"); // Nếu đăng nhập thất bại sẽ quay lại trang đăng nhập
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -87,40 +85,44 @@ public class AccountController {
 
             LoginResponse loginResponse;
 
-            if(roles.contains(Contant.ROLE_EMPLOYEE)) {
-                modelAndView = new ModelAndView("redirect:/employees");
-            } else if (roles.contains(Contant.ROLE_SHIPPER)) {
-                modelAndView = new ModelAndView("redirect:/shipping");
-            }
+            modelAndView.setViewName("redirect:/"); // Nếu đăng nhập thành công sẽ chuyển hướng về trang chủ
 
             if (userDetails.getAccount() != null) {
-                loginResponse = new LoginResponse(token ,
-                        userDetails.getAccount().getEmail() ,roles);
+                loginResponse = new LoginResponse(token, userDetails.getAccount().getEmail(), roles);
 
                 request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 
-                // Lưu token vào cookie
                 Cookie cookie = new Cookie("JWT_TOKEN", token);
                 cookie.setSecure(true);
                 cookie.setHttpOnly(true);
                 cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
                 cookie.setPath("/");
                 response.addCookie(cookie);
+
                 if (roles.contains(Contant.ROLE_ADMIN)) {
                     cookie = new Cookie("1234abc", "1234");
                     cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
                     cookie.setPath("/");
                     response.addCookie(cookie);
                 }
+                if (roles.contains(Contant.ROLE_USER)) {
+                    cookie = new Cookie("4567abc", "4567");
+                    cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
+                    cookie.setPath("/");
+                    response.addCookie(cookie);
+                }
+                if (roles.contains(Contant.ROLE_EMPLOYEE)) {
+                    cookie = new Cookie("89abc", "89");
+                    cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
+                    cookie.setPath("/");
+                    response.addCookie(cookie);
+                }
             }
-        } catch (BadCredentialsException e) {
-            modelAndView = new ModelAndView("login");
-            modelAndView.addObject("error", "Invalid email or password.");
+        } catch (AuthenticationException e) {
+            modelAndView.addObject("errorMessage", "invalid email or password");
         }
-
         return modelAndView;
     }
-
 
     @PostMapping("/forgot-password")
     public void createForgotPassword(@RequestParam(name = "email") String email, HttpServletResponse response) throws IOException {
@@ -131,27 +133,29 @@ public class AccountController {
 
     @PostMapping("/reset-password")
     public void resetPassword(@RequestParam(name = "token", required = false) String token,
-                                                 @RequestParam(name = "newPassword", required = false) String newPassword,
-                                        HttpServletResponse response) throws IOException {
+                              @RequestParam(name = "newPassword", required = false) String newPassword,
+                              HttpServletResponse response) throws IOException {
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest(token, newPassword);
         accountService.resetPassword(resetPasswordRequest);
         response.sendRedirect("/resetPasswordSuccess");
     }
 
     @PostMapping("/change-password")
-    public String changePasswords(
+    public ResponseEntity<String> changePasswords(
             @RequestParam(name = "currentPassword", required = false) String currentPassword,
             @RequestParam(name = "newPassword", required = false) String newPassword,
             @RequestParam(name = "confirmNewPassword", required = false) String confirmNewPassword,
             Principal principal){
         ChangePasswordRequest changePasswordRequest = new ChangePasswordRequest(currentPassword, newPassword, confirmNewPassword);
-        try {
-            accountService.changePassword(changePasswordRequest, principal);
-        } catch (Exception e) {
-            return "redirect:/login";
-        }
-        return "redirect:/UserDetail";
+        accountService.changePassword(changePasswordRequest, principal);
+        return ResponseEntity.ok("Thay doi mat khau thanh cong");
     }
 
-
+//    @PostMapping("/logout")
+//    public ResponseEntity<?> logout(HttpServletRequest request){
+//        String token = tokenService.getTokenFromRequest(request);
+//        tokenService.invalidateToken(token);
+//        return ResponseEntity.ok("logout success");
+//    }
 }
+

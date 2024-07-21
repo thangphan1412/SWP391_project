@@ -45,7 +45,7 @@
                   <a href="/update">Admin Dashboard</a></li>
                 <li class="is-marked">
 
-                  <a href="/createSupBraCate">Add Product</a></li>
+                  <a href="/createSupBraCate">Manage Product</a></li>
 
 
               </ul>
@@ -88,7 +88,7 @@
                         <input class="input-text input-text--primary-style" type="text" placeholder="Enter the supplier name" name="name" required>
 
 
-                        <label class="gl-label" for="reg-lname">Supplier Address</label>
+                        <label class="gl-label" >Supplier Address</label>
 
                         <input class="input-text input-text--primary-style" style="margin: auto" type="text"  placeholder="Enter the address" name="address" required>
                         <input style="padding: 18px 18px; border: 2px solid #ff4500; border-radius: 6px; margin-top: 20px;" class="btn btn--e-transparent-brand-b-2" type="submit" value="Submit">
@@ -99,6 +99,36 @@
                       <p style="color: green" th:text="${supMessage}"></p>
                     </div>
 
+                  </div>
+
+                  <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
+                    <div class="dash__table-wrap gl-scroll">
+                      <table class="dash__table">
+                        <thead>
+                        <tr>
+                          <th>Id</th>
+                          <th>Supplier Name</th>
+                          <th>Address</th>
+                          <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody th:each="sup : ${supplierList}">
+                        <form method="post" th:action="@{/updateSupplier}">
+                          <tr>
+                            <td th:text="${sup.supplierId}"></td>
+                            <td><input type="text" name="supplierName" th:value="${sup.supplierName}" required>
+                              <input type="text" name="supplierId" th:value="${sup.supplierId}" hidden="" required>
+                            </td>
+
+                            <td><input type="text" name="supplierAddress" th:value="${sup.supplierAddress}" required></td>
+                            <td><button type="submit"> Update</button></td>
+                          </tr>
+                        </form>
+
+
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
 
@@ -121,6 +151,35 @@
                       <p style="color: green" th:text="${brandMessage}"></p>
                     </div>
                 </div>
+
+
+                  <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
+                    <div class="dash__table-wrap gl-scroll">
+                      <table class="dash__table">
+                        <thead>
+                        <tr>
+                          <th>Id</th>
+                          <th>Brand Name</th>
+                          <td>Action</td>
+                        </tr>
+                        </thead>
+                        <tbody th:each="brand : ${brandList}">
+                        <form method="post" th:action="@{/updateBrand}">
+                          <tr>
+                            <td th:text="${brand.brandId}"></td>
+                            <td>
+                              <input type="text" name="brandId" th:value="${brand.brandId}" hidden="hidden">
+                              <input type="text" name="brandName" th:value="${brand.brandName}" required>
+                            </td>
+                            <td><button type="submit"> Update</button></td>
+                          </tr>
+                        </form>
+
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
               </div>
 
               <br>
@@ -141,6 +200,34 @@
                       <p style="color: green" th:text="${cateMessage}"></p>
                     </div>
                 </div>
+
+                  <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
+                    <div class="dash__table-wrap gl-scroll">
+                      <table class="dash__table">
+                        <thead>
+                        <tr>
+                          <th>Id</th>
+                          <th>Category Name</th>
+                          <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody th:each="cate : ${categoryList}">
+                        <form method="post" th:action="@{/updateCategory}">
+                          <tr>
+                            <td th:text="${cate.categoryId}"></td>
+                            <td>
+                              <input type="text"  hidden="" name="categoryId" th:value="${cate.categoryId}" required>
+                              <input type="text" name="categoryName" th:value="${cate.categoryName}" required>
+                            </td>
+                            <td><button type="submit"> Update</button></td>
+                          </tr>
+                        </form>
+
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
               </div>
 
 
@@ -193,6 +280,19 @@
 
 <!--====== App ======-->
 <script src="js/app.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    document.querySelectorAll('form').forEach(form => {
+      form.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+        }
+      });
+    });
+  });
+</script>
+
 
 <!--====== Noscript ======-->
 <noscript>

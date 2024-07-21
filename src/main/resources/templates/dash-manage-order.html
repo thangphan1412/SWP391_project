@@ -16,6 +16,23 @@
     <link rel="stylesheet"   th:href="@{/css/vendor.css}" />
     <link rel="stylesheet" th:href="@{/css/utility.css}" />
     <link rel="stylesheet" th:href="@{/css/app.css}" />
+    <style>
+        @keyframes rgbAnimation {
+            0% { background-color: red; }
+            33% { background-color: green; }
+            66% { background-color: blue; }
+            100% { background-color: red; }
+        }
+
+        .buttonRGB {
+            background-color: red;
+            color: #fff;
+            padding: 0.5em;
+            border: none;
+            border-radius: 25px;
+            animation: rgbAnimation 3s infinite;
+        }
+    </style>
 </head>
 <body class="config">
 <div class="preloader is-active">
@@ -46,10 +63,13 @@
                                 <ul class="breadcrumb__list">
                                     <li class="has-separator">
 
-                                        <a href="index.html">Home</a></li>
+                                        <a href="/">Home</a></li>
+                                    <li class="has-separator">
+
+                                        <a href="/UserDetail">My Account</a></li>
                                     <li class="is-marked">
 
-                                        <a href="dash-manage-order.html">My Account</a></li>
+                                        <a href="/viewOrderList">My Orders & Track Order</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -162,7 +182,7 @@
                                                 <div>
                                                     <form method="post" th:action="@{/reOrder}">
                                                         <input type="text" hidden="" th:value="${orderId}" name="orderId">
-                                                        <button type="submit"> ReOrder</button>
+                                                        <button class="buttonRGB" style="background: red;color: #fff;padding: 0.5em ;border: none;border-radius: 25px;" type="submit"> Re-Order Product</button>
                                                     </form>
 
                                                     <div th:if="${orderMessage}" class="alert alert-success" role="alert">

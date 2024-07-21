@@ -134,8 +134,8 @@
                                     <span> </span>
                                     <form class="l-f-o__form" role="form" th:action="@{/api/account/login}" method="post" th:object="${login}">
                                         <!-- Hiển thị thông báo lỗi -->
-                                        <div th:if="${error != null}" class="u-s-m-b-30" style="color: red">
-                                            <span class="error-message" th:text="${error}"></span>
+                                        <div th:if="${errorMessage}">
+                                            <p th:text="${errorMessage}" style="color: red;"></p>
                                         </div>
                                         <div class="u-s-m-b-30">
                                             <label class="gl-label" for="username">Email</label>

@@ -70,6 +70,7 @@ public class WebSecurityConfig {
                     logout.deleteCookies("JWT_TOKEN");
                     logout.deleteCookies("1234abc");
                     logout.deleteCookies("4567abc");
+                    logout.deleteCookies("89abc");
                     logout.invalidateHttpSession(true);
                 })
                 .csrf(AbstractHttpConfigurer::disable);

@@ -22,7 +22,7 @@
                 <form id="name-filter-form" class="shop-w__form-p" action="/ListProduct"
                       method="get">
                     <div  class="shop-w__form-p">
-                        <div>
+                        <div style="position: relative" id="search-container">
                             <label for="name"></label>
 
                             <input style="width: 170%" class="input-text input-text--border-radius input-text--style-1"
@@ -55,6 +55,8 @@
                         >
                         </div>
                     </div>
+                    <ul id="recent-searches" style="display: none; list-style: none; position: absolute; background: white; border: 1px solid #ccc; width: 27%; border-radius: 15px;  z-index: 1000; padding: 0; margin: 0;"></ul>
+
                 </form>
 
                 <!--====== End - Search Form ======-->
@@ -163,10 +165,7 @@
 
                             <li>
 
-                                <a th:href="@{/viewCart}">CART</a></li>
-
-
-
+                                <a th:href="@{/viewCart}" id="cart">CART</a></li>
 
                         </ul>
                         <!--====== End - List ======-->
@@ -194,7 +193,7 @@
 
                             <li class="has-dropdown">
 
-                                <a class="mini-cart-shop-link" th:href="@{/viewCart}"><i class="fas fa-shopping-bag"></i>
+                                <a class="mini-cart-shop-link" th:href="@{/viewCart}" id="cart2"><i class="fas fa-shopping-bag"></i>
                                 </a>
 
                                 <!--====== Dropdown ======-->
@@ -212,14 +211,16 @@
             <!--====== End - Secondary Nav ======-->
         </div>
     </nav>
-    <script
-            th:inline="javascript">
+    <script th:inline="javascript">
         $(document).ready(function () {
             if (readCookie('1234abc')) { // admin
                 console.log(readCookie('1234abc'));
                 $('#account').hide();
-                $("#login").hide()//hide account
-                $("#register").hide()
+                $("#login").hide();//hide account
+                $("#register").hide();
+                $("#cart").hide();
+                $("#cart2").hide();
+
             }
             else if (readCookie('4567abc')) { // customer
                 console.log(readCookie('4567abc'));
@@ -227,6 +228,15 @@
                 $("#login").hide()//hide account
                 $("#register").hide()
             }
+            else if (readCookie('89abc')) { // employee
+                console.log(readCookie('89abc'));
+                $('#account').hide();
+                $("#login").hide()//hide account
+                $("#register").hide()
+                $("#cart").hide();
+                $("#cart2").hide();
+            }
+
             else{
                 $('#dashboard').hide();
                 $('#account').hide();
@@ -244,6 +254,68 @@
             }
             return null;
         }
+
+        // Function to read recent searches from local storage
+        function getRecentSearches() {
+            let searches = localStorage.getItem('recentSearches');
+            return searches ? JSON.parse(searches) : [];
+        }
+
+        // Function to save a new search term
+        function saveSearch(term) {
+            let searches = getRecentSearches();
+            if (!searches.includes(term)) {
+                if (searches.length >= 5) {
+                    searches.pop(); // Remove the oldest search if limit is reached
+                }
+                searches.unshift(term); // Add the new search term at the beginning
+                localStorage.setItem('recentSearches', JSON.stringify(searches));
+            }
+        }
+
+        // Show recent searches when the search input is focused
+        $('#name').on('focus', function() {
+            showRecentSearches();
+        });
+
+        // Function to display recent searches
+        function showRecentSearches() {
+            let searches = getRecentSearches();
+            let searchList = $('#recent-searches');
+            searchList.empty().hide();
+            if (searches.length > 0) {
+                searches.forEach(search => {
+                    searchList.append(`<li style="padding: 5px 10px; cursor: pointer;" onclick="setSearchTerm('${search}')">${search}</li>`);
+                });
+                searchList.show();
+            }
+        }
+
+        // Function to set the clicked search term to the input
+        window.setSearchTerm = function(term) {
+            $('#name').val(term).focus();
+            $('#recent-searches').hide();
+        };
+
+        // Save the search term when the form is submitted
+        $('#name-filter-form').on('submit', function() {
+            let searchTerm = $('#name').val().trim();
+            if (searchTerm) {
+                saveSearch(searchTerm);
+            }
+        });
+
+        // Hide the recent searches dropdown when the mouse leaves the container
+        $('#search-container').on('mouseleave', function() {
+            $('#recent-searches').hide();
+        });
+
+        // Prevent the dropdown from hiding when the mouse enters it
+        $('#recent-searches').on('mouseenter', function() {
+            $('#recent-searches').show();
+        });
+
+
     </script>
     <!--====== End - Nav 2 ======-->
 </header>

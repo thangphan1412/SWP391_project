@@ -54,7 +54,7 @@ public class VoucherController {
         voucher.setPercentageDiscount(percentage);
         voucher.setQuantity(quantity);
         voucher.setCreateDate(LocalDate.now());
-        if (voucher.getCreateDate().isEqual(endDate)){
+        if (voucher.getCreateDate().isEqual(endDate) || endDate.isBefore(voucher.getCreateDate())){
             redirectAttributes.addFlashAttribute("addMessage", "Voucher must be availiable than 1 day");
             return "redirect:/createVoucher";
         }

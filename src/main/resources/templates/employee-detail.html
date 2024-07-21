@@ -51,9 +51,8 @@
                                 <li class="has-separator">
 
                                     <a href="/viewCustomer">View Customer Account</a></li>
-                                <li class="is-marked">
 
-                                    <a th:href="@{/customerDetail/{id}(id = ${customerDetail.getId()})}">Customer Detail</a></li>
+
 
                             </ul>
                         </div>
@@ -78,30 +77,27 @@
                                 <div class="dash__box dash__box--bg-white dash__box--shadow u-s-m-b-30">
                                     <div class="dash__pad-1">
 
-
                                         <ul class="dash__f-list">
                                             <h3 class="dash-active">MANAGE</h3>
                                             <li>
-
-                                                <a class="dash-active" th:href="@{/update}">Manage Product</a></li>
-
+                                                <a class="dash-active" th:href="@{/update}" id="manageProduct">Manage Product</a></li>
                                             <li>
-
-                                                <a  th:href="@{/createSupBraCate}">Manage Supplier & Category & Brand</a></li>
-
+                                                <a  th:href="@{/createSupBraCate}" id="manageCateBraSup">Manage Supplier & Category & Brand</a></li>
                                             <li>
+                                                <a href="/createVoucher" id="manageVoucher">Manage Voucher</a></li>
+                                            <li>
+                                                <a href="/viewRequest" id="manageRequest"> Request of Cancel</a></li>
+                                            <li>
+                                                <a href="/receipt" id="manageReceipt" >Manage Receipt</a></li>
+                                            <li>
+                                                <a href="/viewCustomer" id="manageCustomerAccount">View Customer Account</a></li>
+                                            <li>
+                                                <a href="/viewOrder" id="manageOrder">Manage Orders</a></li>
+                                            <li>
+                                                <a href="/viewAllAccount" id="manageRole">Manage Role of Account</a></li>
 
-                                                <a href="/createVoucher">Manage Voucher</a></li>
+                                        </ul>
 
-                                            <li>
-                                                <a href="/viewRequest"> Request of Cancel</a></li>
-                                            <li>
-
-                                                <a href="/receipt">Manage Receipt</a></li>
-                                            <li>
-                                                <a href="/viewCustomer">View Customer Account</a></li>
-                                            <li>
-                                                <a href="/viewOrder">Manage Orders</a></li>
 
 
                                         </ul>
@@ -113,19 +109,22 @@
                             <div class="col-lg-9 col-md-12">
                                 <div class="dash__box dash__box--shadow dash__box--radius dash__box--bg-white u-s-m-b-30">
                                     <div class="dash__pad-2">
-                                        <h1 class="dash__h1 u-s-m-b-14">View Customer</h1>
-
+                                        <h1 class="dash__h1 u-s-m-b-14">View Employee</h1>
+                                        <div th:if="${updateMessage}" class="alert alert-success" role="alert">
+                                            <p style="color: green" th:text="${updateMessage}"></p>
+                                        </div>
 
                                         <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
                                             <div class="dash__table-wrap gl-scroll">
+
                                                 <table class="dash__table">
                                                     <thead>
                                                     <tr>
                                                         <th>User Id</th>
-                                                        <th>FullName</th>
-                                                        <th>Name User</th>
-                                                        <th>Email</th>
+                                                        <th>Name</th>
+                                                        <th>Date of birth</th>
                                                         <th>Phone Number</th>
+                                                        <th>Email</th>
                                                         <th>Address Detail</th>
                                                         <th>City</th>
                                                         <th>District</th>
@@ -135,16 +134,35 @@
                                                     </thead>
                                                     <tbody>
                                                     <tr>
-                                                        <td th:text="${customerDetail.id}"></td>
-                                                        <td th:text="${customerDetail.fullname}"></td>
-                                                        <td th:text="${customerDetail.name}"></td>
-                                                        <td th:text="${customerDetail.account.email}"></td>
-                                                        <td th:text="${customerDetail.phone}"></td>
-                                                        <td th:text="${customerDetail.addressDetail}"></td>
-                                                        <td th:text="${customerDetail.city}"></td>
-                                                        <td th:text="${customerDetail.district}"></td>
-                                                        <td th:text="${customerDetail.ward}"></td>
-                                                        <td><a href="/viewCustomer">Back to customer list</a></td>
+                                                        <form method="post" th:action="@{/updateEmployee}">
+                                                            <td th:text="${employee.id}"></td>
+                                                            <td>
+                                                                <input type="text" name="id" th:value="${employee.id}" hidden>
+                                                                <input type="text" name="name" required th:value="${employee.name}">
+                                                            </td>
+                                                            <td>
+                                                                <input type="date" name="birthday" required th:value="${#dates.format(employee.birthday, 'yyyy-MM-dd')}">
+                                                            </td>
+                                                            <td>
+                                                                <input type="tel" name="phone" required th:value="${employee.phone}" min="10" max="11">
+                                                            </td>
+                                                            <td th:text="${employee.account.email}"></td>
+                                                            <td>
+                                                                <input type="text" name="addressDetail" required th:value="${employee.addressDetail}">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" name="city" required th:value="${employee.city}">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" name="district" required th:value="${employee.district}">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" name="ward" required th:value="${employee.ward}">
+                                                            </td>
+                                                            <td><button type="submit">Update</button></td>
+                                                        </form>
+
+                                                        <td><a href="/viewAllAccount">Back to Account list</a></td>
                                                     </tr>
 
                                                     </tbody>
@@ -181,6 +199,27 @@
     ga('create', 'UA-XXXXX-Y', 'auto');
     ga('send', 'pageview')
 </script>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        if (readCookie('89abc')) { // employee
+            console.log(readCookie('89abc'));
+            $('#manageRole').hide();
+        }
+
+    })
+    function readCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        console.log(ca);
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+</script>
 <script src="https://www.google-analytics.com/analytics.js" async defer></script>
 
 
@@ -192,6 +231,23 @@
 
 <!--====== App ======-->
 <script th:src="@{/js/app.js}"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Lấy tất cả các phần tử input và textarea trong trang
+        const inputs = document.querySelectorAll('input, textarea');
+
+        inputs.forEach(function (input) {
+            input.addEventListener('keydown', function (event) {
+                // Kiểm tra nếu phím Enter (mã phím là 13) được nhấn
+                if (event.key === 'Enter') {
+                    // Ngăn chặn hành động mặc định của phím Enter
+                    event.preventDefault();
+                }
+            });
+        });
+    });
+</script>
 
 
 <!--====== Noscript ======-->

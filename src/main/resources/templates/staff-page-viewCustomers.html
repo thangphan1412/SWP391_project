@@ -76,34 +76,29 @@
 
 
                                         <ul class="dash__f-list">
-                                            <h3 class="dash-active">MANAGE</h3>
-                                            <li>
+                                            <ul class="dash__f-list">
+                                                <h3 class="dash-active">MANAGE</h3>
+                                                <li>
+                                                    <a  th:href="@{/update}" id="manageProduct">Manage Product</a></li>
+                                                <li>
+                                                    <a  th:href="@{/createSupBraCate}" id="manageCateBraSup">Manage Supplier & Category & Brand</a></li>
+                                                <li>
+                                                    <a href="/createVoucher" id="manageVoucher">Manage Voucher</a></li>
+                                                <li>
+                                                    <a href="/viewRequest" id="manageRequest"> Request of Cancel</a></li>
+                                                <li>
+                                                    <a href="/receipt" id="manageReceipt" >Manage Receipt</a></li>
+                                                <li>
+                                                    <a class="dash-active" href="/viewCustomer" id="manageCustomerAccount">View Customer Account</a></li>
+                                                <li>
+                                                    <a href="/viewOrder" id="manageOrder">Manage Orders</a></li>
+                                                <li>
+                                                    <a  href="/viewAllAccount" id="manageRole">Manage Role of Account</a></li>
+                                                <li>
 
-                                                <a  th:href="@{/update}">Manage Product</a></li>
+                                                    <a href="/viewShipper">View Order</a></li>
 
-                                            <li>
-
-                                                <a  th:href="@{/createSupBraCate}">Manage Supplier & Category & Brand</a></li>
-
-                                            <li>
-
-                                                <a href="/createVoucher">Manage Voucher</a></li>
-                                            <li>
-
-                                                <a href="/receipt">Manage Receipt</a></li>
-
-                                            <h3 class="dash-active">VIEW</h3>
-
-                                            <li>
-                                                <a class="dash-active" href="/viewCustomer">View Customer</a></li>
-                                            <li>
-                                                <a href="/viewBrand">View Brand</a></li>
-                                            <li>
-                                                <a  href="/viewSuppliers">View Suppliers</a></li>
-                                            <li>
-                                                <a href="/viewOrder">View Orders</a></li>
-
-
+                                            </ul>
                                         </ul>
                                     </div>
                                 </div>
@@ -116,9 +111,10 @@
                                         <h1 class="dash__h1 u-s-m-b-14">View Customer</h1>
 
                                         <form th:action="@{/search-customer}" method="post">
-                                            <input type="text" name="name" placeholder="Search for customers by name">
+                                            <input style="width: 30%" class="input-text input-text--border-radius input-text--style-1" type="text" name="name" placeholder="Search here">
                                             <button type="submit">Search</button>
                                         </form>
+                                        <br>
                                         <div th:if="${searchMessage}">
                                             <p th:text="${searchMessage}"></p>
                                         </div>
@@ -134,10 +130,15 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <tr th:each="customer :${customers}">
-                                                        <td th:text="${customer.getId()}"></td>
-                                                        <td th:text="${customer.account.getEmail()}"></td>
-                                                        <td><a th:href="@{/customerDetail/{id}(id = ${customer.getId()})}">View detail</a></td>
+                                                    <tr th:each="account :${accountList}">
+                                                        <td th:text="${account.customer.id}"></td>
+                                                        <td th:text="${account.email}"></td>
+                                                        <td>
+                                                            <a th:href="@{/customerDetail/{id}(id = ${account.getCustomer().getId()})}">View detail</a>
+                                                            <br>
+                                                            <a th:href="@{/customerOrder/{id}(id = ${account.getCustomer().getId()})}">View Order of Account</a>
+                                                        </td>
+
                                                     </tr>
 
                                                     </tbody>
