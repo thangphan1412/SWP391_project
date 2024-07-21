@@ -177,9 +177,11 @@ public class ProductController {
         List<Category> categoryList = categoryService.findAll();
         List<Brand> brandList =  brandService.findAll();
         List<Supplier> supplierList = supplierService.findAllSuppliers();
+        List<ProductTech> productTechList = productTechService.getAllProductTechs();
         model.addAttribute("supplierList", supplierList);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("BrandList", brandList);
+        model.addAttribute("productTech", productTechList);
         return "admin-add-product";
     }
 
@@ -498,7 +500,7 @@ public class ProductController {
     private String saveProductImage(MultipartFile file, String fileName) {
 
         //Change the path after clone
-        String uploadDir = "D:\\Study\\SWP391\\SWP391_ProjectFinal\\SWP391_project\\src\\main\\resources\\static\\product_img";
+        String uploadDir = "D:\\Study\\SWP391\\SWP_FINAL\\SWP391_project\\src\\main\\resources\\static\\product_img";
         File uploadDirFile = new File(uploadDir);
 
         // Kiểm tra và tạo thư mục nếu chưa tồn tại
@@ -657,6 +659,37 @@ public class ProductController {
 
         return "redirect:/createSupBraCate";
     }
+
+
+    @PostMapping("/updateTech")
+    public String updateTech(@RequestParam("techId") Long techId,
+                             @RequestParam("techMemory") int memory,
+                             @RequestParam("techRam") int ram,
+                             @RequestParam("techSize") double size,
+                             RedirectAttributes redirectAttributes) {
+        Optional<ProductTech> optionalProductTech = productTechService.getProductTechById(techId);
+        if (optionalProductTech.isPresent()) {
+            ProductTech existTech = optionalProductTech.get();
+            List<ProductTech> productTechList = productTechService.getAllProductTechs();
+            for (ProductTech p : productTechList) {
+                if (p.getRam() == ram && p.getSize() == size && p.getMemory() == memory) {
+                    redirectAttributes.addFlashAttribute("techMessage", "Tech specifications already exist.");
+                    return "redirect:/create"; // Redirect to a relevant page
+                }
+            }
+            // No duplicates found, proceed to update
+            existTech.setMemory(memory);
+            existTech.setRam(ram);
+            existTech.setSize(size);
+            productTechService.saveTech(existTech);
+            redirectAttributes.addFlashAttribute("techMessage", "Tech updated successfully.");
+            return "redirect:/create"; // Redirect to a relevant page
+        } else {
+            redirectAttributes.addFlashAttribute("techMessage", "Tech not found.");
+            return "redirect:/create"; // Redirect to a relevant page
+        }
+    }
+
 
 
 

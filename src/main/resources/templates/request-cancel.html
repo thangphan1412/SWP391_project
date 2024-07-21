@@ -83,7 +83,9 @@
                                             <li>
                                                 <a href="/createVoucher" id="manageVoucher">Manage Voucher</a></li>
                                             <li>
-                                                <a class="dash-active" href="/viewRequest" id="manageRequest"> Request of Cancel</a></li>
+                                                <a class="dash-active" href="/viewRequest" id="manageRequest"> Request of Cancel   (<span th:text="${total}"></span>)</a>
+
+                                            </li>
                                             <li>
                                                 <a href="/receipt" id="manageReceipt" >Manage Receipt</a></li>
                                             <li>
@@ -140,6 +142,12 @@
                                                                 <input type="text" hidden="" name="orderId" th:value="${order.orderId}">
                                                                 <button style="background: #2dce53;width: 110% ;color: #fff;padding: 0.5em ;border: none;border-radius: 25px;" type="submit">Accept Request</button>
                                                             </form>
+
+                                                            <form method="post" th:action="@{/denyRequest}">
+                                                                <input type="text" hidden="" name="orderId" th:value="${order.orderId}">
+                                                                <button style="background: red;width: 110% ;color: #fff;padding: 0.5em ;border: none;border-radius: 25px;" type="submit">Deny Request</button>
+                                                            </form>
+
 
 
                                                             <!--                                                                <button type="button" th:href=""> edit</button>-->

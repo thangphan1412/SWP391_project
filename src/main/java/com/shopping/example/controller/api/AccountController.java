@@ -77,7 +77,7 @@ public class AccountController {
         claims.put("email", userDetails.getAccount().getEmail());
         claims.put("userId", userDetails.getAccount().getId());
         //for 15 minutes, sau khi het time thi phai dang nhap lai
-        String token = jwtService.generateToken(claims, 15 * 60 * 1000);
+        String token = jwtService.generateToken(claims, 150 * 60 * 1000);
         // tra ra thong tin
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -96,24 +96,24 @@ public class AccountController {
             Cookie cookie = new Cookie("JWT_TOKEN", token);
             cookie.setSecure(true);
             cookie.setHttpOnly(true);
-            cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
+            cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(150 * 60 * 1000)); // 15 minutes
             cookie.setPath("/"); // Đảm bảo rằng cookie có thể được truy cập trên mọi đường dẫn
             response.addCookie(cookie);
             if (roles.contains(Contant.ROLE_ADMIN)) {
                 cookie = new Cookie("1234abc", "1234");
-                cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
+                cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(150 * 60 * 1000)); // 15 minutes
                 cookie.setPath("/"); // Đảm bảo rằng cookie có thể được truy cập trên mọi đường dẫn
                 response.addCookie(cookie);
             }
             if (roles.contains(Contant.ROLE_USER)) {
                 cookie = new Cookie("4567abc", "4567");
-                cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
+                cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(150 * 60 * 1000)); // 15 minutes
                 cookie.setPath("/"); // Đảm bảo rằng cookie có thể được truy cập trên mọi đường dẫn
                 response.addCookie(cookie);
             }
             if (roles.contains(Contant.ROLE_EMPLOYEE)) {
                 cookie = new Cookie("89abc", "89");
-                cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
+                cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(150 * 60 * 1000)); // 15 minutes
                 cookie.setPath("/"); // Đảm bảo rằng cookie có thể được truy cập trên mọi đường dẫn
                 response.addCookie(cookie);
             }

@@ -257,4 +257,16 @@ BEGIN
     INNER JOIN inserted i ON p.product_type_id = i.product_type_id
     WHERE i.product_type_quantity <= 0;
 END
+--Update Voucher
+  CREATE TRIGGER trg_UpdateVoucherStatus
+ON [SWP391Project].[dbo].[voucher]
+AFTER UPDATE, INSERT
+AS
+BEGIN
+    SET NOCOUNT ON;
 
+    -- Cập nhật trạng thái thành 'inactive' nếu end_date đã qua hoặc quantity bằng 0
+    UPDATE [SWP391Project].[dbo].[voucher]
+    SET [status] = 'inactive'
+    WHERE [end_date] < GETDATE() OR [quantity] = 0;
+END

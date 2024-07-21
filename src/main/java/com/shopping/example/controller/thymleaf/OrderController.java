@@ -220,8 +220,7 @@ public class OrderController {
     @PostMapping("/requestCancel")
     public String requestCancel(@RequestParam("orderId") Long orderId,RedirectAttributes redirectAttributes) {
         Order existOrder = orderService.getOrderById(orderId);
-        existOrder.setOrderRequestCancel(Boolean.TRUE);
-        existOrder.setOrderStatus("On Request");
+        existOrder.setOrderStatus("On_Request");
         orderService.save(existOrder);
         return "redirect:/viewOrderList";
     }

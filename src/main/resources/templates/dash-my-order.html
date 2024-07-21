@@ -144,7 +144,7 @@
                                                         <option th:value="Cancelled" th:text="'Cancelled'" th:selected="${selectedStatus == 'Cancelled'}"></option>
                                                         <option th:value="Delivered" th:text="'Delivered'" th:selected="${selectedStatus == 'Delivered'}"></option>
                                                         <option th:value="Processing" th:text="'Processing'" th:selected="${selectedStatus == 'Processing'}"></option>
-                                                        <option th:value="RequestPending" th:text="'Request Pending'" th:selected="${selectedStatus == 'RequestPending'}"></option>
+                                                        <option th:value="On_Request" th:text="'Request Pending'" th:selected="${selectedStatus == 'RequestPending'}"></option>
                                                     </select>
                                                 </div>
                                             </form>
@@ -193,8 +193,9 @@
                                                                     <br>
                                                                     <button style="background: red;color: #fff;padding: 0.5em ;border: none;border-radius: 25px;" type="submit">Request Cancel</button>
                                                                 </form>
-
                                                             </div>
+
+
                                                         </div>
                                                     </div>
                                                 </div>
