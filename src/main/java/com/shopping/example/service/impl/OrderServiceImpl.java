@@ -72,7 +72,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getAllOrdersRequestCancel() {
-        return orderRepository.findByOrderRequestCancelTrue();
+        return orderRepository.findAllByOrderStatusOnRequest();
     }
 
     @Override

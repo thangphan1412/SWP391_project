@@ -16,8 +16,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findByOrderStatus(String status);
 
-    @Query("SELECT o FROM Order o WHERE o.customer.id = :userId AND o.orderStatus = :status")
-    List<Order> findByCustomerIdAndOrderStatus(Long userId, String status);
+    @Query("SELECT o FROM Order o WHERE o.customer.id = :userId AND o.orderStatus LIKE :status")
+    List<Order> findByCustomerIdAndOrderStatus(@Param("userId") Long userId, @Param("status") String status);
 
     @Query("SELECT o FROM Order o WHERE o.customer.account.email = :email")
     List<Order> findByCustomerEmail(String email);
@@ -26,6 +26,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT o FROM Order o WHERE o.orderStatus  = 'Pending' OR o.employee.id = :id")
     List<Order> getAllOrdersNotShipped(@Param("id") Long id);
 
-    List<Order> findByOrderRequestCancelTrue();
+    @Query("SELECT o FROM Order o WHERE o.orderStatus = 'On_Request'")
+    List<Order> findAllByOrderStatusOnRequest();
 
 }

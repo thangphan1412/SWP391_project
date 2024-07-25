@@ -162,8 +162,40 @@
                                                                     <input class="input-text input-text--primary-style" type="number" placeholder="Enter the Screen" name="Size"  step="any" pattern="[0-9]+(\.[0-9]+)?" required min="1" >
                                                                 </div>
                                                                 <input style="padding: 18px 18px; border: 2px solid #ff4500; border-radius: 6px; margin-top: 20px;" class="btn btn--e-transparent-brand-b-2" type="submit" value="Submit">
-
                                                             </form>
+                                            <div class="dash__box dash__box--shadow dash__box--bg-white dash__box--radius">
+                                                <div class="dash__table-wrap gl-scroll">
+                                                    <table class="dash__table">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Id</th>
+                                                            <th>Ram</th>
+                                                            <th>Memory</th>
+                                                            <th>Size</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody th:each="tech : ${productTech}">
+                                                        <form method="post" th:action="@{/updateTech}">
+                                                            <tr>
+                                                                <td th:text="${tech.techId}"></td>
+                                                                <td>
+                                                                    <input type="text"  hidden="" name="techId" th:value="${tech.techId}" required>
+                                                                    <input type="number" min="3" name="techRam" th:value="${tech.ram}" required step="any">
+                                                                </td>
+                                                                <td> <input type="number" name="techMemory" th:value="${tech.memory}" required min="1" step="any"></td>
+                                                                <td> <input type="number" name="techSize" th:value="${tech.size}" required step="any" min="0" max="32"></td>
+                                                                <td><button type="submit"> Update</button></td>
+                                                            </tr>
+                                                        </form>
+
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+
+
                                         </div>
                                     </div>
                                                             <div style="font-weight: 600;" class="u-s-m-b-15 col-lg-12">

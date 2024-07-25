@@ -120,53 +120,75 @@
                                                 <table class="dash__table">
                                                     <thead>
                                                     <tr>
-                                                        <th>User Id</th>
-                                                        <th>Name</th>
-                                                        <th>Date of birth</th>
-                                                        <th>Phone Number</th>
-                                                        <th>Email</th>
-                                                        <th>Address Detail</th>
-                                                        <th>City</th>
-                                                        <th>District</th>
-                                                        <th> Ward</th>
-                                                        <th></th>
+                                                        <th>Field</th>
+                                                        <th>Value</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <tr>
-                                                        <form method="post" th:action="@{/updateEmployee}">
+                                                    <form method="post" th:action="@{/updateEmployee}">
+                                                        <tr>
+                                                            <td>User Id</td>
                                                             <td th:text="${employee.id}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Name</td>
                                                             <td>
                                                                 <input type="text" name="id" th:value="${employee.id}" hidden>
                                                                 <input type="text" name="name" required th:value="${employee.name}">
                                                             </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Date of birth</td>
                                                             <td>
                                                                 <input type="date" name="birthday" required th:value="${#dates.format(employee.birthday, 'yyyy-MM-dd')}">
                                                             </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Phone Number</td>
                                                             <td>
-                                                                <input type="tel" name="phone" required th:value="${employee.phone}" min="10" max="11">
+                                                                <input type="tel" name="phone" required th:value="${employee.phone}" minlength="10" maxlength="11">
                                                             </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Email</td>
                                                             <td th:text="${employee.account.email}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Address Detail</td>
                                                             <td>
                                                                 <input type="text" name="addressDetail" required th:value="${employee.addressDetail}">
                                                             </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>City</td>
                                                             <td>
                                                                 <input type="text" name="city" required th:value="${employee.city}">
                                                             </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>District</td>
                                                             <td>
                                                                 <input type="text" name="district" required th:value="${employee.district}">
                                                             </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Ward</td>
                                                             <td>
                                                                 <input type="text" name="ward" required th:value="${employee.ward}">
                                                             </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>
                                                             <td><button type="submit">Update</button></td>
-                                                        </form>
-
-                                                        <td><a href="/viewAllAccount">Back to Account list</a></td>
+                                                        </tr>
+                                                    </form>
+                                                    <tr>
+                                                        <td colspan="2"><a href="/viewAllAccount">Back to Account list</a></td>
                                                     </tr>
-
                                                     </tbody>
                                                 </table>
+
+
                                             </div>
                                         </div>
                                     </div>

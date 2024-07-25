@@ -298,7 +298,7 @@ public class CheckOutController {
         }
 
         Voucher existVoucher = voucherService.findVoucherWithCoce(code);
-        if (existVoucher == null || existVoucher.getStatus().equals("inactive")) {
+        if (existVoucher == null || existVoucher.getStatus().equals("inactive") || existVoucher.getEndDate().isBefore(LocalDate.now())) {
             redirectAttributes.addFlashAttribute("errorMessage", "Voucher is no longer available.");
             return "redirect:/checkout";
         }

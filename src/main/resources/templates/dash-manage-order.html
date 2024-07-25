@@ -245,18 +245,10 @@
                                                 <div class="dash__pad-3">
                                                     <h2 class="dash__h2 u-s-m-b-8">Total Summary</h2>
                                                     <div class="dash-l-r u-s-m-b-8">
-                                                        <div class="manage-o__text-2 u-c-secondary">Subtotal</div>
-                                                        <div class="manage-o__text-2 u-c-secondary" th:text="${#numbers.formatDecimal(totalPrice, 1, 2)}"> </div>
-                                                    </div>
-                                                    <div class="dash-l-r u-s-m-b-8">
-                                                        <div class="manage-o__text-2 u-c-secondary">Shipping Fee</div>
-                                                        <div class="manage-o__text-2 u-c-secondary" th:text="${#numbers.formatDecimal(shippingFee, 1, 2)}"></div>
-                                                    </div>
-                                                    <div class="dash-l-r u-s-m-b-8">
                                                         <div class="manage-o__text-2 u-c-secondary">Total</div>
-                                                        <div class="manage-o__text-2 u-c-secondary" th:text="${#numbers.formatDecimal(totalPrice + shippingFee, 1, 2)}"></div>
+                                                        <div class="manage-o__text-2 u-c-secondary" th:text="${#numbers.formatDecimal(totalPrice, 1, 2)}"></div>
                                                     </div>
-                                                    <span class="dash__text-2" th:text="${order.paymentStatus}"></span>
+                                                    <span class="dash__text-2" th:text="'Payment Status: ' + ${order.paymentStatus}"></span>
                                                 </div>
                                             </div>
                                         </div>

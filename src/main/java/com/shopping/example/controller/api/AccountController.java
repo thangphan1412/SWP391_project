@@ -24,7 +24,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -61,69 +60,67 @@ public class AccountController {
 
     @PostMapping("/login")
     public ModelAndView login(@Valid @ModelAttribute LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
-        ModelAndView modelAndView = new ModelAndView("login"); // Nếu đăng nhập thất bại sẽ quay lại trang đăng nhập
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginRequest.getEmail(),
-                            loginRequest.getPassword()
-                    )
-            );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        // Lấy thông tin người dùng từ form đăng nhập
 
-            MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
+        // check
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequest.getEmail(),
+                        loginRequest.getPassword()
+                )
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        // lay ra thong tin nguoi dung dnag dang nhap
+        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
+        // tao token , claim : luu thong tin token dua tren 2 colum
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("email", userDetails.getAccount().getEmail());
+        claims.put("userId", userDetails.getAccount().getId());
+        //for 15 minutes, sau khi het time thi phai dang nhap lai
+        String token = jwtService.generateToken(claims, 15 * 60 * 1000);
+        // tra ra thong tin
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
 
-            Map<String, Object> claims = new HashMap<>();
-            claims.put("email", userDetails.getAccount().getEmail());
-            claims.put("userId", userDetails.getAccount().getId());
+        LoginResponse loginResponse;
 
-            String token = jwtService.generateToken(claims, 15 * 60 * 1000);
+        ModelAndView modelAndView = new ModelAndView("redirect:/");
+        if (userDetails.getAccount() != null) {
+            loginResponse = new LoginResponse(token ,
+                    userDetails.getAccount().getEmail() ,roles);
 
-            List<String> roles = userDetails.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .collect(Collectors.toList());
+            request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 
-            LoginResponse loginResponse;
-
-            modelAndView.setViewName("redirect:/"); // Nếu đăng nhập thành công sẽ chuyển hướng về trang chủ
-
-            if (userDetails.getAccount() != null) {
-                loginResponse = new LoginResponse(token, userDetails.getAccount().getEmail(), roles);
-
-                request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
-
-                Cookie cookie = new Cookie("JWT_TOKEN", token);
-                cookie.setSecure(true);
-                cookie.setHttpOnly(true);
+            // Lưu token vào cookie
+            Cookie cookie = new Cookie("JWT_TOKEN", token);
+            cookie.setSecure(true);
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
+            cookie.setPath("/"); // Đảm bảo rằng cookie có thể được truy cập trên mọi đường dẫn
+            response.addCookie(cookie);
+            if (roles.contains(Contant.ROLE_ADMIN)) {
+                cookie = new Cookie("1234abc", "1234");
                 cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
-                cookie.setPath("/");
+                cookie.setPath("/"); // Đảm bảo rằng cookie có thể được truy cập trên mọi đường dẫn
                 response.addCookie(cookie);
-
-                if (roles.contains(Contant.ROLE_ADMIN)) {
-                    cookie = new Cookie("1234abc", "1234");
-                    cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
-                    cookie.setPath("/");
-                    response.addCookie(cookie);
-                }
-                if (roles.contains(Contant.ROLE_USER)) {
-                    cookie = new Cookie("4567abc", "4567");
-                    cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
-                    cookie.setPath("/");
-                    response.addCookie(cookie);
-                }
-                if (roles.contains(Contant.ROLE_EMPLOYEE)) {
-                    cookie = new Cookie("89abc", "89");
-                    cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
-                    cookie.setPath("/");
-                    response.addCookie(cookie);
-                }
             }
-        } catch (AuthenticationException e) {
-            modelAndView.addObject("errorMessage", "invalid email or password");
+            if (roles.contains(Contant.ROLE_USER)) {
+                cookie = new Cookie("4567abc", "4567");
+                cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
+                cookie.setPath("/"); // Đảm bảo rằng cookie có thể được truy cập trên mọi đường dẫn
+                response.addCookie(cookie);
+            }
+            if (roles.contains(Contant.ROLE_EMPLOYEE)) {
+                cookie = new Cookie("89abc", "89");
+                cookie.setMaxAge((int) TimeUnit.MILLISECONDS.toSeconds(15 * 60 * 1000)); // 15 minutes
+                cookie.setPath("/"); // Đảm bảo rằng cookie có thể được truy cập trên mọi đường dẫn
+                response.addCookie(cookie);
+            }
+
         }
         return modelAndView;
     }
-
     @PostMapping("/forgot-password")
     public void createForgotPassword(@RequestParam(name = "email") String email, HttpServletResponse response) throws IOException {
         var command = new ForgotPasswordRequest(email);
@@ -133,8 +130,8 @@ public class AccountController {
 
     @PostMapping("/reset-password")
     public void resetPassword(@RequestParam(name = "token", required = false) String token,
-                              @RequestParam(name = "newPassword", required = false) String newPassword,
-                              HttpServletResponse response) throws IOException {
+                                                 @RequestParam(name = "newPassword", required = false) String newPassword,
+                                        HttpServletResponse response) throws IOException {
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest(token, newPassword);
         accountService.resetPassword(resetPasswordRequest);
         response.sendRedirect("/resetPasswordSuccess");
@@ -158,4 +155,3 @@ public class AccountController {
 //        return ResponseEntity.ok("logout success");
 //    }
 }
-
